@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lcaddress {
+public class Lcaddress implements KLEntity{
     public String customerno;
     public String addressno;
     public String postaladdress;

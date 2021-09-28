@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lpedoritem {
+public class Lpedoritem implements KLEntity{
     public String edoracceptno;
     public String edorno;
     public String edorappno;

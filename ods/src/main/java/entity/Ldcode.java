@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ldcode {
+public class Ldcode implements KLEntity{
     public String codetype;
     public String code;
     public String codename;

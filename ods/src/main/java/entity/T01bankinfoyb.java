@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class T01bankinfoyb {
+public class T01bankinfoyb implements KLEntity{
     public String bank_id_parent;
     public String bank_id;
     public String bank_id_full;

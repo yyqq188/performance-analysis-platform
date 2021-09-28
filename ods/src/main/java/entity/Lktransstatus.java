@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lktransstatus {
+public class Lktransstatus implements KLEntity{
     public String transcode;
     public String reportno;
     public String bankcode;

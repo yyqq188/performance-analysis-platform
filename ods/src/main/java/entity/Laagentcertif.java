@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Laagentcertif {
+public class Laagentcertif implements KLEntity{
     public String agency_sales_id;
     public String bank_id;
     public String channel_id;

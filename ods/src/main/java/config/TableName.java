@@ -23,15 +23,15 @@ public class TableName {
     public static final String Ldcom = dbName+"."+ "ldcom_LDCOM";
     public static final String Ldplan = dbName+"."+ "ldplan_LDPLAN";
     public static final String Ljagetendorse = dbName+"."+ "ljagetendorse_LJAGETENDORSE";
-    public static final String Ljapayerson = dbName+"."+ "ljapayperson_LJAPAYPERSON";
+    public static final String Ljapayperson = dbName+"."+ "ljapayperson_LJAPAYPERSON";
     public static final String Ljtempfeeclass = dbName+"."+ "ljtempfeeclass_LJTEMPFEECLASS";
     public static final String Lktransstatus = dbName+"."+ "lktransstatus_LKTRANSSTATUS";
-    public static final String Imedoritem = dbName+"."+ "lmedoritem_LMEDORITEM";
+    public static final String Lmedoritem = dbName+"."+ "lmedoritem_LMEDORITEM";
     public static final String Lmriskapp = dbName+"."+ "lmriskapp_LMRISKAPP";
     public static final String Lpedoritem = dbName+"."+ "lpedoritem_LPEDORITEM";
-    public static final String t01bankinfoyb = dbName+"."+ "t01bankinfoyh_T01BANKINFOYB";
-    public static final String t01branchinfo = dbName+"."+ "t01branchinfo_T01BRANCHINFO";
-    public static final String t01teaminfo = dbName+"."+ "t01teaminfo_T01TEAMINFO";
-    public static final String t02salesinfo = dbName+"."+ "t02salesinfo_T01SALESINFO";
-    public static final String t02salesinfo_k = dbName+"."+ "t02salesinfo_k_T02SALESINFO_K";
+    public static final String T01bankinfoyb = dbName+"."+ "t01bankinfoyh_T01BANKINFOYB";
+    public static final String T01branchinfo = dbName+"."+ "t01branchinfo_T01BRANCHINFO";
+    public static final String T01teaminfo = dbName+"."+ "t01teaminfo_T01TEAMINFO";
+    public static final String T02salesinfo = dbName+"."+ "t02salesinfo_T01SALESINFO";
+    public static final String T02salesinfo_k = dbName+"."+ "t02salesinfo_k_T02SALESINFO_K";
 }

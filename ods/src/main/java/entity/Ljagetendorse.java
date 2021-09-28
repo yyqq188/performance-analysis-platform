@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ljagetendorse {
+public class Ljagetendorse implements KLEntity{
     public String actugetno;
     public String endorsementno;
     public String feeoperationtype;

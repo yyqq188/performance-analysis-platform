@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lbinsured {
+public class Lbinsured implements KLEntity{
     public String edorno;
     public String grpcontno;
     public String contno;

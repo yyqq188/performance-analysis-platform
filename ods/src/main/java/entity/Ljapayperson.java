@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ljapayperson {
+public class Ljapayperson implements KLEntity{
     public String polno;
     public Integer paycount;
     public String grpcontno;

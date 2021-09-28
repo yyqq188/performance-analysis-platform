@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lacom {
+public class Lacom implements KLEntity{
     public String agentcom;
     public String managecom;
     public String areatype;

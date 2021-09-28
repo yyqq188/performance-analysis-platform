@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lcpol {
+public class Lcpol implements KLEntity{
     public String grpcontno;
     public String grppolno;
     public String contno;

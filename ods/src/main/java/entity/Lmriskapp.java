@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lmriskapp {
+public class Lmriskapp implements KLEntity{
     public String riskcode;
     public String riskver;
     public String riskname;

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lccontextend {
+public class Lccontextend implements KLEntity{
     public String contno;
     public String operatesource;
     public String back1;

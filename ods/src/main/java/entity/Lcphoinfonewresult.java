@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lcphoinfonewresult {
+public class Lcphoinfonewresult implements KLEntity{
     public String contno;
     public String state;
     public String sendstate;

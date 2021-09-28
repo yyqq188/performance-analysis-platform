@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Labranchgroup {
+public class Labranchgroup implements KLEntity{
     public String agentgroup;
     public String name;
     public String managecom;

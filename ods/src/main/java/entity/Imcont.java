@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Imcont {
+public class Imcont implements KLEntity{
     public String data_source;
     public String branch_no;
     public String sales_id;

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ljtempfeeclass {
+public class Ljtempfeeclass implements KLEntity{
     public String tempfeeno;
     public String paymode;
     public String chequeno;

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ldplan {
+public class Ldplan implements KLEntity{
     public String contplancode;
     public String contplanname;
     public String plantype;

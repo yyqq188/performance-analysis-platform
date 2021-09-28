@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lmedoritem {
+public class Lmedoritem implements KLEntity{
     public String edorcode;
     public String edorname;
     public String appobj;

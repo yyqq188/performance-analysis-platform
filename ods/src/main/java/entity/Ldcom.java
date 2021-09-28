@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ldcom {
+public class Ldcom implements KLEntity{
     public String comcode;
     public String outcomcode;
     public String name;

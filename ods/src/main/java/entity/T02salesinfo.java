@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class T02salesinfo {
+public class T02salesinfo implements KLEntity{
     public String channel_id;
     public String channel_id_2nd;
     public String branch_id;
