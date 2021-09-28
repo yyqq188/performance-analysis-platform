@@ -38,8 +38,8 @@ public class Lcinsured implements KLEntity{
     public String marriage;
     public String marriagedate;
     public String health;
-    public BigDecimal stature;
-    public BigDecimal avoirdupois;
+    public String stature;
+    public String avoirdupois;
     public String degree;
     public String creditgrade;
     public String bankcode;
@@ -48,7 +48,7 @@ public class Lcinsured implements KLEntity{
     public String joincompanydate;
     public String startworkdate;
     public String position;
-    public BigDecimal salary;
+    public String salary;
     public String occupationtype;
     public String occupationcode;
     public String worktype;
@@ -65,9 +65,9 @@ public class Lcinsured implements KLEntity{
     public String uwcode;
     public String uwdate;
     public String uwtime;
-    public BigDecimal bmi;
-    public Integer insuredpeoples;
-    public BigDecimal contplancount;
+    public String bmi;
+    public String insuredpeoples;
+    public String contplancount;
     public String diskimportno;
     public String othidtype;
     public String othidno;

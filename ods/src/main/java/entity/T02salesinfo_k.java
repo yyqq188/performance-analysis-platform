@@ -58,7 +58,7 @@ public class T02salesinfo_k implements KLEntity{
     public String duty_date;
     public String probation_date;
     public String assess_start_date;
-    public BigDecimal deposit;
+    public String deposit;
     public String mobile;
     public String fixed_line;
     public String email;
@@ -115,7 +115,7 @@ public class T02salesinfo_k implements KLEntity{
     public String manager_rank;
     public String manager_duty_date;
     public String sales_id_old;
-    public BigDecimal multiinsscore;
+    public String multiinsscore;
     public String agency_agreement;
     public String agreement_start;
     public String agreement_end;

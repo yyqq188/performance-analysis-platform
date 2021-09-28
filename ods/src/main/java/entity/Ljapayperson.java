@@ -32,8 +32,8 @@ public class Ljapayperson implements KLEntity{
     public String payaimclass;
     public String dutycode;
     public String payplancode;
-    public BigDecimal sumduepaymoney;
-    public BigDecimal sumactupaymoney;
+    public String sumduepaymoney;
+    public String sumactupaymoney;
     public Integer payintv;
     public String paydate;
     public String paytype;

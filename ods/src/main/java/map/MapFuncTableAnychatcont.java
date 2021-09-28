@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 
 /**
  * @author SUN KI
@@ -27,15 +28,23 @@ public class MapFuncTableAnychatcont extends RichMapFunction<String, KLEntity> {
         JSONArray meta_data = message.getJSONArray("meta_data");
         String tableName = meta_data.getJSONObject(1).getJSONObject("value").getString("string");
         logger.info("tableName is {}",tableName);
+        System.out.println(s);
+        System.out.println("tableName is " + tableName);
         KLEntity entity = EntityStrategy.getEntity(tableName);
         JSONArray columns = message.getJSONObject("columns").getJSONArray("array");
         for(Object o:columns){
             JSONObject columObj = JSON.parseObject(o.toString());
-            String colName = columObj.getJSONObject("name").getString("string");
-            String colValue = columObj.getJSONObject("value").getString("string");
-            Field field = entity.getClass().getDeclaredField(colName);
-            field.setAccessible(true);
-            field.set(entity,colValue);
+            Object value = columObj.get("value");
+            if(value instanceof JSONObject ) {
+                String colName = columObj.getJSONObject("name").getString("string").toLowerCase();
+                String colValue = ((JSONObject) value).getString("string");
+                Field field = entity.getClass().getDeclaredField(colName);
+                field.setAccessible(true);
+                field.set(entity,colValue);
+            }else{
+                continue;
+            }
+
         }
         return entity;
     }

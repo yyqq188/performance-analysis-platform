@@ -32,10 +32,10 @@ public class Lpedoritem implements KLEntity{
     public String uwoperator;
     public String uwdate;
     public String uwtime;
-    public BigDecimal chgprem;
-    public BigDecimal chgamnt;
-    public BigDecimal getmoney;
-    public BigDecimal getinterest;
+    public String chgprem;
+    public String chgamnt;
+    public String getmoney;
+    public String getinterest;
     public String operator;
     public String makedate;
     public String maketime;

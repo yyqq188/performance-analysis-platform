@@ -60,10 +60,10 @@ public class Lacom implements KLEntity{
     public String licenseenddate;
     public String branchtype;
     public String branchtype2;
-    public BigDecimal assets;
-    public BigDecimal income;
-    public BigDecimal profits;
-    public Integer personnalsum;
+    public String assets;
+    public String income;
+    public String profits;
+    public String personnalsum;
     public String protocalno;
     public String endflag;
     public String enddate;

@@ -28,7 +28,7 @@ public class TableName {
     public static final String Lktransstatus = dbName+"."+ "lktransstatus_LKTRANSSTATUS";
     public static final String Lmedoritem = dbName+"."+ "lmedoritem_LMEDORITEM";
     public static final String Lmriskapp = dbName+"."+ "lmriskapp_LMRISKAPP";
-    public static final String Lpedoritem = dbName+"."+ "lpedoritem_LPEDORITEM";
+    public static final String Lpedoritem = dbName+"."+ "lpedorit_LPEDORITEM";
     public static final String T01bankinfoyb = dbName+"."+ "t01bankinfoyh_T01BANKINFOYB";
     public static final String T01branchinfo = dbName+"."+ "t01branchinfo_T01BRANCHINFO";
     public static final String T01teaminfo = dbName+"."+ "t01teaminfo_T01TEAMINFO";

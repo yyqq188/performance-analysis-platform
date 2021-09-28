@@ -18,7 +18,7 @@ public class Ljtempfeeclass implements KLEntity{
     public String tempfeeno;
     public String paymode;
     public String chequeno;
-    public BigDecimal paymoney;
+    public String paymoney;
     public String appntname;
     public String paydate;
     public String confdate;

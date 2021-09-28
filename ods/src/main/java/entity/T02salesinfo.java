@@ -26,7 +26,7 @@ public class T02salesinfo implements KLEntity{
     public String recommend_name;
     public String is_leader_reserve;
     public String sales_id;
-    public Integer workload_goal;
+    public String workload_goal;
     public String employ_kind;
     public String bank_biz_years;
     public String instancy_linkman;
@@ -36,7 +36,7 @@ public class T02salesinfo implements KLEntity{
     public String sales_name_once;
     public String server_com_once;
     public String channel_type_sale;
-    public Integer group_biz_years;
+    public String group_biz_years;
     public String sales_type;
     public String sales_type_rank;
     public String sales_name;
@@ -58,14 +58,14 @@ public class T02salesinfo implements KLEntity{
     public String duty_date;
     public String probation_date;
     public String assess_start_date;
-    public BigDecimal deposit;
+    public String deposit;
     public String mobile;
     public String fixed_line;
     public String email;
     public String phs;
     public String is_criminal_record;
     public String is_qualicert;
-    public Integer server_com_num;
+    public String server_com_num;
     public String stat;
     public String is_resigned;
     public String is_green_passport;
@@ -95,7 +95,7 @@ public class T02salesinfo implements KLEntity{
     public String insert_time;
     public String operate_type;
     public String user_id;
-    public Integer biz_years;
+    public String biz_years;
     public String enter_rank;
     public String to_director_date;
     public String dismiss_date_pre;
@@ -106,7 +106,7 @@ public class T02salesinfo implements KLEntity{
     public String remission_start_date;
     public String remission_type;
     public String mountguard_date;
-    public Integer dismiss_times;
+    public String dismiss_times;
     public String salary_rank;
     public String comp_sales_id;
     public String comp_branch_id;
@@ -115,7 +115,7 @@ public class T02salesinfo implements KLEntity{
     public String manager_rank;
     public String manager_duty_date;
     public String sales_id_old;
-    public BigDecimal multiinsscore;
+    public String multiinsscore;
     public String agency_agreement;
     public String agreement_start;
     public String agreement_end;

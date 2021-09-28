@@ -34,7 +34,7 @@ public class T01teaminfo implements KLEntity{
     public String found_date;
     public String cancel_date;
     public String cancel_reason;
-    public BigDecimal sales_goal;
+    public String sales_goal;
     public String remark;
     public String insert_time;
     public String user_id;

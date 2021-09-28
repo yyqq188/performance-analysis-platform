@@ -32,7 +32,7 @@ public class Imcont implements KLEntity{
     public String agentcodeisnet;
     public String agentcomisnet;
     public String policyflag;
-    public BigDecimal amnt;
+    public String amnt;
     public String etl_dt;
     public String etl_tm;
     public String etl_fg;

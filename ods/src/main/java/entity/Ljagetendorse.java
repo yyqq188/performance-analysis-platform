@@ -33,7 +33,7 @@ public class Ljagetendorse implements KLEntity{
     public String getdate;
     public String enteraccdate;
     public String getconfirmdate;
-    public BigDecimal getmoney;
+    public String getmoney;
     public String kindcode;
     public String riskcode;
     public String riskversion;

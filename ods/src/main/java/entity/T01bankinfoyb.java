@@ -16,8 +16,8 @@ public class T01bankinfoyb implements KLEntity{
     public String bank_id_parent;
     public String bank_id;
     public String bank_id_full;
-    public Integer class_id;
-    public Integer grade_id;
+    public String class_id;
+    public String grade_id;
     public String bank_type;
     public String bank_name;
     public String found_date;
@@ -27,7 +27,7 @@ public class T01bankinfoyb implements KLEntity{
     public String telephone;
     public String email;
     public String leader_id;
-    public Integer commision_standard;
+    public String commision_standard;
     public String is_startup;
     public String bank_id_query;
     public String branchid;
@@ -37,7 +37,7 @@ public class T01bankinfoyb implements KLEntity{
     public String agreement_enddate;
     public String user_id;
     public String network;
-    public Integer type_id;
+    public String type_id;
     public String manager;
     public String leader_telphone;
     public String bank_name_full;

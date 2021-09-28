@@ -32,7 +32,7 @@ public class Lktransstatus implements KLEntity{
     public String polno;
     public String edorno;
     public String tempfeeno;
-    public BigDecimal transamnt;
+    public String transamnt;
     public String bankacc;
     public String rcode;
     public String transstatus;

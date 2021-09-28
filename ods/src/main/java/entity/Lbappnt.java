@@ -34,8 +34,8 @@ public class Lbappnt implements KLEntity{
     public String marriage;
     public String marriagedate;
     public String health;
-    public BigDecimal stature;
-    public BigDecimal avoirdupois;
+    public String stature;
+    public String avoirdupois;
     public String degree;
     public String creditgrade;
     public String bankcode;
@@ -44,7 +44,7 @@ public class Lbappnt implements KLEntity{
     public String joincompanydate;
     public String startworkdate;
     public String position;
-    public BigDecimal salary;
+    public String salary;
     public String occupationtype;
     public String occupationcode;
     public String worktype;
@@ -56,7 +56,7 @@ public class Lbappnt implements KLEntity{
     public String maketime;
     public String modifydate;
     public String modifytime;
-    public BigDecimal bmi;
+    public String bmi;
     public String othidtype;
     public String othidno;
     public String englishname;

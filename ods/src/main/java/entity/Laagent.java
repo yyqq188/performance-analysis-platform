@@ -74,7 +74,7 @@ public class Laagent implements KLEntity{
     public String cautionerbirthday;
     public String approver;
     public String approvedate;
-    public BigDecimal assumoney;
+    public String assumoney;
     public String remark;
     public String agentstate;
     public String qualipassflag;
