@@ -15,13 +15,18 @@ import java.util.Properties;
  * @Desc
  */
 public class jobDefine {
-    public static void jobTableAnychatcont(StreamExecutionEnvironment env, Properties properties, String topic) {
+    public static void jobTableAnychatcont(StreamExecutionEnvironment env, Properties properties, String topic) throws Exception {
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(topic, new SimpleStringSchema(), properties);
 //        kafkaConsumer.setStartFromTimestamp(Long.parseLong(ts));
-        DataStreamSource<String> source = env.addSource(kafkaConsumer);
-        source.map(new MapFuncTableAnychatcont())
-                .filter(x -> x != null)
-                .addSink(new SinkFuncTableAnychatcont())
-                .name("sinkToHBaseTable");
+//        kafkaConsumer.setStartFromEarliest();
+        kafkaConsumer.setStartFromLatest();
+//        DataStreamSource<String> source = env.addSource(kafkaConsumer);
+//        source.map(new MapFuncTableAnychatcont())
+//                .filter(x -> x != null)
+//                .addSink(new SinkFuncTableAnychatcont())
+//                .name("sinkToHBaseTable");
+        env.addSource(kafkaConsumer).print();
+
+        env.execute(jobDefine.class.getName());
     }
 }
