@@ -10,7 +10,7 @@ import sink.SinkFuncTableAnychatcont;
 import java.util.Properties;
 
 /**
- * @author SUN KI
+ * @author yhl
  * @time 2021/9/27 17:16
  * @Desc
  */
