@@ -28,8 +28,8 @@ public class MapFuncTableAnychatcont extends RichMapFunction<String, KLEntity> {
         JSONArray meta_data = message.getJSONArray("meta_data");
         String tableName = meta_data.getJSONObject(1).getJSONObject("value").getString("string");
         logger.info("tableName is {}",tableName);
-        System.out.println(s);
-        System.out.println("tableName is " + tableName);
+//        System.out.println(s);
+//        System.out.println("tableName is " + tableName);
         KLEntity entity = EntityStrategy.getEntity(tableName);
         JSONArray columns = message.getJSONObject("columns").getJSONArray("array");
         for(Object o:columns){

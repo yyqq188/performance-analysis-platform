@@ -33,10 +33,11 @@ public class KLHbaseConnection {
     }
     public static Configuration createConfiguration(Map<String, String> params){
 
-        String zkUrl = params.get("zookeeper");
-        String zkPort = params.get("zk_port");
+        String zkUrl = params.get("zkquorum");
+        String zkPort = params.get("zkport");
         String rpcPool = params.get("hbase_client_ipc_pool_size");
         Configuration hbaseConfig = HBaseConfiguration.create();
+        hbaseConfig.set( "zookeeper.znode.parent", "/hbase-unsecure");
         hbaseConfig.set(HConstants.ZOOKEEPER_QUORUM, zkUrl);
         hbaseConfig.set(HConstants.ZOOKEEPER_CLIENT_PORT, zkPort);
         hbaseConfig.set(HConstants.HBASE_CLIENT_OPERATION_TIMEOUT, "30000");

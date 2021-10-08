@@ -6,6 +6,7 @@ import org.apache.flink.runtime.state.FunctionInitializationContext;
 import org.apache.flink.runtime.state.FunctionSnapshotContext;
 import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
+import org.apache.hadoop.hbase.client.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,11 @@ public class SinkFuncTableAnychatcont<OUT> extends RichSinkFunction<OUT> impleme
         default_queue_num = Integer.parseInt(params.get("default_queue_num"));
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(default_client_thread_num,default_client_thread_num,
                 0L, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<>());
-        MultiThreadConsumerClient multiThreadConsumerClient = new MultiThreadConsumerClient(linkedBlockingQueue,cyclicBarrier,params);
+        linkedBlockingQueue = new LinkedBlockingQueue<>(default_queue_num);
+        cyclicBarrier = new CyclicBarrier(default_client_thread_num + 1);
+        Connection connection = KLHbaseConnection.getHbaseHbaseConnection(params);
+        MultiThreadConsumerClient_V2 multiThreadConsumerClient = new MultiThreadConsumerClient_V2(linkedBlockingQueue,cyclicBarrier,
+                params,connection);
         for(int i = 0;i < default_client_thread_num;i++){
             threadPoolExecutor.execute(multiThreadConsumerClient);
         }
@@ -43,6 +48,7 @@ public class SinkFuncTableAnychatcont<OUT> extends RichSinkFunction<OUT> impleme
     @Override
     public void invoke(OUT value, Context context) throws Exception {
         linkedBlockingQueue.put((KLEntity) value);
+//        System.out.println(value);
     }
 
     @Override

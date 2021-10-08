@@ -21,11 +21,10 @@ public class jobDefine {
         kafkaConsumer.setStartFromEarliest();
 //        kafkaConsumer.setStartFromLatest();
         DataStreamSource<String> source = env.addSource(kafkaConsumer);
-        source.map(new MapFuncTableAnychatcont()).print();
-//                .filter(x -> x != null)
-//                .addSink(new SinkFuncTableAnychatcont())
-//                .name("sinkToHBaseTable");
-//        env.addSource(kafkaConsumer).print();
+        source.map(new MapFuncTableAnychatcont())  //.print();
+                .filter(x -> x != null)
+                .addSink(new SinkFuncTableAnychatcont())
+                .name("sinkToHBaseTable");
         env.execute(jobDefine.class.getName());
     }
 }
