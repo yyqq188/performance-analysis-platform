@@ -44,5 +44,5 @@ nbdist/
 *rebel*
 *.bak
 
-ods/src/main/java/demo
-ods/src/main/java/config
+ods/src/main/java/demo/*
+ods/src/main/java/config/*
