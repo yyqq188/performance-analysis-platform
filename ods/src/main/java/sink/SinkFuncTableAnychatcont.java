@@ -38,8 +38,7 @@ public class SinkFuncTableAnychatcont<OUT> extends RichSinkFunction<OUT> impleme
         linkedBlockingQueue = new LinkedBlockingQueue<>(default_queue_num);
         cyclicBarrier = new CyclicBarrier(default_client_thread_num + 1);
         Connection connection = KLHbaseConnection.getHbaseHbaseConnection(params);
-        MultiThreadConsumerClient_V2 multiThreadConsumerClient = new MultiThreadConsumerClient_V2(linkedBlockingQueue,cyclicBarrier,
-                params,connection);
+        MultiThreadConsumerClient_V2 multiThreadConsumerClient = new MultiThreadConsumerClient_V2(linkedBlockingQueue,cyclicBarrier,connection);
         for(int i = 0;i < default_client_thread_num;i++){
             threadPoolExecutor.execute(multiThreadConsumerClient);
         }
@@ -48,7 +47,6 @@ public class SinkFuncTableAnychatcont<OUT> extends RichSinkFunction<OUT> impleme
     @Override
     public void invoke(OUT value, Context context) throws Exception {
         linkedBlockingQueue.put((KLEntity) value);
-//        System.out.println(value);
     }
 
     @Override

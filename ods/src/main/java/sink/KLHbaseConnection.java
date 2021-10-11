@@ -40,13 +40,24 @@ public class KLHbaseConnection {
         hbaseConfig.set( "zookeeper.znode.parent", "/hbase-unsecure");
         hbaseConfig.set(HConstants.ZOOKEEPER_QUORUM, zkUrl);
         hbaseConfig.set(HConstants.ZOOKEEPER_CLIENT_PORT, zkPort);
-        hbaseConfig.set(HConstants.HBASE_CLIENT_OPERATION_TIMEOUT, "30000");
-        hbaseConfig.set(HConstants.HBASE_CLIENT_SCANNER_TIMEOUT_PERIOD, "30000");
+        hbaseConfig.set(HConstants.HBASE_CLIENT_OPERATION_TIMEOUT, "600000");
+        hbaseConfig.set(HConstants.HBASE_CLIENT_SCANNER_TIMEOUT_PERIOD, "600000");
+        hbaseConfig.setLong("hbase.rpc.timeout", 600000);
+        hbaseConfig.setLong("hbase.regionserver.lease.period", 600000);
+        hbaseConfig.set("hbase.client.ipc.pool.type","ThreadLocalPool");
         hbaseConfig.set("hbase.client.ipc.pool.size",rpcPool);  //1
 //        hbaseConfig.set("hbase.client.ipc.pool.type","Reusable");  //Reusable也是默认的  RoundRobinPool ThreadLocal
 //        hbaseConfig.set("hbase.client.ipc.pool.size","1000");  //1
 //        hbaseConfig.set("hbase.hconnection.threads.max","1000"); //256
 //        hbaseConfig.set("hbase.hconnection.threads.core","1000");// 256
+
+
+//
+//        hbaseConfig.setLong("hbase.client.operation.timeout", 600000);
+//        hbaseConfig.setLong("hbase.client.scanner.timeout.period", 600000);
+
+        // ReusablePool，RoundRobinPool，ThreadLocalPool
+
 
         return hbaseConfig;
     }

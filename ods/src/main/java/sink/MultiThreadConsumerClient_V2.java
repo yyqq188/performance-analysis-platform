@@ -55,7 +55,6 @@ public class MultiThreadConsumerClient_V2 implements Runnable{
 
     public MultiThreadConsumerClient_V2(LinkedBlockingQueue<KLEntity> linkedBlockingQueue,
                                         CyclicBarrier cyclicBarrier,
-                                        Map<String,String> params,
                                         Connection connection) throws IOException {
         this.linkedBlockingQueue = linkedBlockingQueue;
         this.cyclicBarrier = cyclicBarrier;
