@@ -3,7 +3,7 @@ package com.pactera.yhl.insurance_detail.sink;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pactera.yhl.entity.KLEntity;
-import com.pactera.yhl.entity.KL_lupol;
+import com.pactera.yhl.entity.Lbcont;
 import com.pactera.yhl.util.Util;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
@@ -12,20 +12,20 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TmpLcpolSink extends AbstractInsertHbase<KLEntity> {
-
-    public TmpLcpolSink(){
-        tableName = "kl:lupol";
-        rowkeys = new String[]{"polno"};
+public class TmpLbcontSink1 extends AbstractInsertHbase<KLEntity>  {
+    public TmpLbcontSink1(){
+        tableName = "kl:midlbcont";
+        rowkeys = new String[]{"contno"};
         columnNames = new String[]{};
-        columnTableName = "lupol";
+        columnTableName = "lbcont";
     }
     @Override
     public void handle(KLEntity klEntity, Context context, HTable table) throws Exception {
-        KL_lupol value = (KL_lupol)  klEntity;
+        Lbcont value = (Lbcont) klEntity;
+
+
         StringBuilder rowkeySb = new StringBuilder();
         StringBuilder columnSb = new StringBuilder();
-        columnSb.append(columnTableName);
         try{
             Map<String,Object> map=new HashMap<String,Object>();
 
@@ -36,7 +36,6 @@ public class TmpLcpolSink extends AbstractInsertHbase<KLEntity> {
                 Object value1 = Util.convertToCode(expression,map);
                 rowkeySb.append(value1);
             }
-
             if(columnNames.length > 0 ) {
                 for(String rowkey:columnNames){
                     map.put("value",value);
@@ -46,6 +45,7 @@ public class TmpLcpolSink extends AbstractInsertHbase<KLEntity> {
                     columnSb.append(value1);
                 }
             }
+
 //            Put put = new Put(Bytes.toBytes(value.getChdrcoy() + value.getChdrnum()));
             Put put = new Put(Bytes.toBytes(rowkeySb.toString()));
             String valueJson = JSON.toJSONString(value, SerializerFeature.WriteMapNullValue, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteDateUseDateFormat);

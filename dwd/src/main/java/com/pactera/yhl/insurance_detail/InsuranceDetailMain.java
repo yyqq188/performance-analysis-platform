@@ -1,7 +1,6 @@
 package com.pactera.yhl.insurance_detail;
 
 import com.pactera.yhl.insurance_detail.job.tmp_job.JobLuDefine;
-import com.pactera.yhl.insurance_detail.sink.TmpLupolSink;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -27,8 +26,8 @@ public class InsuranceDetailMain {
         //lu生成表
         JobLuDefine.lupol_from_lbpol(env, kafkaProp, topic,"");
         JobLuDefine.lupol_from_lcpol(env, kafkaProp, topic,"");
-//        JobLuDefine.lucont_from_lbcont(env, kafkaProp, topic,"");
-//        JobLuDefine.lucont_from_lccont(env, kafkaProp, topic,"");
+        JobLuDefine.lucont_from_lbcont(env, kafkaProp, topic,"");
+        JobLuDefine.lucont_from_lccont(env, kafkaProp, topic,"");
 
 //        //中间表
 //        JobMidDefine.jobTable1(env, new String[]{params.get("databaselist")},new String[]{params.get("tablelist1")});

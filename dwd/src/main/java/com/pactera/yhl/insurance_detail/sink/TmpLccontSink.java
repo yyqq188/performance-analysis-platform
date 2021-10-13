@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pactera.yhl.entity.KLEntity;
 import com.pactera.yhl.entity.KL_lucont;
+import com.pactera.yhl.entity.Lccont;
 import com.pactera.yhl.util.Util;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
@@ -12,16 +13,15 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TmpLccontSink extends AbstractInsertHbase<KLEntity>  {
+public class TmpLccontSink extends AbstractInsertHbase<Lccont>  {
     public TmpLccontSink(){
-        tableName = "kl:lucont";
+        tableName = "kl:midlccont";
         rowkeys = new String[]{"contno"};
         columnNames = new String[]{};
-        columnTableName = "lucont";
+        columnTableName = "lccont";
     }
     @Override
-    public void handle(KLEntity klEntity, Context context, HTable table) throws Exception {
-        KL_lucont value = (KL_lucont) klEntity;
+    public void handle(Lccont value, Context context, HTable table) throws Exception {
         StringBuilder rowkeySb = new StringBuilder();
         StringBuilder columnSb = new StringBuilder();
         try{
@@ -40,7 +40,7 @@ public class TmpLccontSink extends AbstractInsertHbase<KLEntity>  {
                     map.put("rowkey",rowkey);
                     String expression = "value.getStateflag(rowkey)";
                     Object value1 = Util.convertToCode(expression,map);
-                    rowkeySb.append(value1);
+                    columnSb.append(value1);
                 }
             }
 

@@ -2,10 +2,7 @@ package com.pactera.yhl.insurance_detail.sink;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.pactera.yhl.entity.KLEntity;
-import com.pactera.yhl.entity.KL_lucont;
-import com.pactera.yhl.entity.Lbpol;
-import com.pactera.yhl.entity.Lcpol;
+import com.pactera.yhl.entity.*;
 import com.pactera.yhl.util.Util;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.hadoop.hbase.client.Delete;
@@ -16,16 +13,16 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TmpLucontSink extends AbstractInsertHbase<KLEntity>  {
-    public TmpLucontSink(){
-        tableName = "kl:lucont";
+public class TmpLbcontSink extends AbstractInsertHbase<Lbcont>  {
+    public TmpLbcontSink(){
+        tableName = "kl:midlbcont";
         rowkeys = new String[]{"contno"};
         columnNames = new String[]{};
-        columnTableName = "lucont";
+        columnTableName = "lbcont";
     }
     @Override
-    public void handle(KLEntity klEntity, SinkFunction.Context context, HTable table) throws Exception {
-        KL_lucont value = (KL_lucont) klEntity;
+    public void handle(Lbcont value, SinkFunction.Context context, HTable table) throws Exception {
+
         StringBuilder rowkeySb = new StringBuilder();
         StringBuilder columnSb = new StringBuilder();
         try{
@@ -44,7 +41,7 @@ public class TmpLucontSink extends AbstractInsertHbase<KLEntity>  {
                     map.put("rowkey",rowkey);
                     String expression = "value.getStateflag(rowkey)";
                     Object value1 = Util.convertToCode(expression,map);
-                    rowkeySb.append(value1);
+                    columnSb.append(value1);
                 }
             }
 
