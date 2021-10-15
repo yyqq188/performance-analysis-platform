@@ -10,7 +10,7 @@ public class TmpLcpolMap implements MapFunction<Lcpol, Lcpol_sourceId> {
     @Override
     public Lcpol_sourceId map(Lcpol lcpol) throws Exception {
         Lcpol_sourceId lcpol_sourceId = new Lcpol_sourceId();
-        BeanUtils.copyProperties(lcpol,lcpol_sourceId);
+        BeanUtils.copyProperties(lcpol_sourceId,lcpol);
         lcpol_sourceId.setSourceId("0");
 
         switch (lcpol.getStateflag()){

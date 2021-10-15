@@ -29,38 +29,19 @@ public class TmpJoinlm_id1_lup extends AbstractJoin<Lccont, Lcpol>{
 
     @Override
     public void asyncHandler(Lccont lccont) throws Exception {
-        String cownnum = lccont.getCownnum();
-        String chdrcoy = lccont.getChdrcoy();
-        String chdrnum = lccont.getChdrnum();
-        Result result = getHbaseResult(chdrcoy+chdrnum+"",table);
-
-        for(Cell cell:result.listCells()){
-            String qualifierName = Bytes.toString(CellUtil.cloneQualifier(cell));
-            String value = Bytes.toString(CellUtil.cloneValue(cell));
-            Result hbaseResult2 = getHbaseResult(value, tableResult);
-            for(Cell cell2:hbaseResult2.listCells()){
-                //要那个key
-                Result result = getHbaseResult(chdrcoy+chdrnum+"",table);
-            }
-
-        }
-
-
-
-
-
-
+//        String cownnum = lccont.getCownnum();
+//        String chdrcoy = lccont.getChdrcoy();
+//        String chdrnum = lccont.getChdrnum();
+//        Result result = getHbaseResult(chdrcoy+chdrnum+"",table);
+//
+//        for(Cell cell:result.listCells()){
+//            String qualifierName = Bytes.toString(CellUtil.cloneQualifier(cell));
+//            String value = Bytes.toString(CellUtil.cloneValue(cell));
+//            Result hbaseResult2 = getHbaseResult(value, tableResult);
+//            for(Cell cell2:hbaseResult2.listCells()){
+//                //要那个key
+//                Result result = getHbaseResult(chdrcoy+chdrnum+"",table);
+//            }
+//        }
     }
-
-    public static Result getHbaseResult(String rowkey,AsyncTable<AdvancedScanResultConsumer> table) throws Exception{
-        String chdrcoy = rowkey;
-        Get get = new Get(Bytes.toBytes(chdrcoy+""));
-        get.addFamily(cf);
-        CompletableFuture<Result> resultCompletableFuture = table.get(get);
-        Result result = resultCompletableFuture.get();
-        return result;
-
-    }
-
-
 }

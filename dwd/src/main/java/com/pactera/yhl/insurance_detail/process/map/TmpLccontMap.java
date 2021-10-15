@@ -10,7 +10,7 @@ public class TmpLccontMap implements MapFunction<Lccont, Lccont_sourceId> {
     @Override
     public Lccont_sourceId map(Lccont lccont) throws Exception {
         Lccont_sourceId lccont_sourceId = new Lccont_sourceId();
-        BeanUtils.copyProperties(lccont,lccont_sourceId);
+        BeanUtils.copyProperties(lccont_sourceId,lccont);
         lccont_sourceId.setSourceId("0");
         switch (lccont.getStateflag()){
             case "0" : lccont_sourceId.setStateName("投保");

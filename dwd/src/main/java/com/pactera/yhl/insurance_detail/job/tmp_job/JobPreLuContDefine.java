@@ -28,15 +28,26 @@ public class JobPreLuContDefine {
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(topic, new SimpleStringSchema(), properties);
         kafkaConsumer.setStartFromEarliest();
         DataStreamSource<String> source = env.addSource(kafkaConsumer);
-        SingleOutputStreamOperator<KLEntity> ljtempfeeclass = source.map(new MapFuncTableAnychatcont())
+        SingleOutputStreamOperator<KLEntity> lcpol = source.map(new MapFuncTableAnychatcont())
                 .filter(x -> x != null)
-                .filter(x -> x instanceof Ljtempfeeclass);
-        tableEnv.createTemporaryView("ljtempfeeclass",ljtempfeeclass);
-        Table table = tableEnv.sqlQuery("select confmakedate,otherno,row_number() over " +
-                "(partition by confmakedate,otherno order by confmakedate asc) as conf from ljtempfeeclass");
-        DataStream<String> stringDataStream = tableEnv.toAppendStream(table, String.class);
-        stringDataStream.addSink(new FlinkKafkaProducer<String>("10.5.2.133:6667,10.5.2.134:6667,10.5.2.144:6667,10.5.2.145:6667",
-                "tmptopic", new SimpleStringSchema()));
+                .filter(x -> x instanceof Lcpol);
+
+        tableEnv.createTemporaryView("lcpol",lcpol);
+        Table table = tableEnv.sqlQuery("select * from lcpol");
+
+        DataStream<Tuple2<Boolean, String>> tuple2DataStream = tableEnv.toRetractStream(table, String.class);
+
+        tuple2DataStream.print();
+//        stringDataStream.addSink(new FlinkKafkaProducer<String>("10.5.2.133:6667,10.5.2.134:6667,10.5.2.144:6667,10.5.2.145:6667",
+//                "tmptopic", new SimpleStringSchema()));
+
+
+//        tableEnv.createTemporaryView("ljtempfeeclass",ljtempfeeclass);
+//        Table table = tableEnv.sqlQuery("select confmakedate,otherno,row_number() over " +
+//                "(partition by confmakedate,otherno order by confmakedate asc) as conf from ljtempfeeclass) where ljtempfeeclass.conf=1");
+//        DataStream<String> stringDataStream = tableEnv.toAppendStream(table, String.class);
+//        stringDataStream.addSink(new FlinkKafkaProducer<String>("10.5.2.133:6667,10.5.2.134:6667,10.5.2.144:6667,10.5.2.145:6667",
+//                "tmptopic", new SimpleStringSchema()));
 
         env.execute("TmpLcpolSink");
     }

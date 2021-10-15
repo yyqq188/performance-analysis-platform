@@ -30,13 +30,7 @@ public class DemoMain {
         A a = objMapper.convertValue(o, A.class);
         System.out.println(a.getId());
 
-
     }
-
-
-
-
-
 
     public static <T>  void test(Class<T> className) throws Exception {
         T t = className.newInstance();

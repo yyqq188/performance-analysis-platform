@@ -6,6 +6,6 @@ import org.apache.flink.api.common.functions.FilterFunction;
 public class TmpLcpolFilter implements FilterFunction<Lcpol> {
     @Override
     public boolean filter(Lcpol lcpol) throws Exception {
-        return lcpol.getSalechnl().equals("13") || lcpol.getSalechnl().equals("04");
+        return  "13".equals(lcpol.getSalechnl()) || "04".equals(lcpol.getSalechnl());
     }
 }

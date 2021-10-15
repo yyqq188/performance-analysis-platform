@@ -23,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class Util {
+    public static final byte[] cf = Bytes.toBytes("f");
     //字符串转可执行程序
     public static Object convertToCode(String jexlExp, Map<String,Object> map){
         JexlEngine jexl=new JexlEngine();
@@ -65,6 +66,16 @@ public class Util {
         }
         return new Tuple2<List<String>,List<String>>(resultRowKeys,resultColumns);
 
+    }
+
+
+    public static Result getHbaseResult(String rowkey,AsyncTable<AdvancedScanResultConsumer> table) throws Exception{
+        String chdrcoy = rowkey;
+        Get get = new Get(Bytes.toBytes(chdrcoy+""));
+        get.addFamily(cf);
+        CompletableFuture<Result> resultCompletableFuture = table.get(get);
+        Result result = resultCompletableFuture.get();
+        return result;
     }
 }
 

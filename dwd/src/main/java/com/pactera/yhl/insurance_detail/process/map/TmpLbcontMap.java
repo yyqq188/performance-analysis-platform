@@ -9,7 +9,7 @@ public class TmpLbcontMap implements MapFunction<Lbcont, Lbcont_sourceId> {
     @Override
     public Lbcont_sourceId map(Lbcont lbcont) throws Exception {
         Lbcont_sourceId lbcont_sourceId = new Lbcont_sourceId();
-        BeanUtils.copyProperties(lbcont,lbcont_sourceId);
+        BeanUtils.copyProperties(lbcont_sourceId,lbcont);
         lbcont_sourceId.setSourceId("1");
         switch (lbcont.getStateflag()){
             case "0" : lbcont_sourceId.setStateName("投保");

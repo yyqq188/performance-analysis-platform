@@ -12,7 +12,7 @@ public class TmpLbpolMap implements MapFunction<Lbpol, Lbpol_sourceId> {
     public Lbpol_sourceId map(Lbpol lbpol) throws Exception {
         //对select的字段进行修改和填充
         Lbpol_sourceId lbpol_sourceId = new Lbpol_sourceId();
-        BeanUtils.copyProperties(lbpol,lbpol_sourceId);
+        BeanUtils.copyProperties(lbpol_sourceId,lbpol);
         lbpol_sourceId.setSourceId("1");
         switch (lbpol.getStateflag()){
             case "0": lbpol_sourceId.setStateName("投保");

@@ -1,6 +1,7 @@
 package com.pactera.yhl.insurance_detail;
 
-import com.pactera.yhl.insurance_detail.job.tmp_job.JobLuDefine;
+import com.pactera.yhl.insurance_detail.job.tmp_job.JobLuPolDefine;
+import com.pactera.yhl.insurance_detail.job.tmp_job.JobPreLuContDefine;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -23,11 +24,16 @@ public class InsuranceDetailMain {
         kafkaProp.setProperty("enable.auto.commit", params.toMap().get("kafka_enable_auto_commit"));
         kafkaProp.setProperty("auto.commit.interval.ms", params.toMap().get("kafka_auto_commit_interval"));//自动提交的时间间隔
         String topic = "listables";
-        //lu生成表
-        JobLuDefine.lupol_from_lbpol(env, kafkaProp, topic,"");
-        JobLuDefine.lupol_from_lcpol(env, kafkaProp, topic,"");
-        JobLuDefine.lucont_from_lbcont(env, kafkaProp, topic,"");
-        JobLuDefine.lucont_from_lccont(env, kafkaProp, topic,"");
+
+        //pre
+//        JobPreLuContDefine.lccont_pre(env, kafkaProp,topic,"tmptopic");
+
+//        //lu生成表
+        JobLuPolDefine.lupol_from_lbpol(env, kafkaProp, topic,"aa");
+        JobLuPolDefine.lupol_from_lcpol(env, kafkaProp, topic,"bb");
+//        JobLuDefine.lucont_from_lbcont(env, kafkaProp, topic,"");
+//        JobLuDefine.lucont_from_lccont(env, kafkaProp, topic,"");
+
 
 //        //中间表
 //        JobMidDefine.jobTable1(env, new String[]{params.get("databaselist")},new String[]{params.get("tablelist1")});
