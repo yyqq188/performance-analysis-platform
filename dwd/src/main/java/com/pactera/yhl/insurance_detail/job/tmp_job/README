@@ -1,0 +1,2 @@
+lupolDefine  只是过滤和添加新的字段
+lucontDefine 需要先过滤数据，并插入数据后，然后形成中间层

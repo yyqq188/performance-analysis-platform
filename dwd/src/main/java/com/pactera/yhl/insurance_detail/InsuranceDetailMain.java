@@ -1,7 +1,8 @@
 package com.pactera.yhl.insurance_detail;
 
+import com.pactera.yhl.insurance_detail.job.tmp_job.JobMidLuContDefine;
 import com.pactera.yhl.insurance_detail.job.tmp_job.JobLuPolDefine;
-import com.pactera.yhl.insurance_detail.job.tmp_job.JobPreLuContDefine;
+import com.pactera.yhl.insurance_detail.job.tmp_job.JobRowNumLjtempfeeclassDefine;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -25,14 +26,21 @@ public class InsuranceDetailMain {
         kafkaProp.setProperty("auto.commit.interval.ms", params.toMap().get("kafka_auto_commit_interval"));//自动提交的时间间隔
         String topic = "listables";
 
-        //pre
-//        JobPreLuContDefine.lccont_pre(env, kafkaProp,topic,"tmptopic");
 
-//        //lu生成表
+//        //lupol生成表
         JobLuPolDefine.lupol_from_lbpol(env, kafkaProp, topic,"aa");
         JobLuPolDefine.lupol_from_lcpol(env, kafkaProp, topic,"bb");
-//        JobLuDefine.lucont_from_lbcont(env, kafkaProp, topic,"");
-//        JobLuDefine.lucont_from_lccont(env, kafkaProp, topic,"");
+
+        //先生成lucont的中间层
+        JobRowNumLjtempfeeclassDefine.lccont_rownum(env, kafkaProp, topic,"cc");
+        JobMidLuContDefine.lucont_from_lbcont(env, kafkaProp, topic,"dd");
+        JobMidLuContDefine.lucont_from_lccont(env, kafkaProp, topic,"ee");
+        JobMidLuContDefine.lccont_rownum(env,kafkaProp,"topic11","ff");
+        JobMidLuContDefine.lccont_infonewresult(env,kafkaProp,topic,"df");
+
+        //再生成lucont表  join
+
+
 
 
 //        //中间表
@@ -52,6 +60,11 @@ public class InsuranceDetailMain {
 //        TmpLupolSink o =(TmpLupolSink) aClass.newInstance();
 //        o.setTableName("aaa");
 //        o.handle(null, null,null);
+
+
+        String t1= "20131011" ;
+        String t2= "20131030" ;
+        int  result = t1.compareTo(t2);
 
     }
 }

@@ -13,7 +13,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public class TmpJoinlm_id1_lup extends AbstractJoin<Lccont, Lcpol>{
+public class TmpJoinlm_id1_lup_bak extends AbstractJoin<Lccont, Lcpol>{
     private AsyncTable<AdvancedScanResultConsumer> table;
     private AsyncTable<AdvancedScanResultConsumer> tableResult;
 

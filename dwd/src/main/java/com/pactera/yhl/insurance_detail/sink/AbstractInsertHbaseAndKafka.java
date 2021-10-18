@@ -1,6 +1,5 @@
 package com.pactera.yhl.insurance_detail.sink;
 
-import lombok.Data;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
@@ -11,13 +10,17 @@ import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.kafka.clients.producer.KafkaProducer;
 
-public abstract class AbstractInsertHbase<OUT> extends RichSinkFunction<OUT> {
+import java.util.Properties;
+
+public abstract class AbstractInsertHbaseAndKafka<OUT> extends RichSinkFunction<OUT> {
     protected static final String cfString = "f";
     protected static final byte[] cf = Bytes.toBytes(cfString);
     protected  String tableName = null;
     private Connection connection;
-
+    protected KafkaProducer<String,String> producer;
+    protected String topic ;
     //rowkey
     protected String[] rowkeys = {};
     //列名
@@ -46,6 +49,16 @@ public abstract class AbstractInsertHbase<OUT> extends RichSinkFunction<OUT> {
         if(null == connection){
             connection = ConnectionFactory.createConnection(hbaseConfig);
         }
+
+
+        //kafka的配置
+        Properties kafkaProps = new Properties();
+        kafkaProps.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
+        kafkaProps.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
+        kafkaProps.put("bootstrap.servers",params.get("kafka_bootstrap_servers"));
+
+        producer=new KafkaProducer<String, String>(kafkaProps);
+
     }
 
     @Override

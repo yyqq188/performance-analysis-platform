@@ -2,10 +2,11 @@ package com.pactera.yhl.insurance_detail.sink;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.pactera.yhl.entity.*;
+import com.pactera.yhl.entity.KLEntity;
+import com.pactera.yhl.entity.Lbcont;
+import com.pactera.yhl.entity.Lccont;
+import com.pactera.yhl.entity.Ljtempfeeclass;
 import com.pactera.yhl.util.Util;
-import org.apache.flink.streaming.api.functions.sink.SinkFunction;
-import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -13,18 +14,18 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TmpLbcontSink extends AbstractInsertHbase<Lbcont>  {
-    public TmpLbcontSink(){
-        tableName = "kl:midlbcont";
-        rowkeys = new String[]{"contno"};
-        columnNames = new String[]{};
-        columnTableName = "lbcont";
+public class TmpMidLjfeeclassSink extends AbstractInsertHbase<Ljtempfeeclass>  {
+    public TmpMidLjfeeclassSink(){
+        tableName = "kl:midlccont";
+        rowkeys = new String[]{"otherno"};
+        columnNames = new String[]{"tempfeeno","paymode"};
+        columnTableName = "ljtempfeeclass";
     }
     @Override
-    public void handle(Lbcont value, SinkFunction.Context context, HTable table) throws Exception {
-
+    public void handle(Ljtempfeeclass value, Context context, HTable table) throws Exception {
         StringBuilder rowkeySb = new StringBuilder();
         StringBuilder columnSb = new StringBuilder();
+        columnSb.append(columnTableName);
         try{
             Map<String,Object> map=new HashMap<String,Object>();
 

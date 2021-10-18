@@ -13,6 +13,8 @@ import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -76,6 +78,17 @@ public class Util {
         CompletableFuture<Result> resultCompletableFuture = table.get(get);
         Result result = resultCompletableFuture.get();
         return result;
+    }
+
+    // 同时往hbase和kafka插入数据
+    public static void insertHbaseAndKafka(String rowkey, KLEntity value, String columnName, HTable hTable,
+                                           KafkaProducer<String,String> producer, String topic) throws Exception {
+        Put put = new Put(Bytes.toBytes(rowkey));
+        String valueJson = JSON.toJSONString(value, SerializerFeature.WriteMapNullValue, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteDateUseDateFormat);
+        put.addColumn(cf,Bytes.toBytes(columnName),Bytes.toBytes(valueJson));
+        hTable.put(put);
+
+        producer.send(new ProducerRecord<>(topic,valueJson));
     }
 }
 

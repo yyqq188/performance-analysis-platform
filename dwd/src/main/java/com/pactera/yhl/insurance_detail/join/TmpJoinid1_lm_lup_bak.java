@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.pactera.yhl.util.Util.getHbaseValue;
 
-public class TmpJoinid1_lm_lup extends AbstractJoin<Lccont, Lccont>{
+public class TmpJoinid1_lm_lup_bak extends AbstractJoin<Lccont, Lccont>{
     private AsyncTable<AdvancedScanResultConsumer> Ld1Table;
     private AsyncTable<AdvancedScanResultConsumer> LmTable;
     private AsyncTable<AdvancedScanResultConsumer> lupTable;

@@ -3,8 +3,8 @@ package com.pactera.yhl.insurance_detail.sink;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pactera.yhl.entity.KLEntity;
-import com.pactera.yhl.entity.Lbcont;
-import com.pactera.yhl.entity.Lcphoinfonewresult;
+
+import com.pactera.yhl.entity.T01teaminfo;
 import com.pactera.yhl.util.Util;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
@@ -13,19 +13,27 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TmpLcphoinfonewresultSink extends AbstractInsertHbase<Lcphoinfonewresult>  {
-    public TmpLcphoinfonewresultSink(){
-        tableName = "kl:midlcphoinfonewresult";
-        rowkeys = new String[]{"contno"};
-        columnNames = new String[]{};
-        columnTableName = "lcphoinfonewresult";
+/**
+ * @author zy
+ * @version 1.0
+ * @description:
+ * @date 2021/10/15 9:19
+ */
+public class T01teaminfo_Team_idSink  extends AbstractInsertHbase<KLEntity>{
+
+    public T01teaminfo_Team_idSink(){
+        tableName = "KL:T01TEAMINFO_TEAM_ID";//HBase中间表名
+        rowkeys = new String[]{"team_id"};//HBase rowkeys
+        //POJO主键---HBase列名
+        columnNames = new String[]{"team_id", "channel_id"};
+        columnTableName = "t01teaminfo";//表名
     }
     @Override
-    public void handle(Lcphoinfonewresult value, Context context, HTable table) throws Exception {
-        if(!value.state.equals("02")) return;
-
+    public void handle(KLEntity klEntity, Context context, HTable table) throws Exception {
+        T01teaminfo value = (T01teaminfo)  klEntity;
         StringBuilder rowkeySb = new StringBuilder();
         StringBuilder columnSb = new StringBuilder();
+        columnSb.append(columnTableName);
         try{
             Map<String,Object> map=new HashMap<String,Object>();
 
@@ -36,6 +44,7 @@ public class TmpLcphoinfonewresultSink extends AbstractInsertHbase<Lcphoinfonewr
                 Object value1 = Util.convertToCode(expression,map);
                 rowkeySb.append(value1);
             }
+
             if(columnNames.length > 0 ) {
                 for(String rowkey:columnNames){
                     map.put("value",value);
@@ -45,7 +54,6 @@ public class TmpLcphoinfonewresultSink extends AbstractInsertHbase<Lcphoinfonewr
                     columnSb.append(value1);
                 }
             }
-
 //            Put put = new Put(Bytes.toBytes(value.getChdrcoy() + value.getChdrnum()));
             Put put = new Put(Bytes.toBytes(rowkeySb.toString()));
             String valueJson = JSON.toJSONString(value, SerializerFeature.WriteMapNullValue, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteDateUseDateFormat);
