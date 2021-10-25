@@ -11,6 +11,7 @@
     <modules>
         <module>ods</module>
         <module>dwd</module>
+        <module>dws</module>
     </modules>
 
     <properties>

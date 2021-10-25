@@ -90,6 +90,20 @@ public class Util {
 
         producer.send(new ProducerRecord<>(topic,valueJson));
     }
+
+    //首字母大写
+    public static String LargerFirstChar(String str) {
+        char[] chars = str.toCharArray();
+        chars[0] -= 32;
+        if(chars[0]>97){
+
+        }
+        return String.valueOf(chars);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(LargerFirstChar("esadaaaa"));
+    }
 }
 
 
