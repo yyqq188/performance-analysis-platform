@@ -1,6 +1,5 @@
 package com.pactera.yhl.hbasecdc;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
@@ -81,7 +80,7 @@ public class MyHBaseObserver implements RegionObserver, RegionCoprocessor {
                 }
             }
             json.put("rowkey", rowkey);
-            producer.send(new ProducerRecord<>("hbase_test_observer", JSONObject.toJSONString(json)));
+//            producer.send(new ProducerRecord<>("hbase_test_observer", JSONObject.toJSONString(json)));
 
         } catch (Exception ex) {
             ex.printStackTrace();

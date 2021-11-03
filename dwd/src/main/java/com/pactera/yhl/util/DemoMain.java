@@ -43,7 +43,7 @@ public class DemoMain {
         }
 
 //        ClassLoader classLoader = className.getClassLoader();
-//        Class<?> aClass = classLoader.loadClass("com.pactera.yhl.util.DemoMain$A");
+//        Class<?> aClass = classLoader.loadClass("com.pactera.yhl.com.pactera.yhl.util.DemoMain$A");
 //        ((A) aClass).getField("id");
 
     }

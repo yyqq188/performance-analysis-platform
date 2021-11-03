@@ -1,0 +1,659 @@
+[INFO] [2021-10-29 18:12:09][org.apache.kafka.clients.producer.ProducerConfig]ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [10.5.2.133:6667, 10.5.2.134:6667, 10.5.2.144:6667, 10.5.2.145:6667]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+[INFO] [2021-10-29 18:12:11][org.apache.kafka.common.utils.AppInfoParser]Kafka version : 2.0.0
+[INFO] [2021-10-29 18:12:11][org.apache.kafka.common.utils.AppInfoParser]Kafka commitId : 3402a8361b734732
+[INFO] [2021-10-29 18:12:11][ru.yandex.clickhouse.ClickHouseDriver]Driver registered
+[INFO] [2021-10-29 18:12:11][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:zookeeper.version=3.4.10-39d3a4f269333c922ed3db283be479f9deacaa0f, built on 03/23/2017 10:13 GMT
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:host.name=WF-20161217QSCX
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:java.version=1.8.0_151
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:java.vendor=Oracle Corporation
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:java.home=D:\java\jdk1.8.0_151\jre
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:java.class.path=C:\Windows\Temp\classpath2099941021.jar;E:\IntelliJ IDEA Community Edition 2021.2\lib\idea_rt.jar
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:java.library.path=D:\java\jdk1.8.0_151\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Python38\Scripts\;C:\Python38\;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;D:\Anaconda3;D:\Anaconda3\Library\mingw-w64\bin;D:\Anaconda3\Library\usr\bin;D:\Anaconda3\Library\bin;D:\Anaconda3\Scripts;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\java\jdk1.8.0_151\bin;D:\java\jdk1.8.0_151\jre\bin;C:\Program Files\VanDyke Software\Clients\;D:\apache-maven-3.6.3\bin;D:\spark1.6_hadoop2.6\hadoop-2.6.0\bin;F:\spark-2.2.0-bin-hadoop2.7\bin;C:\Program Files (x86)\scala\bin;C:\ProgramData\chocolatey\bin;D:\Users\Desktop\phantomjs-2.1.1-windows\bin;D:\phantomjs-2.1.1-windows\bin;C:\Program Files\Redis\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\Administrator\minikube_about;D:\android-sdk-windows\platform-tools;D:\android-sdk-windows\tools;C:\Go\bin;C:\Program Files (x86)\Tesseract-OCR;C:\Program Files\nodejs\;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\cmd;;C:\Program Files\Docker Toolbox;D:\GoLand 2019.2\bin;;C:\Users\Administrator\go\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Fiddler;C:\Users\Administrator\AppData\Local\Programs\Hyper\resources\bin;.
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:java.io.tmpdir=C:\Windows\TEMP\
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:java.compiler=<NA>
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:os.name=Windows 7
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:os.arch=amd64
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:os.version=6.1
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:user.name=Administrator
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:user.home=C:\Users\Administrator
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Client environment:user.dir=D:\Users\Desktop\pactera\code_project\performance-analysis-platform
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@46be2882
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc15/10.5.2.145:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc15/10.5.2.145:2181, initiating session
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc15/10.5.2.145:2181, sessionid = 0x37b335101b602c4, negotiated timeout = 60000
+[INFO] [2021-10-29 18:12:11][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:12:11][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ZooKeeper]Session: 0x37b335101b602c4 closed
+[INFO] [2021-10-29 18:12:11][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x37b335101b602c4
+[INFO] [2021-10-29 18:12:11][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:12:12][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:12:12][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@2253d15
+[INFO] [2021-10-29 18:12:12][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc14/10.5.2.144:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:12:12][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc14/10.5.2.144:2181, initiating session
+[INFO] [2021-10-29 18:12:12][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc14/10.5.2.144:2181, sessionid = 0x27b33505acd0299, negotiated timeout = 60000
+[INFO] [2021-10-29 18:12:12][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:12:12][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:12:12][org.apache.zookeeper.ZooKeeper]Session: 0x27b33505acd0299 closed
+[INFO] [2021-10-29 18:12:12][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x27b33505acd0299
+[INFO] [2021-10-29 18:12:12][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:17:10][org.apache.kafka.clients.producer.ProducerConfig]ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [10.5.2.133:6667, 10.5.2.134:6667, 10.5.2.144:6667, 10.5.2.145:6667]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+[INFO] [2021-10-29 18:17:12][org.apache.kafka.common.utils.AppInfoParser]Kafka version : 2.0.0
+[INFO] [2021-10-29 18:17:12][org.apache.kafka.common.utils.AppInfoParser]Kafka commitId : 3402a8361b734732
+[INFO] [2021-10-29 18:17:12][ru.yandex.clickhouse.ClickHouseDriver]Driver registered
+[INFO] [2021-10-29 18:17:12][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:zookeeper.version=3.4.10-39d3a4f269333c922ed3db283be479f9deacaa0f, built on 03/23/2017 10:13 GMT
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:host.name=WF-20161217QSCX
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:java.version=1.8.0_151
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:java.vendor=Oracle Corporation
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:java.home=D:\java\jdk1.8.0_151\jre
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:java.class.path=C:\Windows\Temp\classpath1369897069.jar;E:\IntelliJ IDEA Community Edition 2021.2\lib\idea_rt.jar
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:java.library.path=D:\java\jdk1.8.0_151\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Python38\Scripts\;C:\Python38\;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;D:\Anaconda3;D:\Anaconda3\Library\mingw-w64\bin;D:\Anaconda3\Library\usr\bin;D:\Anaconda3\Library\bin;D:\Anaconda3\Scripts;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\java\jdk1.8.0_151\bin;D:\java\jdk1.8.0_151\jre\bin;C:\Program Files\VanDyke Software\Clients\;D:\apache-maven-3.6.3\bin;D:\spark1.6_hadoop2.6\hadoop-2.6.0\bin;F:\spark-2.2.0-bin-hadoop2.7\bin;C:\Program Files (x86)\scala\bin;C:\ProgramData\chocolatey\bin;D:\Users\Desktop\phantomjs-2.1.1-windows\bin;D:\phantomjs-2.1.1-windows\bin;C:\Program Files\Redis\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\Administrator\minikube_about;D:\android-sdk-windows\platform-tools;D:\android-sdk-windows\tools;C:\Go\bin;C:\Program Files (x86)\Tesseract-OCR;C:\Program Files\nodejs\;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\cmd;;C:\Program Files\Docker Toolbox;D:\GoLand 2019.2\bin;;C:\Users\Administrator\go\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Fiddler;C:\Users\Administrator\AppData\Local\Programs\Hyper\resources\bin;.
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:java.io.tmpdir=C:\Windows\TEMP\
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:java.compiler=<NA>
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:os.name=Windows 7
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:os.arch=amd64
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:os.version=6.1
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:user.name=Administrator
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:user.home=C:\Users\Administrator
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Client environment:user.dir=D:\Users\Desktop\pactera\code_project\performance-analysis-platform
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@4fe7c5b3
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc14/10.5.2.144:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc14/10.5.2.144:2181, initiating session
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc14/10.5.2.144:2181, sessionid = 0x27b33505acd029a, negotiated timeout = 60000
+[INFO] [2021-10-29 18:17:12][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:17:12][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ZooKeeper]Session: 0x27b33505acd029a closed
+[INFO] [2021-10-29 18:17:12][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x27b33505acd029a
+[INFO] [2021-10-29 18:17:12][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:29:59][org.apache.kafka.clients.producer.ProducerConfig]ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [10.5.2.133:6667, 10.5.2.134:6667, 10.5.2.144:6667, 10.5.2.145:6667]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+[INFO] [2021-10-29 18:30:00][org.apache.kafka.common.utils.AppInfoParser]Kafka version : 2.0.0
+[INFO] [2021-10-29 18:30:00][org.apache.kafka.common.utils.AppInfoParser]Kafka commitId : 3402a8361b734732
+[INFO] [2021-10-29 18:30:00][ru.yandex.clickhouse.ClickHouseDriver]Driver registered
+[INFO] [2021-10-29 18:30:01][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:zookeeper.version=3.4.10-39d3a4f269333c922ed3db283be479f9deacaa0f, built on 03/23/2017 10:13 GMT
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:host.name=WF-20161217QSCX
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:java.version=1.8.0_151
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:java.vendor=Oracle Corporation
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:java.home=D:\java\jdk1.8.0_151\jre
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:java.class.path=C:\Windows\Temp\classpath1731155795.jar;E:\IntelliJ IDEA Community Edition 2021.2\lib\idea_rt.jar
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:java.library.path=D:\java\jdk1.8.0_151\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Python38\Scripts\;C:\Python38\;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;D:\Anaconda3;D:\Anaconda3\Library\mingw-w64\bin;D:\Anaconda3\Library\usr\bin;D:\Anaconda3\Library\bin;D:\Anaconda3\Scripts;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\java\jdk1.8.0_151\bin;D:\java\jdk1.8.0_151\jre\bin;C:\Program Files\VanDyke Software\Clients\;D:\apache-maven-3.6.3\bin;D:\spark1.6_hadoop2.6\hadoop-2.6.0\bin;F:\spark-2.2.0-bin-hadoop2.7\bin;C:\Program Files (x86)\scala\bin;C:\ProgramData\chocolatey\bin;D:\Users\Desktop\phantomjs-2.1.1-windows\bin;D:\phantomjs-2.1.1-windows\bin;C:\Program Files\Redis\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\Administrator\minikube_about;D:\android-sdk-windows\platform-tools;D:\android-sdk-windows\tools;C:\Go\bin;C:\Program Files (x86)\Tesseract-OCR;C:\Program Files\nodejs\;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\cmd;;C:\Program Files\Docker Toolbox;D:\GoLand 2019.2\bin;;C:\Users\Administrator\go\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Fiddler;C:\Users\Administrator\AppData\Local\Programs\Hyper\resources\bin;.
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:java.io.tmpdir=C:\Windows\TEMP\
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:java.compiler=<NA>
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:os.name=Windows 7
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:os.arch=amd64
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:os.version=6.1
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:user.name=Administrator
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:user.home=C:\Users\Administrator
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Client environment:user.dir=D:\Users\Desktop\pactera\code_project\performance-analysis-platform
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@269b4aa5
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc10/10.5.2.140:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc10/10.5.2.140:2181, initiating session
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc10/10.5.2.140:2181, sessionid = 0x17b33505ad3028e, negotiated timeout = 60000
+[INFO] [2021-10-29 18:30:01][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:30:01][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Session: 0x17b33505ad3028e closed
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x17b33505ad3028e
+[INFO] [2021-10-29 18:30:01][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:30:01][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@1fe93098
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc10/10.5.2.140:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc10/10.5.2.140:2181, initiating session
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc10/10.5.2.140:2181, sessionid = 0x17b33505ad3028f, negotiated timeout = 60000
+[INFO] [2021-10-29 18:30:01][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:30:01][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ZooKeeper]Session: 0x17b33505ad3028f closed
+[INFO] [2021-10-29 18:30:01][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x17b33505ad3028f
+[INFO] [2021-10-29 18:30:01][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:30:02][org.apache.kafka.clients.Metadata]Cluster ID: vONEJb7wSxS9dnIqH8pX2g
+[INFO] [2021-10-29 18:30:24][org.apache.kafka.clients.producer.ProducerConfig]ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [10.5.2.133:6667, 10.5.2.134:6667, 10.5.2.144:6667, 10.5.2.145:6667]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+[INFO] [2021-10-29 18:30:25][org.apache.kafka.common.utils.AppInfoParser]Kafka version : 2.0.0
+[INFO] [2021-10-29 18:30:25][org.apache.kafka.common.utils.AppInfoParser]Kafka commitId : 3402a8361b734732
+[INFO] [2021-10-29 18:30:25][ru.yandex.clickhouse.ClickHouseDriver]Driver registered
+[INFO] [2021-10-29 18:30:26][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:zookeeper.version=3.4.10-39d3a4f269333c922ed3db283be479f9deacaa0f, built on 03/23/2017 10:13 GMT
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:host.name=WF-20161217QSCX
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:java.version=1.8.0_151
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:java.vendor=Oracle Corporation
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:java.home=D:\java\jdk1.8.0_151\jre
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:java.class.path=C:\Windows\Temp\classpath1934837135.jar;E:\IntelliJ IDEA Community Edition 2021.2\lib\idea_rt.jar
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:java.library.path=D:\java\jdk1.8.0_151\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Python38\Scripts\;C:\Python38\;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;D:\Anaconda3;D:\Anaconda3\Library\mingw-w64\bin;D:\Anaconda3\Library\usr\bin;D:\Anaconda3\Library\bin;D:\Anaconda3\Scripts;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\java\jdk1.8.0_151\bin;D:\java\jdk1.8.0_151\jre\bin;C:\Program Files\VanDyke Software\Clients\;D:\apache-maven-3.6.3\bin;D:\spark1.6_hadoop2.6\hadoop-2.6.0\bin;F:\spark-2.2.0-bin-hadoop2.7\bin;C:\Program Files (x86)\scala\bin;C:\ProgramData\chocolatey\bin;D:\Users\Desktop\phantomjs-2.1.1-windows\bin;D:\phantomjs-2.1.1-windows\bin;C:\Program Files\Redis\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\Administrator\minikube_about;D:\android-sdk-windows\platform-tools;D:\android-sdk-windows\tools;C:\Go\bin;C:\Program Files (x86)\Tesseract-OCR;C:\Program Files\nodejs\;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\cmd;;C:\Program Files\Docker Toolbox;D:\GoLand 2019.2\bin;;C:\Users\Administrator\go\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Fiddler;C:\Users\Administrator\AppData\Local\Programs\Hyper\resources\bin;.
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:java.io.tmpdir=C:\Windows\TEMP\
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:java.compiler=<NA>
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:os.name=Windows 7
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:os.arch=amd64
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:os.version=6.1
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:user.name=Administrator
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:user.home=C:\Users\Administrator
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Client environment:user.dir=D:\Users\Desktop\pactera\code_project\performance-analysis-platform
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@3f330fe1
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc15/10.5.2.145:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc15/10.5.2.145:2181, initiating session
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc15/10.5.2.145:2181, sessionid = 0x37b335101b602c5, negotiated timeout = 60000
+[INFO] [2021-10-29 18:30:26][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:30:26][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Session: 0x37b335101b602c5 closed
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x37b335101b602c5
+[INFO] [2021-10-29 18:30:26][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:30:26][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@33cd76c4
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc14/10.5.2.144:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc14/10.5.2.144:2181, initiating session
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc14/10.5.2.144:2181, sessionid = 0x27b33505acd029b, negotiated timeout = 60000
+[INFO] [2021-10-29 18:30:26][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:30:26][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ZooKeeper]Session: 0x27b33505acd029b closed
+[INFO] [2021-10-29 18:30:26][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x27b33505acd029b
+[INFO] [2021-10-29 18:30:26][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:30:27][org.apache.kafka.clients.Metadata]Cluster ID: vONEJb7wSxS9dnIqH8pX2g
+[INFO] [2021-10-29 18:31:49][org.apache.kafka.clients.producer.ProducerConfig]ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [10.5.2.133:6667, 10.5.2.134:6667, 10.5.2.144:6667, 10.5.2.145:6667]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+[INFO] [2021-10-29 18:31:50][org.apache.kafka.common.utils.AppInfoParser]Kafka version : 2.0.0
+[INFO] [2021-10-29 18:31:50][org.apache.kafka.common.utils.AppInfoParser]Kafka commitId : 3402a8361b734732
+[INFO] [2021-10-29 18:31:50][org.apache.kafka.clients.Metadata]Cluster ID: vONEJb7wSxS9dnIqH8pX2g
+[INFO] [2021-10-29 18:32:24][org.apache.kafka.clients.producer.ProducerConfig]ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [10.5.2.133:6667, 10.5.2.134:6667, 10.5.2.144:6667, 10.5.2.145:6667]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+[INFO] [2021-10-29 18:32:25][org.apache.kafka.common.utils.AppInfoParser]Kafka version : 2.0.0
+[INFO] [2021-10-29 18:32:25][org.apache.kafka.common.utils.AppInfoParser]Kafka commitId : 3402a8361b734732
+[INFO] [2021-10-29 18:32:25][ru.yandex.clickhouse.ClickHouseDriver]Driver registered
+[INFO] [2021-10-29 18:32:25][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:zookeeper.version=3.4.10-39d3a4f269333c922ed3db283be479f9deacaa0f, built on 03/23/2017 10:13 GMT
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:host.name=WF-20161217QSCX
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:java.version=1.8.0_151
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:java.vendor=Oracle Corporation
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:java.home=D:\java\jdk1.8.0_151\jre
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:java.class.path=C:\Windows\Temp\classpath1645319835.jar;E:\IntelliJ IDEA Community Edition 2021.2\lib\idea_rt.jar
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:java.library.path=D:\java\jdk1.8.0_151\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Python38\Scripts\;C:\Python38\;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;D:\Anaconda3;D:\Anaconda3\Library\mingw-w64\bin;D:\Anaconda3\Library\usr\bin;D:\Anaconda3\Library\bin;D:\Anaconda3\Scripts;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\java\jdk1.8.0_151\bin;D:\java\jdk1.8.0_151\jre\bin;C:\Program Files\VanDyke Software\Clients\;D:\apache-maven-3.6.3\bin;D:\spark1.6_hadoop2.6\hadoop-2.6.0\bin;F:\spark-2.2.0-bin-hadoop2.7\bin;C:\Program Files (x86)\scala\bin;C:\ProgramData\chocolatey\bin;D:\Users\Desktop\phantomjs-2.1.1-windows\bin;D:\phantomjs-2.1.1-windows\bin;C:\Program Files\Redis\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\Administrator\minikube_about;D:\android-sdk-windows\platform-tools;D:\android-sdk-windows\tools;C:\Go\bin;C:\Program Files (x86)\Tesseract-OCR;C:\Program Files\nodejs\;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\cmd;;C:\Program Files\Docker Toolbox;D:\GoLand 2019.2\bin;;C:\Users\Administrator\go\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Fiddler;C:\Users\Administrator\AppData\Local\Programs\Hyper\resources\bin;.
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:java.io.tmpdir=C:\Windows\TEMP\
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:java.compiler=<NA>
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:os.name=Windows 7
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:os.arch=amd64
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:os.version=6.1
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:user.name=Administrator
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:user.home=C:\Users\Administrator
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Client environment:user.dir=D:\Users\Desktop\pactera\code_project\performance-analysis-platform
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@13946a9e
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc14/10.5.2.144:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc14/10.5.2.144:2181, initiating session
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc14/10.5.2.144:2181, sessionid = 0x27b33505acd029c, negotiated timeout = 60000
+[INFO] [2021-10-29 18:32:25][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:32:25][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ZooKeeper]Session: 0x27b33505acd029c closed
+[INFO] [2021-10-29 18:32:25][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x27b33505acd029c
+[INFO] [2021-10-29 18:32:25][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:32:26][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:32:26][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@7cc186cb
+[INFO] [2021-10-29 18:32:26][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc14/10.5.2.144:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:32:26][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc14/10.5.2.144:2181, initiating session
+[INFO] [2021-10-29 18:32:26][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc14/10.5.2.144:2181, sessionid = 0x27b33505acd029d, negotiated timeout = 60000
+[INFO] [2021-10-29 18:32:26][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:32:26][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:32:26][org.apache.zookeeper.ZooKeeper]Session: 0x27b33505acd029d closed
+[INFO] [2021-10-29 18:32:26][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x27b33505acd029d
+[INFO] [2021-10-29 18:32:26][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:32:27][org.apache.kafka.clients.Metadata]Cluster ID: vONEJb7wSxS9dnIqH8pX2g
+[INFO] [2021-10-29 18:34:19][org.apache.kafka.clients.producer.ProducerConfig]ProducerConfig values: 
+	acks = 1
+	batch.size = 16384
+	bootstrap.servers = [10.5.2.133:6667, 10.5.2.134:6667, 10.5.2.144:6667, 10.5.2.145:6667]
+	buffer.memory = 33554432
+	client.id = 
+	compression.type = none
+	connections.max.idle.ms = 540000
+	enable.idempotence = false
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.StringSerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.class = class org.apache.kafka.clients.producer.internals.DefaultPartitioner
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 0
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.mechanism = GSSAPI
+	security.protocol = PLAINTEXT
+	send.buffer.bytes = 131072
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.1, TLSv1]
+	ssl.endpoint.identification.algorithm = https
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLS
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.StringSerializer
+
+[INFO] [2021-10-29 18:34:20][org.apache.kafka.common.utils.AppInfoParser]Kafka version : 2.0.0
+[INFO] [2021-10-29 18:34:20][org.apache.kafka.common.utils.AppInfoParser]Kafka commitId : 3402a8361b734732
+[INFO] [2021-10-29 18:34:20][ru.yandex.clickhouse.ClickHouseDriver]Driver registered
+[INFO] [2021-10-29 18:34:20][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:zookeeper.version=3.4.10-39d3a4f269333c922ed3db283be479f9deacaa0f, built on 03/23/2017 10:13 GMT
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:host.name=WF-20161217QSCX
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:java.version=1.8.0_151
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:java.vendor=Oracle Corporation
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:java.home=D:\java\jdk1.8.0_151\jre
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:java.class.path=C:\Windows\Temp\classpath2140974741.jar;E:\IntelliJ IDEA Community Edition 2021.2\lib\idea_rt.jar
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:java.library.path=D:\java\jdk1.8.0_151\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Python38\Scripts\;C:\Python38\;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;D:\Anaconda3;D:\Anaconda3\Library\mingw-w64\bin;D:\Anaconda3\Library\usr\bin;D:\Anaconda3\Library\bin;D:\Anaconda3\Scripts;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\java\jdk1.8.0_151\bin;D:\java\jdk1.8.0_151\jre\bin;C:\Program Files\VanDyke Software\Clients\;D:\apache-maven-3.6.3\bin;D:\spark1.6_hadoop2.6\hadoop-2.6.0\bin;F:\spark-2.2.0-bin-hadoop2.7\bin;C:\Program Files (x86)\scala\bin;C:\ProgramData\chocolatey\bin;D:\Users\Desktop\phantomjs-2.1.1-windows\bin;D:\phantomjs-2.1.1-windows\bin;C:\Program Files\Redis\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\Administrator\minikube_about;D:\android-sdk-windows\platform-tools;D:\android-sdk-windows\tools;C:\Go\bin;C:\Program Files (x86)\Tesseract-OCR;C:\Program Files\nodejs\;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\cmd;;C:\Program Files\Docker Toolbox;D:\GoLand 2019.2\bin;;C:\Users\Administrator\go\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Fiddler;C:\Users\Administrator\AppData\Local\Programs\Hyper\resources\bin;.
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:java.io.tmpdir=C:\Windows\TEMP\
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:java.compiler=<NA>
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:os.name=Windows 7
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:os.arch=amd64
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:os.version=6.1
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:user.name=Administrator
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:user.home=C:\Users\Administrator
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Client environment:user.dir=D:\Users\Desktop\pactera\code_project\performance-analysis-platform
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@4791f145
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc15/10.5.2.145:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc15/10.5.2.145:2181, initiating session
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc15/10.5.2.145:2181, sessionid = 0x37b335101b602c6, negotiated timeout = 60000
+[INFO] [2021-10-29 18:34:20][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:34:20][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ZooKeeper]Session: 0x37b335101b602c6 closed
+[INFO] [2021-10-29 18:34:20][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x37b335101b602c6
+[INFO] [2021-10-29 18:34:20][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:34:21][org.apache.curator.framework.imps.CuratorFrameworkImpl]Starting
+[INFO] [2021-10-29 18:34:21][org.apache.zookeeper.ZooKeeper]Initiating client connection, connectString=prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181 sessionTimeout=60000 watcher=org.apache.curator.ConnectionState@65c239f3
+[INFO] [2021-10-29 18:34:21][org.apache.zookeeper.ClientCnxn]Opening socket connection to server prod-bigdata-pc14/10.5.2.144:2181. Will not attempt to authenticate using SASL (unknown error)
+[INFO] [2021-10-29 18:34:21][org.apache.zookeeper.ClientCnxn]Socket connection established to prod-bigdata-pc14/10.5.2.144:2181, initiating session
+[INFO] [2021-10-29 18:34:21][org.apache.zookeeper.ClientCnxn]Session establishment complete on server prod-bigdata-pc14/10.5.2.144:2181, sessionid = 0x27b33505acd029e, negotiated timeout = 60000
+[INFO] [2021-10-29 18:34:21][org.apache.curator.framework.state.ConnectionStateManager]State change: CONNECTED
+[INFO] [2021-10-29 18:34:21][org.apache.curator.framework.imps.CuratorFrameworkImpl]backgroundOperationsLoop exiting
+[INFO] [2021-10-29 18:34:21][org.apache.zookeeper.ZooKeeper]Session: 0x27b33505acd029e closed
+[INFO] [2021-10-29 18:34:21][org.apache.zookeeper.ClientCnxn]EventThread shut down for session: 0x27b33505acd029e
+[INFO] [2021-10-29 18:34:21][org.apache.hive.jdbc.HiveConnection]Connected to prod-bigdata-pc15:10000
+[INFO] [2021-10-29 18:34:22][org.apache.kafka.clients.Metadata]Cluster ID: vONEJb7wSxS9dnIqH8pX2g
