@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class MyHbaseCli {
+public class MyKafka {
     public static Configuration createConfiguration(Properties params){
         String zkUrl = params.getProperty("zkquorum");
         String zkPort = params.getProperty("zkport");
@@ -31,20 +31,13 @@ public class MyHbaseCli {
         return hbaseConfig;
     }
 
-    public static Connection hbaseConnection(String configPath) throws IOException {
+    public static Properties getProperties(String configPath) throws IOException{
         System.out.println(configPath);
         InputStream inputStream = new FileInputStream(new File(configPath));
         Properties properties = new Properties();
         properties.load(inputStream);
         inputStream.close();
-        Configuration conf = MyHbaseCli.createConfiguration(properties);
-        conf.set("hbase.client.ipc.pool.type","Reusable");  //Reusable也是默认的  RoundRobinPool ThreadLocal
-        conf.set("hbase.client.ipc.pool.size","1000");  //1
-        conf.set("hbase.hconnection.threads.max","1000"); //256
-        conf.set("hbase.hconnection.threads.core","1000");// 256
-        UserGroupInformation userGroupInformation = UserGroupInformation.createRemoteUser("klapp");
-        Connection connection = ConnectionFactory.createConnection(conf, User.create(userGroupInformation));
-        return connection;
-    }
+        return properties;
 
+    }
 }

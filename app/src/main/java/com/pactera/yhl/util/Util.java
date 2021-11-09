@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pactera.yhl.entity.source.KLEntity;
+import kafka.admin.AdminUtils;
+import kafka.admin.RackAwareMode;
+import kafka.utils.ZkUtils;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
@@ -15,10 +18,12 @@ import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.security.JaasUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
 public class Util {
@@ -103,6 +108,24 @@ public class Util {
 
         }
         return String.valueOf(chars);
+    }
+
+    //判断某个kafka的topic是否存在
+    public static boolean topicExists(String zkConnection,String topic){
+        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+        boolean exists = AdminUtils.topicExists(zkUtils, topic);
+        return exists;
+    }
+    //创建新的topic
+    public static boolean createTopic(String zkConnection,String topic){
+        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+        try{
+            AdminUtils.createTopic(zkUtils,topic,1,1,new Properties(), RackAwareMode.Enforced$.MODULE$);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void main(String[] args) {

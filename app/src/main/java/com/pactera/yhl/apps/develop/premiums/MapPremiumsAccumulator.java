@@ -15,7 +15,7 @@ public class MapPremiumsAccumulator extends RichMapFunction<Lbpol, Lbpol> {
 
     @Override
     public Lbpol map(Lbpol lbpol) throws Exception {
-        counter.add(lbpol.getPrem());
+//        counter.add(lbpol.getPrem());
         return null;
     }
 }

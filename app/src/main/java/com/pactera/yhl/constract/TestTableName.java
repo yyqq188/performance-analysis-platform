@@ -2,10 +2,13 @@ package com.pactera.yhl.constract;
 
 public class TestTableName {
     public static final String dbName = "kl_core";
+    public static final String dbNameXG = "kl_umss";
     public static final String Lbcont = dbName+"."+"lbcont";
     public static final String Lbpol = dbName+"."+ "lbpol";
     public static final String Lccont = dbName+"."+ "lccont";
     public static final String Lcpol = dbName+"."+ "lcpol";
+    public static final String T02salesinfo_k = dbNameXG+"."+ "t02salesinfo_k";
+
 
     public static final String AnyChatCont = dbName + "." + "anychatcont";
     public static final String ImCont = dbName+"."+ "imcont";
@@ -30,9 +33,9 @@ public class TestTableName {
     public static final String Lmedoritem = dbName+"."+ "lmedoritem";
     public static final String Lmriskapp = dbName+"."+ "lmriskapp";
     public static final String Lpedoritem = dbName+"."+ "lpedoritem";
-    public static final String T01bankinfoyb = dbName+"."+ "t01bankinfoyh";
-    public static final String T01branchinfo = dbName+"."+ "t01branchinfo";
-    public static final String T01teaminfo = dbName+"."+ "t01teaminfo";
-    public static final String T02salesinfo = dbName+"."+ "t02salesinfo";
-    public static final String T02salesinfo_k = dbName+"."+ "t02salesinfo_k";
+    public static final String T01bankinfoyb = dbNameXG+"."+ "t01bankinfoyh";
+    public static final String T01branchinfo = dbNameXG+"."+ "t01branchinfo";
+    public static final String T01teaminfo = dbNameXG+"."+ "t01teaminfo";
+    public static final String T02salesinfo = dbNameXG+"."+ "t02salesinfo";
+
 }
