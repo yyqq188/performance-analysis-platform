@@ -4,9 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pactera.yhl.entity.source.KLEntity;
-import kafka.admin.AdminUtils;
-import kafka.admin.RackAwareMode;
-import kafka.utils.ZkUtils;
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
@@ -16,9 +13,9 @@ import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.security.JaasUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,17 +107,40 @@ public class Util {
         return String.valueOf(chars);
     }
 
+
     //判断某个kafka的topic是否存在
-    public static boolean topicExists(String zkConnection,String topic){
-        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
-        boolean exists = AdminUtils.topicExists(zkUtils, topic);
-        return exists;
+    public static boolean topicExists(String kafkaservers,String topic){
+        Properties prop = new Properties();
+        prop.setProperty("bootstrap.servers",kafkaservers);
+        AdminClient adminClient = AdminClient.create(prop);
+        ArrayList<NewTopic> topics = new ArrayList<>();
+        ListTopicsResult listTopicsResult = adminClient.listTopics();
+        try{
+            Map<String, TopicListing> maps = listTopicsResult.namesToListings().get();
+            if(maps.containsKey(topic)){
+                return true;
+            }else{
+                return false;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+
     }
     //创建新的topic
-    public static boolean createTopic(String zkConnection,String topic){
-        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+    public static boolean createTopic(String kafkaservers,String topic){
+        Properties prop = new Properties();
+        prop.setProperty("bootstrap.servers",kafkaservers);
+        AdminClient adminClient = AdminClient.create(prop);
+        ArrayList<NewTopic> topics = new ArrayList<>();
+        NewTopic newTopic = new NewTopic(topic,1,(short) 1);
+        topics.add(newTopic);
+        CreateTopicsResult result = adminClient.createTopics(topics);
         try{
-            AdminUtils.createTopic(zkUtils,topic,1,1,new Properties(), RackAwareMode.Enforced$.MODULE$);
+            result.all().get();
             return true;
         }catch (Exception e){
             e.printStackTrace();
@@ -128,8 +148,35 @@ public class Util {
         return false;
     }
 
+
+    //判断某个kafka的topic是否存在
+//    public static boolean topicExists_bak(String zkConnection,String topic){
+//        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+//        boolean exists = AdminUtils.topicExists(zkUtils, topic);
+//        return exists;
+//    }
+//    //创建新的topic
+//    public static boolean createTopic_bak(String zkConnection,String topic){
+//        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+//        try{
+//            AdminUtils.createTopic(zkUtils,topic,1,1,new Properties(), RackAwareMode.Enforced$.MODULE$);
+//            return true;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
+
     public static void main(String[] args) {
-        System.out.println(LargerFirstChar("esadaaaa"));
+//        System.out.println(LargerFirstChar("esadaaaa"));
+        String kafkaservers = "10.5.2.133:6667,10.5.2.134:6667,10.5.2.144:6667,10.5.2.145:6667";
+        String topic = "testyhlv3";
+        boolean exists = topicExists(kafkaservers, topic);
+        System.out.println(exists);
+        boolean testyhlv4 = createTopic(kafkaservers, "testyhlv4");
+        System.out.println(testyhlv4);
+
+
     }
 }
 

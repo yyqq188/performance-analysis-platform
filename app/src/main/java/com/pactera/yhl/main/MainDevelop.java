@@ -28,26 +28,26 @@ public class MainDevelop {
         Properties kafkaProp = new Properties();
         kafkaProp.setProperty("bootstrap.servers", params.toMap().get("kafka_bootstrap_servers"));
         String topic = "testyhlv2";
-        String lbTopic = "testyhlv3";
+        String lbTopic = "testyhlv4";
         String lcTopic = "testyhlv3";
         //premiums
         //中间表
 
-        JobPremiums.midLbpol(env,topic,kafkaProp,
-                "KLMIDAPP:lbpol_agentcode",
-                new String[]{"agentcode"},
-                new String[]{"polno"},
-                "lbpol");
-        JobPremiums.midLcpol(env,topic,kafkaProp,
-                "KLMIDAPP:lcpol_agentcode",
-                new String[]{"agentcode"},
-                new String[]{"polno"},
-                "lcpol");
-        JobPremiums.midSaleinfoK(env,topic,kafkaProp,
-                "KLMIDAPP:t02salesinfok_salesId",
-                new String[]{"sales_id"},
-                new String[]{},
-                "t02salesinfok");
+//        JobPremiums.midLbpol(env,topic,kafkaProp,
+//                "KLMIDAPP:lbpol_agentcode",
+//                new String[]{"agentcode"},
+//                new String[]{"polno"},
+//                "lbpol");
+//        JobPremiums.midLcpol(env,topic,kafkaProp,
+//                "KLMIDAPP:lcpol_agentcode",
+//                new String[]{"agentcode"},
+//                new String[]{"polno"},
+//                "lcpol");
+//        JobPremiums.midSaleinfoK(env,topic,kafkaProp,
+//                "KLMIDAPP:t02salesinfok_salesId",
+//                new String[]{"sales_id"},
+//                new String[]{},
+//                "t02salesinfok");
 
         //关联层
         JobPremiums.lbpol2saleinfo(env,topic,kafkaProp,lbTopic);
@@ -55,7 +55,7 @@ public class MainDevelop {
 //        JobPremiums.saleinfo2lbpol(env,topic,kafkaProp,lbTopic);
 //        JobPremiums.saleinfo2lcpol(env,topic,kafkaProp,lcTopic);
 
-//        JobPremiums.premiums(env,topic,kafkaProp);
+        JobPremiums.premiums(env,topic,kafkaProp);
         env.execute("");
     }
 }

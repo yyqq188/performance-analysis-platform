@@ -31,22 +31,24 @@ public abstract class AbstractInsertKafka<OUT> extends RichSinkFunction<OUT> {
         super.open(parameters);
         ParameterTool params = (ParameterTool) getRuntimeContext().getExecutionConfig().getGlobalJobParameters();
         String config_path = params.get("config_path");
+
 //        String config_path = "D:\\Users\\Desktop\\pactera\\code_project\\performance-analysis-platform\\app\\src\\main\\resources\\configuration.properties";
         connection = MyHbaseCli.hbaseConnection(config_path);
 
         //kafka的配置
+        final Properties props = MyKafka.getProperties(config_path);
         Properties kafkaProps = new Properties();
         kafkaProps.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
         kafkaProps.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
-        kafkaProps.put("bootstrap.servers",params.get("kafka_bootstrap_servers"));
+        kafkaProps.put("bootstrap.servers",props.getProperty("kafka_bootstrap_servers"));
 
         producer=new KafkaProducer<String, String>(kafkaProps);
 
         //创建目的中间的topic
-        String zkUrl = MyKafka.getProperties(config_path).getProperty("zkquorum");
-        boolean isExists = Util.topicExists(zkUrl,topic);
+        String kafkaservers = props.getProperty("kafka_bootstrap_servers");
+        boolean isExists = Util.topicExists(kafkaservers,topic);
         if(!isExists){
-            Util.createTopic(zkUrl,topic);
+            Util.createTopic(kafkaservers,topic);
         }
 
 

@@ -32,7 +32,7 @@ public class MyKafka {
     }
 
     public static Properties getProperties(String configPath) throws IOException{
-        System.out.println(configPath);
+        System.out.println("---+++"+configPath);
         InputStream inputStream = new FileInputStream(new File(configPath));
         Properties properties = new Properties();
         properties.load(inputStream);

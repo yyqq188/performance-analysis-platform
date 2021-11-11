@@ -67,7 +67,7 @@ public class JobPremiums {
     //关联层
     public static void lbpol2saleinfo(StreamExecutionEnvironment env, String topic,
                                       Properties prop,String topicOut){
-        prop.setProperty("group.id","JobPremiums_lbpol2saleinfo");
+        prop.setProperty("group.id","JobPremiums_lbpol2saleinfo4");
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
                 topic, new SimpleStringSchema(), prop);
         kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());

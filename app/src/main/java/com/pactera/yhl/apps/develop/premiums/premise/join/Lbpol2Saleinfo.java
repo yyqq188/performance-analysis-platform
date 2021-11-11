@@ -36,94 +36,105 @@ public class Lbpol2Saleinfo extends AbstractInsertKafka<Lbpol>{
         this.topic = topic; //"testyhlv3";  //目的topic
     }
 
-    @Override
-    public void handle(Lbpol value, Context context, HTable hTable) throws Exception {
-        Map<String,Object> map=new HashMap<String,Object>();
-
-        //todo 关联字段
-        StringBuilder rowkeySb = new StringBuilder();
-        for(String rowkey:joinFieldsDriver){
-            map.put("value",value);
-            String expression = "value.get"+ Util.LargerFirstChar(rowkey)+"()";
-            Object value1 = Util.convertToCode(expression,map);
-            rowkeySb.append(value1);
-        }
-        Result result = Util.getHbaseResultSync(rowkeySb.toString(),hTable);
-
-        //todo 源字段的截取 也就是接下来的需要用的字段
-        Map<String,Object> otherFieldsMap = new HashMap<>();
-        for(String rowkey:otherFieldsDriver){
-            map.put("value",value);
-            String expression = "value.get"+ Util.LargerFirstChar(rowkey)+"()";
-            Object value1 = Util.convertToCode(expression,map);
-            otherFieldsMap.put(rowkey,value1);
-        }
-
-
-        for(Cell cell:result.listCells()){
-            String valueJson = Bytes.toString(CellUtil.cloneValue(cell));
-
-
-//            T02salesinfok t02salesinfok = JSON.parseObject(valueJson, T02salesinfok.class);
-//            String workarea = t02salesinfok.getWorkarea();
-            //todo 以及中间表的实体类
-            map.put("valueJson",valueJson);
-            map.put(hbaseClazzStr,hbaseClazz);
-            String expression2 = "JSON.parseObject(valueJson, " + hbaseClazzStr +")";
-            Object hbaseClassObj = Util.convertToCode(expression2,map);
-
-            //todo 取要取的字段 也就是需要扩充打宽的字段
-            for(String rowkey:fieldsHbase){
-                map.put("value",hbaseClassObj);
-                String expression3 = "value.get"+ Util.LargerFirstChar(rowkey)+"()";
-                Object value1 = Util.convertToCode(expression3,map);
-                otherFieldsMap.put(rowkey,value1);
-            }
-
-            //premiumsKafkaEntity01.setPrem(prem);
-            //todo 传入新消息的实体类
-            for(String rowkey:otherFieldsMap.keySet()){
-                map.put("kafkaEntity",kafkaEntity);
-                map.put("value",otherFieldsMap.get(rowkey));
-                String expression3 = "kafkaEntity.set"+ Util.LargerFirstChar(rowkey)+"(value)";
-                Object value1 = Util.convertToCode(expression3,map);
-            }
-
-            producer.send(new ProducerRecord<>(topic,
-                    JSON.toJSONString(kafkaEntity)));
-
-        }
-
-
-
-    }
-    //    @Override
+//    @Override
 //    public void handle(Lbpol value, Context context, HTable hTable) throws Exception {
+//        Map<String,Object> map=new HashMap<String,Object>();
+//
 //        //todo 关联字段
-//        String rowkey = value.getAgentcode();
-//        Result result = Util.getHbaseResultSync(rowkey+"",hTable);
+//        StringBuilder rowkeySb = new StringBuilder();
+//        for(String rowkey:joinFieldsDriver){
+//            map.put("value",value);
+//            String expression = "value.get"+ Util.LargerFirstChar(rowkey)+"()";
+//            Object value1 = Util.convertToCode(expression,map);
+//            rowkeySb.append(value1);
+//        }
+//        Result result = Util.getHbaseResultSync(rowkeySb.toString(),hTable);
 //
 //        //todo 源字段的截取 也就是接下来的需要用的字段
-//        String managecom = value.getManagecom();
-//        String prem = value.getPrem();
+//        Map<String,Object> otherFieldsMap = new HashMap<>();
+//        for(String rowkey:otherFieldsDriver){
+//            map.put("value",value);
+//            String expression = "value.get"+ Util.LargerFirstChar(rowkey)+"()";
+//            Object value1 = Util.convertToCode(expression,map);
+//            otherFieldsMap.put(rowkey,value1);
+//        }
+//
+//
 //        for(Cell cell:result.listCells()){
 //            String valueJson = Bytes.toString(CellUtil.cloneValue(cell));
-//            //todo 取要取的字段 也就是需要扩充打宽的字段
+//
+//
+////            T02salesinfok t02salesinfok = JSON.parseObject(valueJson, T02salesinfok.class);
+////            String workarea = t02salesinfok.getWorkarea();
 //            //todo 以及中间表的实体类
-//            T02salesinfok t02salesinfok = JSON.parseObject(valueJson, T02salesinfok.class);
-//            String workarea = t02salesinfok.getWorkarea();
+//            map.put("valueJson",valueJson);
+//            map.put(hbaseClazzStr,hbaseClazz);
+//            String expression2 = "JSON.parseObject(valueJson, " + hbaseClazzStr +")";
+//            Object hbaseClassObj = Util.convertToCode(expression2,map);
+//
+//            //todo 取要取的字段 也就是需要扩充打宽的字段
+//            for(String rowkey:fieldsHbase){
+//                map.put("value",hbaseClassObj);
+//                String expression3 = "value.get"+ Util.LargerFirstChar(rowkey)+"()";
+//                Object value1 = Util.convertToCode(expression3,map);
+//                otherFieldsMap.put(rowkey,value1);
+//            }
+//
+//            //premiumsKafkaEntity01.setPrem(prem);
 //            //todo 传入新消息的实体类
-//            PremiumsKafkaEntity01 premiumsKafkaEntity01 = new PremiumsKafkaEntity01();
-//            premiumsKafkaEntity01.setPrem(prem);
-//            premiumsKafkaEntity01.setManagecom(managecom);
-//            premiumsKafkaEntity01.setWorkarea(workarea);
+//            for(String rowkey:otherFieldsMap.keySet()){
+//                map.put("kafkaEntity",kafkaEntity);
+//                map.put("value",otherFieldsMap.get(rowkey));
+//                String expression3 = "kafkaEntity.set"+ Util.LargerFirstChar(rowkey)+"(value)";
+//                Object value1 = Util.convertToCode(expression3,map);
+//            }
 //
 //            producer.send(new ProducerRecord<>(topic,
-//                    JSON.toJSONString(premiumsKafkaEntity01)));
+//                    JSON.toJSONString(kafkaEntity)));
 //
 //        }
 //
+//
+//
 //    }
+
+    @Override
+    public void handle(Lbpol value, Context context, HTable hTable) throws Exception {
+        //todo 关联字段
+        String rowkey = value.getAgentcode();
+        Result result = Util.getHbaseResultSync(rowkey+"",hTable);
+        //todo 源字段的截取 也就是接下来的需要用的字段
+        String managecom = value.getManagecom();
+        String prem = value.getPrem();
+        for(Cell cell:result.listCells()){
+            String valueJson = Bytes.toString(CellUtil.cloneValue(cell));
+            //todo 取要取的字段 也就是需要扩充打宽的字段
+            //todo 以及中间表的实体类
+            T02salesinfok t02salesinfok = JSON.parseObject(valueJson, T02salesinfok.class);
+            //todo 加过滤
+            if("08".equals(t02salesinfok.getChannel_id())){
+                String workarea = t02salesinfok.getWorkarea();
+                String versionId = t02salesinfok.getVersion_id();
+                //
+                if(workarea != null && "2021".equals(versionId)){
+                    System.out.println("----++++ rowkey "+rowkey);
+                    //todo 传入新消息的实体类
+                    PremiumsKafkaEntity01 premiumsKafkaEntity01 = new PremiumsKafkaEntity01();
+                    premiumsKafkaEntity01.setPrem(prem);
+                    premiumsKafkaEntity01.setManagecom(managecom);
+                    premiumsKafkaEntity01.setWorkarea(workarea);
+
+                    producer.send(new ProducerRecord<>(topic,
+                            JSON.toJSONString(premiumsKafkaEntity01)));
+                }
+
+
+            }
+
+
+        }
+
+    }
 
 
 
