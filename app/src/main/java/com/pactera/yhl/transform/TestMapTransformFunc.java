@@ -23,6 +23,10 @@ public class TestMapTransformFunc implements MapFunction<String, KLEntity> {
             return JSONObject.parseObject(data, Lccont.class);
         }else if(tableName.equals(TestTableName.T02salesinfo_k)) {
             return JSONObject.parseObject(data, T02salesinfok.class);
+        }else if(tableName.equals(TestTableName.T01branchinfo)){
+            return JSONObject.parseObject(data, T01branchinfo.class);
+        }else if(tableName.equals(TestTableName.Lpedoritem)){
+            return JSONObject.parseObject(data, Lpedoritem.class);
         }
         return null;
     }

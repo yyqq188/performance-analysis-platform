@@ -10,6 +10,7 @@ import com.pactera.yhl.entity.source.Lcpol;
 import com.pactera.yhl.entity.source.T02salesinfok;
 import com.pactera.yhl.sink.PremiumsKuduSinkV2;
 import com.pactera.yhl.transform.TestMapTransformFunc;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -20,6 +21,8 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public class JobPremiums {
@@ -111,8 +114,34 @@ public class JobPremiums {
                 .map(x -> (T02salesinfok) x);
     }
 
+    public static void premiums(StreamExecutionEnvironment env, String topic, Properties prop){
+        //<固定套路
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop
+        );
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        SingleOutputStreamOperator<Lcpol> source = env.addSource(kafkaConsumer)
+                .map(new TestMapTransformFunc())
+                .filter(x -> x instanceof Lcpol)
+                .map(x -> (Lcpol) x)
+                .filter(new FilterFunction<Lcpol>() {
+                    @Override
+                    public boolean filter(Lcpol lcpol) throws Exception {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        String today = sdf.format(new Date());
+                        if(lcpol.getModifydate().equals(today)){
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+                });
+        //固定套路>
+        source.print();
 
 
+//todo -------------------------------------------------------------------------------------------------------------------
 
 //    public static void premise(StreamExecutionEnvironment env, String topic, Properties prop){
 //        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
@@ -134,11 +163,12 @@ public class JobPremiums {
 //                }).reduce(new ReduceFunction<Lcpol>() {
 //                    @Override
 //                    public Lcpol reduce(Lcpol lcpol, Lcpol t1) throws Exception {
-//                        Lcpol newLc = new Lcpol();
-//                        Double pre = Double.valueOf(lcpol.getPrem());
-//                        Double suf = Double.valueOf(t1.getPrem());
-//                        newLc.setPrem(String.valueOf(pre + suf));
-//                        return newLc;
+//                    Lcpol newLc = new Lcpol();
+//                    Double pre = Double.valueOf(lcpol.getPrem());
+//                    Double suf = Double.valueOf(t1.getPrem());
+//                    newLc.setPrem(String.valueOf(pre + suf));
+//                    newLc.setPolno(lcpol.getPolno);
+//                    return newLc;
 //                    }
 //                }).map(new MapFunction<Lcpol, Tuple4<String, String, String, String>>() {
 //                    @Override
@@ -151,12 +181,7 @@ public class JobPremiums {
 //    }
 
 
-    public static void premiums(StreamExecutionEnvironment env, String topic, Properties prop){
-        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
-                topic, new SimpleStringSchema(), prop
-        );
 
-        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
 //        env.addSource(kafkaConsumer).map(new TestMapTransformFunc())
 //                .filter(x ->  x instanceof Lbpol)
 //                .map(x -> (Lbpol)x)
@@ -179,32 +204,35 @@ public class JobPremiums {
 //        sum.addSink(new PremiumsKuduSink()).setParallelism(1);
 ////        sum.addSink(new PremiumsHbaseSink());
 
-        SingleOutputStreamOperator<Tuple4<String, String, String, String>> sum = env.addSource(kafkaConsumer)
-                .map(new TestMapTransformFunc())
-                .filter(x -> x instanceof Lcpol)
-                .map(x -> (Lcpol) x)
-                .keyBy(new KeySelector<Lcpol, Tuple3<String, String, String>>() {
-                    @Override
-                    public Tuple3<String, String, String> getKey(Lcpol lcpol) throws Exception {
-                        return Tuple3.of(lcpol.getGrppolno(), lcpol.getPolno(), lcpol.getInsuredno());
-                    }
-                }).reduce(new ReduceFunction<Lcpol>() {
-                    @Override
-                    public Lcpol reduce(Lcpol lcpol, Lcpol t1) throws Exception {
-                        Lcpol newLc = new Lcpol();
-                        Double pre = Double.valueOf(lcpol.getPrem());
-                        Double suf = Double.valueOf(t1.getPrem());
-                        newLc.setPrem(String.valueOf(pre + suf));
-                        return newLc;
-                    }
-                }).map(new MapFunction<Lcpol, Tuple4<String, String, String, String>>() {
-                    @Override
-                    public Tuple4<String, String, String, String> map(Lcpol lcpol) throws Exception {
-                        return Tuple4.of(lcpol.getGrppolno(), lcpol.getPolno(), lcpol.getInsuredno(), lcpol.getPrem());
-                    }
-                });
-//        sum.print();
-        sum.addSink(new PremiumsKuduSinkV2());
+
+
+//        SingleOutputStreamOperator<Tuple4<String, String, String, String>> sum = env.addSource(kafkaConsumer)
+//                .map(new TestMapTransformFunc())
+//                .filter(x -> x instanceof Lcpol)
+//                .map(x -> (Lcpol) x)
+//                .keyBy(new KeySelector<Lcpol, Tuple3<String, String, String>>() {
+//                    @Override
+//                    public Tuple3<String, String, String> getKey(Lcpol lcpol) throws Exception {
+//                        return Tuple3.of(lcpol.getGrppolno(), lcpol.getPolno(), lcpol.getInsuredno());
+//                    }
+//                }).reduce(new ReduceFunction<Lcpol>() {
+//                    @Override
+//                    public Lcpol reduce(Lcpol lcpol, Lcpol t1) throws Exception {
+//                        Lcpol newLc = new Lcpol();
+//                        Double pre = Double.valueOf(lcpol.getPrem());
+//                        Double suf = Double.valueOf(t1.getPrem());
+//                        newLc.setPrem(String.valueOf(pre + suf));
+//                        newLc.setPolno(lcpol.getPolno());
+//                        return newLc;
+//                    }
+//                }).map(new MapFunction<Lcpol, Tuple4<String, String, String, String>>() {
+//                    @Override
+//                    public Tuple4<String, String, String, String> map(Lcpol lcpol) throws Exception {
+//                        return Tuple4.of(lcpol.getGrppolno(), lcpol.getPolno(), lcpol.getInsuredno(), lcpol.getPrem());
+//                    }
+//                });
+////        sum.print();
+//        sum.addSink(new PremiumsKuduSinkV2());
 
 
     }
