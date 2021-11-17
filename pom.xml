@@ -13,6 +13,7 @@
         <module>dwd</module>
         <module>dws</module>
         <module>app</module>
+        <module>realtimeincrement</module>
     </modules>
 
     <properties>

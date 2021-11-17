@@ -1,0 +1,2 @@
+InsertHive和InsertHiveV2这两个版本的都是可以使用的
+就是插入的速度太慢了，因为是通过jdbc直连hive

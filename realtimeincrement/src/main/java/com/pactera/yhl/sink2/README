@@ -1,0 +1,26 @@
+这里是通过hive和hbase之间的映射，先把数据导入hbase，于是在hive中就可以直接查到了
+建立的hive表是外部映射到hbase的表，底层都是hdfs
+
+
+建立映射表后
+无论是通过hive插入还是通过hbase插入，对方都可以查到
+
+建立映射表的样例：
+
+create external table hbase_test_ldcode1(
+code String,
+codetype String,
+codename String,
+codealias String,
+comcode String,
+othersign String,
+etl_dt String,
+etl_tm String,
+etl_fg String,
+op_ts String,
+current_ts String,
+load_date String
+)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,f:codetype,f:codename,f:codealias,f:comcode,f:othersign,f:etl_dt,f:etl_tm,f:etl_fg,f:op_ts,f:current_ts,f:load_date")
+TBLPROPERTIES("hbase.table.name" = "hbase_test_ldcode");

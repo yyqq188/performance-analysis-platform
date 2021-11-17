@@ -1,10 +1,8 @@
-package com.pactera.yhl.entity.source;
+package com.pactera.yhl.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * @author SUN KI
@@ -14,8 +12,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lbcont implements KLEntity{
-    public String edorno;
+public class Lccont implements KLEntity {
     public String grpcontno;
     public String contno;
     public String proposalcontno;
@@ -139,10 +136,8 @@ public class Lbcont implements KLEntity{
 
     @Override
     public String toString() {
-        return "{\"Lbcont\":{"
-                + "\"edorno\":\""
-                + edorno + '\"'
-                + ",\"grpcontno\":\""
+        return "{\"Lccont\":{"
+                + "\"grpcontno\":\""
                 + grpcontno + '\"'
                 + ",\"contno\":\""
                 + contno + '\"'

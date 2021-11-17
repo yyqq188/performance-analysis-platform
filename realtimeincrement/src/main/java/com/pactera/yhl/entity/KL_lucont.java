@@ -1,23 +1,16 @@
-package com.pactera.yhl.entity.source;
+package com.pactera.yhl.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
-/**
- * @author SUN KI
- * @time 2021/9/27 14:37
- * @Desc
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lbcont implements KLEntity{
-    public String edorno;
+public class KL_lucont {
     public String grpcontno;
     public String contno;
+    public String edorno;
     public String proposalcontno;
     public String prtno;
     public String conttype;
@@ -114,6 +107,7 @@ public class Lbcont implements KLEntity{
     public String handlerdate;
     public String handlerprint;
     public String stateflag;
+    public String statename;
     public String premscope;
     public String intlflag;
     public String uwconfirmno;
@@ -131,21 +125,18 @@ public class Lbcont implements KLEntity{
     public String xbankcode;
     public String xbankaccno;
     public String xaccname;
-    public String etl_dt;
-    public String etl_tm;
-    public String etl_fg;
-    public String op_ts;
-    public String current_ts;
+    public String source_id;
+    public String load_date;
 
     @Override
     public String toString() {
-        return "{\"Lbcont\":{"
-                + "\"edorno\":\""
-                + edorno + '\"'
-                + ",\"grpcontno\":\""
+        return "{\"KL_lucont\":{"
+                + "\"grpcontno\":\""
                 + grpcontno + '\"'
                 + ",\"contno\":\""
                 + contno + '\"'
+                + ",\"edorno\":\""
+                + edorno + '\"'
                 + ",\"proposalcontno\":\""
                 + proposalcontno + '\"'
                 + ",\"prtno\":\""
@@ -338,6 +329,8 @@ public class Lbcont implements KLEntity{
                 + handlerprint + '\"'
                 + ",\"stateflag\":\""
                 + stateflag + '\"'
+                + ",\"statename\":\""
+                + statename + '\"'
                 + ",\"premscope\":\""
                 + premscope + '\"'
                 + ",\"intlflag\":\""
@@ -372,16 +365,10 @@ public class Lbcont implements KLEntity{
                 + xbankaccno + '\"'
                 + ",\"xaccname\":\""
                 + xaccname + '\"'
-                + ",\"etl_dt\":\""
-                + etl_dt + '\"'
-                + ",\"etl_tm\":\""
-                + etl_tm + '\"'
-                + ",\"etl_fg\":\""
-                + etl_fg + '\"'
-                + ",\"op_ts\":\""
-                + op_ts + '\"'
-                + ",\"current_ts\":\""
-                + current_ts + '\"'
+                + ",\"source_id\":\""
+                + source_id + '\"'
+                + ",\"load_date\":\""
+                + load_date + '\"'
                 + "}}";
 
     }
