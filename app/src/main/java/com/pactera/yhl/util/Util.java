@@ -17,6 +17,7 @@ import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -147,6 +148,37 @@ public class Util {
         }
         return false;
     }
+
+
+    //hbase通过rowkey,列名
+    public static void insertHbaseValue(HTable hTable,String rowkey,String family,
+                                        String columnName,String value) throws IOException {
+        Put put = new Put(Bytes.toBytes(rowkey));
+        put.addColumn(
+                Bytes.toBytes(family),
+                Bytes.toBytes(columnName),
+                Bytes.toBytes(value));
+        hTable.put(put);
+
+    }
+    //通过 rowkey column获得值
+    public static List<String> getHbaseValue(HTable hTable,String rowkey,String family,
+                                        String columnName) throws IOException {
+        List<String> values = new ArrayList<>();
+        Get get = new Get(Bytes.toBytes(rowkey));
+        get.addColumn(
+                Bytes.toBytes(family),
+                Bytes.toBytes(columnName));
+        Result result = hTable.get(get);
+        for(Cell cell:result.listCells()) {
+            byte[] bytes = CellUtil.cloneValue(cell);
+            String value = Bytes.toString(bytes);
+            values.add(value);
+        }
+        return values;
+
+    }
+
 
 
     //判断某个kafka的topic是否存在

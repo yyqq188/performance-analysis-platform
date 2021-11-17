@@ -1,0 +1,5 @@
+目前
+还有未做的
+1 op_ts  current_ts
+2 insert update  和 delete解析分开处理
+3 主键的组合
