@@ -14,6 +14,7 @@
         <module>dws</module>
         <module>app</module>
         <module>realtimeincrement</module>
+        <module>realtimehive2hbase</module>
     </modules>
 
     <properties>

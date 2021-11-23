@@ -2,21 +2,14 @@ package com.pactera.yhl.apps.develop.premiums;
 
 import com.pactera.yhl.apps.develop.premiums.premise.join.Lbpol2Saleinfo;
 import com.pactera.yhl.apps.develop.premiums.premise.mid.InsertHbase;
-import com.pactera.yhl.apps.develop.premiums.premise.mid_bak.MidLbpol;
-import com.pactera.yhl.apps.develop.premiums.premise.mid_bak.MidLcpol;
-import com.pactera.yhl.apps.develop.premiums.premise.mid_bak.MidSaleinfoK;
 import com.pactera.yhl.entity.source.Lbpol;
 import com.pactera.yhl.entity.source.Lcpol;
+import com.pactera.yhl.entity.source.Ldcode;
 import com.pactera.yhl.entity.source.T02salesinfok;
-import com.pactera.yhl.sink.PremiumsKuduSinkV2;
+import com.pactera.yhl.sink.abstr.AbstractCKSink;
 import com.pactera.yhl.transform.TestMapTransformFunc;
 import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.api.java.tuple.Tuple3;
-import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
@@ -235,5 +228,29 @@ public class JobPremiums {
 //        sum.addSink(new PremiumsKuduSinkV2());
 
 
+    }
+
+//    public static void testCK(StreamExecutionEnvironment env, String topic, Properties prop){
+//        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+//                topic, new SimpleStringSchema(), prop
+//        );
+//        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+//        env.addSource(kafkaConsumer)
+//                .map(new TestMapTransformFunc())
+//                .filter(x -> x instanceof Ldcode)
+//                .map(x -> (Ldcode) x)
+//                .addSink(new AbstractCKSink<>());
+//    }
+
+    public static void testCK(StreamExecutionEnvironment env, String topic, Properties prop){
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop
+        );
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new TestMapTransformFunc())
+                .filter(x -> x instanceof Ldcode)
+                .map(x -> (Ldcode) x)
+                .addSink(new AbstractCKSink<>());
     }
 }

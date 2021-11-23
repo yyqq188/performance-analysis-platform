@@ -24,7 +24,7 @@ public class MainDevelop {
 
         env.getConfig().setGlobalJobParameters(parameterTool);
 
-
+        parameterTool.getProperties();
         Properties kafkaProp = new Properties();
         kafkaProp.setProperty("bootstrap.servers", params.toMap().get("kafka_bootstrap_servers"));
         String topic = "testyhlv2";
@@ -50,12 +50,17 @@ public class MainDevelop {
 //                "t02salesinfok");
 
         //关联层
-        JobPremiums.lbpol2saleinfo(env,topic,kafkaProp,lbTopic);
+//        JobPremiums.lbpol2saleinfo(env,topic,kafkaProp,lbTopic);
 //        JobPremiums.lcpol2saleinfo(env,topic,kafkaProp,lcTopic);
 //        JobPremiums.saleinfo2lbpol(env,topic,kafkaProp,lbTopic);
 //        JobPremiums.saleinfo2lcpol(env,topic,kafkaProp,lcTopic);
 
-        JobPremiums.premiums(env,topic,kafkaProp);
+//        JobPremiums.premiums(env,topic,kafkaProp);
+
+
+
+
+        JobPremiums.testCK(env,topic,kafkaProp);
         env.execute("");
     }
 }

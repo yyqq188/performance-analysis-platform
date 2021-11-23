@@ -7,6 +7,7 @@ import com.pactera.yhl.transform.TestMapTransformFunc;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.state.MapStateDescriptor;
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -32,21 +33,26 @@ public class T01branchInfo {
 //        actionByUser.connect(broadcast).process(new PatternEvaluator());
 //
 //    }
+
+    final static MapStateDescriptor<String,String> DimensionT01BranchId = new MapStateDescriptor<String, String>("aa",
+            BasicTypeInfo.STRING_TYPE_INFO,BasicTypeInfo.STRING_TYPE_INFO);
+
     public static void branchInfo(StreamExecutionEnvironment env, String topic, Properties prop){
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
                 topic, new SimpleStringSchema(), prop
         );
         kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
-        SingleOutputStreamOperator<Tuple4<String, String, String, String>> source = env.addSource(kafkaConsumer)
+        SingleOutputStreamOperator<DimensionT01BranchId> source = env.addSource(kafkaConsumer)
                 .map(new TestMapTransformFunc())
                 .filter(x -> x instanceof T01branchinfo)
                 .map(x -> {
                     T01branchinfo branchinfo = (T01branchinfo) x;
-                    return Tuple4.of(branchinfo.getBranch_id(),
+                    return new DimensionT01BranchId(branchinfo.getBranch_id(),
                             branchinfo.getBranch_id_parent(),
                             branchinfo.getBranch_id_full(),
                             branchinfo.getBranch_name());
                 });
-//        source.broadcast(DimensionT01BranchId)
+        source.broadcast(DimensionT01BranchId);
     }
+
 }

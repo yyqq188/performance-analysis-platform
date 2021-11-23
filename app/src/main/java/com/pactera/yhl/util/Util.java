@@ -161,8 +161,8 @@ public class Util {
         hTable.put(put);
 
     }
-    //通过 rowkey column获得值
-    public static List<String> getHbaseValue(HTable hTable,String rowkey,String family,
+    //通过 表名 rowkey column获得值
+    public static List<String> getHbaseValueWithTableName(HTable hTable,String rowkey,String family,
                                         String columnName) throws IOException {
         List<String> values = new ArrayList<>();
         Get get = new Get(Bytes.toBytes(rowkey));
@@ -176,8 +176,13 @@ public class Util {
             values.add(value);
         }
         return values;
-
     }
+
+
+
+    //
+
+
 
 
 

@@ -50,4 +50,3 @@ public class AggPremiums {
 
     }
 }
-//        sum.print();
