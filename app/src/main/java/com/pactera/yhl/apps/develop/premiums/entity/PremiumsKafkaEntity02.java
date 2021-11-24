@@ -10,9 +10,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class PremiumsKafkaEntity01 implements Serializable,KafkaEntity{
+public class PremiumsKafkaEntity02 implements Serializable,KafkaEntity{
     public String workarea;
     public String managecom;
     public String prem;
     public String agentcom;
+    public String branch_name;
 }

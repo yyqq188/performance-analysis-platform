@@ -9,7 +9,10 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DimensionT01BranchId implements Serializable{
+/**
+ * 暂时没用
+ */
+public class DimensionT01BranchId implements Serializable,KafkaEntity{
     public String branch_id;
     public String branch_id_parent;
     public String branch_id_full;

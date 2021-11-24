@@ -21,6 +21,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -107,10 +109,12 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
 
         Result result = null;
         Object kafkaClazzObj = kafkaClazz.newInstance();
+        StringBuilder rowkeySb = new StringBuilder();
         for(Field f:value.getClass().getDeclaredFields()){
             if(joinFieldsDriver.contains(f.getName())){
-                result = Util.getHbaseResultSync(f.get(value)+"",hTable);
+                rowkeySb.append(f.get(value)+"");
             }
+            result = Util.getHbaseResultSync(rowkeySb.toString(),hTable);
             if(otherFieldsDriver.contains(f.getName())){
                 String methodName = "set"+Util.LargerFirstChar(f.getName());
                 Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
@@ -136,6 +140,19 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
                     if(filterMap.keySet().contains(fieldName)){
                         Field field = T02salesinfok.class.cast(o).getClass().getField(fieldName);
                         String v = field.get(T02salesinfok.class.cast(o)).toString();
+
+                        if(filterMap.get(fieldName).equals("function")){
+                            //给一个指定的function
+                            String todayStr = new SimpleDateFormat("yyyy-MM-dd")
+                                    .format(new Date(System.currentTimeMillis()));
+                            if(todayStr.equals(v)){
+                                //将hbase的值赋值到kafka实体类中
+                                String methodName = "set"+Util.LargerFirstChar(fieldName);
+                                Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                                method.invoke(kafkaClazzObj,v);
+                            }
+                        }
+
                         if(filterMap.get(fieldName).equals(v)){
                             //将hbase的值赋值到kafka实体类中
                             String methodName = "set"+Util.LargerFirstChar(fieldName);

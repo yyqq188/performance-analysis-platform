@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop.premiums;
+package com.pactera.yhl.apps.develop.demo.demo2;
 
 import com.pactera.yhl.entity.source.Lbpol;
 import org.apache.flink.api.common.accumulators.DoubleCounter;

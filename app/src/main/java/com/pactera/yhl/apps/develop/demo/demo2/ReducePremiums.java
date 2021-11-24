@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop.premiums;
+package com.pactera.yhl.apps.develop.demo.demo2;
 
 import org.apache.flink.api.common.functions.ReduceFunction;
 import scala.Tuple2;

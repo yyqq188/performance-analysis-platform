@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop.demo;
+package com.pactera.yhl.apps.develop.demo.demo1;
 
 import lombok.Data;
 

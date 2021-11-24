@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop.demo;
+package com.pactera.yhl.apps.develop.demo.demo1;
 
 import com.pactera.yhl.apps.develop.premiums.entity.PremiumsKafkaEntity01;
 import com.pactera.yhl.util.Util;
