@@ -1,11 +1,9 @@
-package com.pactera.yhl.apps.develop.premiums;
+package com.pactera.yhl.apps.develop.premiums.job;
 
-import com.pactera.yhl.apps.develop.premiums.premise.join.Lbpol2Saleinfo;
+import com.pactera.yhl.apps.develop.premiums.premise.join_bak.Lbpol2Saleinfo;
+import com.pactera.yhl.apps.develop.premiums.premise.join_bak.Lcpol2Saleinfo;
 import com.pactera.yhl.apps.develop.premiums.premise.mid.InsertHbase;
-import com.pactera.yhl.entity.source.Lbpol;
-import com.pactera.yhl.entity.source.Lcpol;
-import com.pactera.yhl.entity.source.Ldcode;
-import com.pactera.yhl.entity.source.T02salesinfok;
+import com.pactera.yhl.entity.source.*;
 import com.pactera.yhl.sink.abstr.AbstractCKSink;
 import com.pactera.yhl.transform.TestMapTransformFunc;
 import org.apache.flink.api.common.functions.FilterFunction;
@@ -16,7 +14,9 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 public class JobPremiums {
     //中间层
@@ -37,7 +37,7 @@ public class JobPremiums {
     public static void midLcpol(StreamExecutionEnvironment env, String topic, Properties prop,
                                 String tableName,String[] rowkeys,
                                 String[] columnNames,String columnTableName){
-        prop.setProperty("group.id","JobPremiums_midLcpol");
+        prop.setProperty("group.id","JobPremiums_midLcpol2");
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
                 topic, new SimpleStringSchema(), prop);
         kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
@@ -47,10 +47,12 @@ public class JobPremiums {
                 .map(x -> (Lcpol) x)
                 .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
     }
+
+
     public static void midSaleinfoK(StreamExecutionEnvironment env, String topic, Properties prop,
                                     String tableName,String[] rowkeys,
                                     String[] columnNames,String columnTableName){
-        prop.setProperty("group.id","JobPremiums_midSaleinfoK");
+        prop.setProperty("group.id","JobPremiums_midSaleinfoK2");
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
                 topic, new SimpleStringSchema(), prop);
         kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
@@ -60,6 +62,52 @@ public class JobPremiums {
                 .map(x -> (T02salesinfok) x)
                 .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
     }
+
+    public static void midLpedoritem(StreamExecutionEnvironment env, String topic, Properties prop,
+                                    String tableName,String[] rowkeys,
+                                    String[] columnNames,String columnTableName){
+        prop.setProperty("group.id","JobPremiums_midLpedoritem");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new TestMapTransformFunc())
+                .filter(x -> x instanceof Lpedoritem)
+                .map(x -> (Lpedoritem) x)
+                .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
+    }
+
+    public static void midLbpol2(StreamExecutionEnvironment env, String topic, Properties prop,
+                                    String tableName,String[] rowkeys,
+                                    String[] columnNames,String columnTableName){
+        prop.setProperty("group.id","JobPremiums_midLbpol2");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new TestMapTransformFunc())
+                .filter(x -> x instanceof Lbpol)
+                .map(x -> (Lbpol) x)
+                .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
+    }
+
+    public static void midT01branchinfo(StreamExecutionEnvironment env, String topic, Properties prop,
+                                    String tableName,String[] rowkeys,
+                                    String[] columnNames,String columnTableName){
+        prop.setProperty("group.id","JobPremiums_midT01branchinfo");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new TestMapTransformFunc())
+                .filter(x -> x instanceof T01branchinfo)
+                .map(x -> (T01branchinfo) x)
+                .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
+    }
+
+
+
+
     //关联层
     public static void lbpol2saleinfo(StreamExecutionEnvironment env, String topic,
                                       Properties prop,String topicOut){
@@ -74,7 +122,11 @@ public class JobPremiums {
                 .addSink(new Lbpol2Saleinfo(topicOut));
     }
     public static void lcpol2saleinfo(StreamExecutionEnvironment env, String topic,
-                                      Properties prop,String topicOut){
+                                      Properties prop, String topicOut,
+                                      String tableName, Set<String> joinFieldsDriver,
+                                      Set<String> otherFieldsDriver,
+                                      Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                      Class<?> kafkaClazz, Map<String,String> filterMap){
         prop.setProperty("group.id","JobPremiums_lcpol2saleinfo");
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
                 topic, new SimpleStringSchema(), prop);
@@ -82,7 +134,14 @@ public class JobPremiums {
         env.addSource(kafkaConsumer)
                 .map(new TestMapTransformFunc())
                 .filter(x -> x instanceof Lcpol)
-                .map(x -> (Lcpol) x);
+                .map(x -> (Lcpol) x)
+                .addSink(new Lcpol2Saleinfo(tableName,topicOut,
+                        joinFieldsDriver,otherFieldsDriver,
+                        fieldsHbase,hbaseClazz,kafkaClazz,filterMap));
+
+
+
+
     }
     public static void saleinfo2lbpol(StreamExecutionEnvironment env, String topic,
                                       Properties prop,String topicOut){
@@ -230,17 +289,7 @@ public class JobPremiums {
 
     }
 
-//    public static void testCK(StreamExecutionEnvironment env, String topic, Properties prop){
-//        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
-//                topic, new SimpleStringSchema(), prop
-//        );
-//        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
-//        env.addSource(kafkaConsumer)
-//                .map(new TestMapTransformFunc())
-//                .filter(x -> x instanceof Ldcode)
-//                .map(x -> (Ldcode) x)
-//                .addSink(new AbstractCKSink<>());
-//    }
+
 
     public static void testCK(StreamExecutionEnvironment env, String topic, Properties prop){
         FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
@@ -253,4 +302,6 @@ public class JobPremiums {
                 .map(x -> (Ldcode) x)
                 .addSink(new AbstractCKSink<>());
     }
+
+
 }

@@ -9,8 +9,8 @@ import org.apache.flink.api.common.functions.MapFunction;
 public class TestMapTransformFunc implements MapFunction<String, KLEntity> {
     @Override
     public KLEntity map(String s) throws Exception {
-        String replaceStr = s.substring(1, s.length() - 1).replace("\\", "");
-        JSONObject jsonObject = JSONObject.parseObject(replaceStr);
+//        String replaceStr = s.substring(1, s.length() - 1).replace("\\", "");
+        JSONObject jsonObject = JSONObject.parseObject(s);
         String tableName = jsonObject.getJSONObject("meta").getString("tableName");
         String data = jsonObject.getJSONObject("data").toString();
         if(tableName.equals(TestTableName.Lbpol)){

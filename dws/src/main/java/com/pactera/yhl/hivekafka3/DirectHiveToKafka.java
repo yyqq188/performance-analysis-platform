@@ -1,5 +1,6 @@
 package com.pactera.yhl.hivekafka3;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.pactera.yhl.hivekafka2.KafkaClient;
 import lombok.SneakyThrows;
@@ -38,7 +39,7 @@ public class DirectHiveToKafka implements Runnable{
         ResultSet res = stmt.executeQuery(querySQL);
 
         while(res.next()){
-            Gson gson = new Gson();
+//            Gson gson = new Gson();
             Map<String,String> mapData = new HashMap<>();
             Map<String,Object> map = new HashMap<>();
             Map<String,String> maptableName = new HashMap<>();
@@ -48,7 +49,8 @@ public class DirectHiveToKafka implements Runnable{
                 mapData.put(fields.get(i), res.getString(i + 1));
             }
             map.put("data",mapData);
-            producer.send(new ProducerRecord(topic,gson.toJson(gson.toJson(map)))).get();
+//            producer.send(new ProducerRecord(topic,gson.toJson(gson.toJson(map)))).get();
+            producer.send(new ProducerRecord(topic, JSON.toJSONString(map))).get();
         }
     }
 

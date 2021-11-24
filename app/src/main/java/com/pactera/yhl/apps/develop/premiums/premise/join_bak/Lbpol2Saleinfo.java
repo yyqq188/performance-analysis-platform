@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop.premiums.premise.join;
+package com.pactera.yhl.apps.develop.premiums.premise.join_bak;
 
 
 import com.alibaba.fastjson.JSON;
@@ -6,16 +6,12 @@ import com.pactera.yhl.apps.develop.premiums.entity.PremiumsKafkaEntity01;
 import com.pactera.yhl.entity.source.Lbpol;
 import com.pactera.yhl.entity.source.T02salesinfok;
 import com.pactera.yhl.util.Util;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.kafka.clients.producer.ProducerRecord;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Lbpol2Saleinfo extends AbstractInsertKafka<Lbpol>{
     //1 要从主流中需要取得的字段 之 关联字段

@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop.premiums.premise.join;
+package com.pactera.yhl.apps.develop.premiums.premise.join_bak;
 
 import com.pactera.yhl.sink.abstr.MyHbaseCli;
 import com.pactera.yhl.sink.abstr.MyKafka;
@@ -6,25 +6,30 @@ import com.pactera.yhl.util.Util;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.HConstants;
-import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
-import org.apache.hadoop.hbase.regionserver.BloomType;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.kafka.clients.producer.KafkaProducer;
 
-import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 public abstract class AbstractInsertKafka<OUT> extends RichSinkFunction<OUT> {
     protected static final String cfString = "f";
     protected static final byte[] cf = Bytes.toBytes(cfString);
-    protected  String tableName = null;
+    protected  String tableName;
     private Connection connection;
     protected KafkaProducer<String,String> producer;
     protected String topic ;
+
+    protected Set<String> joinFieldsDriver;
+    protected Set<String> otherFieldsDriver;
+    protected Set<String> fieldsHbase;
+    protected Class<?> hbaseClazz;
+    protected Class<?> kafkaClazz;
+    protected Map<String,String> filterMap;
+
 
     @Override
     public void open(Configuration parameters) throws Exception {

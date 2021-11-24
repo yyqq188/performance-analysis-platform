@@ -13,6 +13,7 @@ import org.apache.hadoop.hbase.regionserver.BloomType;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +71,8 @@ public  class InsertHbase<OUT> extends RichSinkFunction<OUT> {
             e.printStackTrace();
         }
     }
+
+
     public  void handle(OUT value, Context context,HTable hTable) throws Exception{
         StringBuilder rowkeySb = new StringBuilder();
         StringBuilder columnSb = new StringBuilder();
@@ -77,18 +80,14 @@ public  class InsertHbase<OUT> extends RichSinkFunction<OUT> {
         try{
             Map<String,Object> map=new HashMap<String,Object>();
             for(String rowkey:rowkeys){
-                map.put("value",value);
-                String expression = "value.get"+ Util.LargerFirstChar(rowkey)+"()";
-                Object value1 = Util.convertToCode(expression,map);
-                rowkeySb.append(value1);
+                Field field = value.getClass().getField(rowkey);
+                rowkeySb.append(field.get(value).toString());
             }
 
             if(columnNames.length > 0 ) {
                 for(String rowkey:columnNames){
-                    map.put("value",value);
-                    String expression = "value.get"+Util.LargerFirstChar(rowkey)+"()";
-                    Object value1 = Util.convertToCode(expression,map);
-                    columnSb.append(value1);
+                    Field field = value.getClass().getField(rowkey);
+                    columnSb.append(field.get(value));
                 }
             }
 //            Put put = new Put(Bytes.toBytes(value.getChdrcoy() + value.getChdrnum()));
@@ -101,6 +100,40 @@ public  class InsertHbase<OUT> extends RichSinkFunction<OUT> {
             System.out.println(e);
         }
     }
+
+
+
+//    public  void handle(OUT value, Context context,HTable hTable) throws Exception{
+//        StringBuilder rowkeySb = new StringBuilder();
+//        StringBuilder columnSb = new StringBuilder();
+//        columnSb.append(columnTableName);
+//        try{
+//            Map<String,Object> map=new HashMap<String,Object>();
+//            for(String rowkey:rowkeys){
+//                map.put("value",value);
+//                String expression = "value.get"+ Util.LargerFirstChar(rowkey)+"()";
+//                Object value1 = Util.convertToCode(expression,map);
+//                rowkeySb.append(value1);
+//            }
+//
+//            if(columnNames.length > 0 ) {
+//                for(String rowkey:columnNames){
+//                    map.put("value",value);
+//                    String expression = "value.get"+Util.LargerFirstChar(rowkey)+"()";
+//                    Object value1 = Util.convertToCode(expression,map);
+//                    columnSb.append(value1);
+//                }
+//            }
+////            Put put = new Put(Bytes.toBytes(value.getChdrcoy() + value.getChdrnum()));
+//            Put put = new Put(Bytes.toBytes(rowkeySb.toString()));
+//            String valueJson = JSON.toJSONString(value, SerializerFeature.WriteMapNullValue, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteDateUseDateFormat);
+//            put.addColumn(cf, Bytes.toBytes(columnSb.toString()), Bytes.toBytes(valueJson));
+//            hTable.put(put);
+//
+//        }catch (Exception e){
+//            System.out.println(e);
+//        }
+//    }
 
 
     public void createTable(HTable table) throws IOException {

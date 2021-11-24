@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DimensionT01BranchId {
+public class DimensionT01BranchId implements Serializable{
     public String branch_id;
     public String branch_id_parent;
     public String branch_id_full;
