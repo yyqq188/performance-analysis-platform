@@ -28,7 +28,8 @@ public abstract class AbstractInsertKafka<OUT> extends RichSinkFunction<OUT> {
     protected Set<String> fieldsHbase;
     protected Class<?> hbaseClazz;
     protected Class<?> kafkaClazz;
-    protected Map<String,String> filterMap;
+    protected Map<String,String> filterMapDriver;
+    protected Map<String,String> filterMapHbase;
 
 
     @Override

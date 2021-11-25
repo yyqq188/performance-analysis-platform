@@ -13,6 +13,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,7 +37,8 @@ public class Lcpol2Saleinfo extends AbstractInsertKafka<Lcpol>{
     public Lcpol2Saleinfo(String tableName, String topic,
                           Set<String> joinFieldsDriver, Set<String> otherFieldsDriver,
                           Set<String> fieldsHbase, Class<?> hbaseClazz,
-                          Class<?> kafkaClazz, Map<String,String> filterMap){
+                          Class<?> kafkaClazz,
+                          Map<String,String> filterMapDriver,Map<String,String> filterMapHbase){
         this.tableName = tableName;//HBase中间表名
         this.topic = topic; //"testyhlv3";  //目的topic
 
@@ -44,7 +47,8 @@ public class Lcpol2Saleinfo extends AbstractInsertKafka<Lcpol>{
         this.fieldsHbase = fieldsHbase;
         this.hbaseClazz = hbaseClazz;
         this.kafkaClazz = kafkaClazz;
-        this.filterMap = filterMap;
+        this.filterMapDriver = filterMapDriver;
+        this.filterMapHbase = filterMapHbase;
 
     }
 
@@ -59,38 +63,72 @@ public class Lcpol2Saleinfo extends AbstractInsertKafka<Lcpol>{
                 result = Util.getHbaseResultSync(f.get(value)+"",hTable);
             }
             if(otherFieldsDriver.contains(f.getName())){
-                String methodName = "set"+Util.LargerFirstChar(f.getName());
-                Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
-                method.invoke(kafkaClazzObj,f.get(value).toString());
+                if(filterMapDriver.keySet().contains(f.getName())
+                        && filterMapDriver.get(f.getName()+"").equals(f.get(value)+"")){
+                    String methodName = "set"+Util.LargerFirstChar(f.getName());
+                    Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                    method.invoke(kafkaClazzObj,f.get(value).toString());
+                }else{
+                    String methodName = "set"+Util.LargerFirstChar(f.getName());
+                    Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                    method.invoke(kafkaClazzObj,f.get(value).toString());
+                }
+
 
             }
         }
 
         for(Cell cell:result.listCells()){
             String valueJson = Bytes.toString(CellUtil.cloneValue(cell));
-            Object o = JSON.parseObject(valueJson, T02salesinfok.class);
+            Object o = JSON.parseObject(valueJson, hbaseClazz);
 
             for(String fieldName:fieldsHbase){
-                if(filterMap.size() == 0){
-                    //获得hbase的值
-                    Field field = T02salesinfok.class.cast(o).getClass().getField(fieldName);
-                    String v = field.get(T02salesinfok.class.cast(o)).toString();
-                    //将hbase的值赋值到kafka实体类中
+
+                //获得hbase的值
+                Field field = hbaseClazz.cast(o).getClass().getField(fieldName);
+                String v = field.get(hbaseClazz.cast(o)).toString();
+                //将hbase的值赋值到kafka实体类中
+
+                if(filterMapHbase.keySet().contains(fieldName) && filterMapHbase.get(fieldName).equals(v)){
                     String methodName = "set"+Util.LargerFirstChar(fieldName);
                     Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
                     method.invoke(kafkaClazzObj,v);
-                }else{
-                    if(filterMap.keySet().contains(fieldName)){
-                        Field field = T02salesinfok.class.cast(o).getClass().getField(fieldName);
-                        String v = field.get(T02salesinfok.class.cast(o)).toString();
-                        if(filterMap.get(fieldName).equals(v)){
-                            //将hbase的值赋值到kafka实体类中
-                            String methodName = "set"+Util.LargerFirstChar(fieldName);
-                            Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
-                            method.invoke(kafkaClazzObj,v);
-                        }
+                }else if(filterMapHbase.keySet().contains(fieldName) && filterMapHbase.get(fieldName).equals("function")){
+                    //给一个指定的function
+                    String todayStr = new SimpleDateFormat("yyyy-MM-dd")
+                            .format(new Date(System.currentTimeMillis()));
+                    if(todayStr.equals(v)){
+                        //将hbase的值赋值到kafka实体类中
+                        String methodName = "set"+Util.LargerFirstChar(fieldName);
+                        Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                        method.invoke(kafkaClazzObj,v);
                     }
+                }else{
+                    String methodName = "set"+Util.LargerFirstChar(fieldName);
+                    Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                    method.invoke(kafkaClazzObj,v);
                 }
+
+//                if(filterMap.size() == 0){
+//                    //获得hbase的值
+//                    Field field = T02salesinfok.class.cast(o).getClass().getField(fieldName);
+//                    String v = field.get(T02salesinfok.class.cast(o)).toString();
+//                    //将hbase的值赋值到kafka实体类中
+//                    String methodName = "set"+Util.LargerFirstChar(fieldName);
+//                    Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+//                    method.invoke(kafkaClazzObj,v);
+//                }else{
+//                    if(filterMap.keySet().contains(fieldName)){
+//                        Field field = T02salesinfok.class.cast(o).getClass().getField(fieldName);
+//                        String v = field.get(T02salesinfok.class.cast(o)).toString();
+//                        if(filterMap.get(fieldName).equals(v)){
+//                            //将hbase的值赋值到kafka实体类中
+//                            String methodName = "set"+Util.LargerFirstChar(fieldName);
+//                            Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+//                            method.invoke(kafkaClazzObj,v);
+//                        }
+//                    }
+//                }
             }
             //判断是否有过滤，有过滤的话，如何处理
             producer.send(new ProducerRecord<>(topic,

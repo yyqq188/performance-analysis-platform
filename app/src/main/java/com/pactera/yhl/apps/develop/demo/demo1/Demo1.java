@@ -5,6 +5,9 @@ import com.pactera.yhl.util.Util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Demo1 {
     public static void main(String[] args) throws Exception, InstantiationException, NoSuchMethodException {
@@ -21,17 +24,23 @@ public class Demo1 {
 //
 //        }
         //给反射的类型赋值
-        Class<?> clazz = PremiumsKafkaEntity01.class;
-        Object o = clazz.newInstance();
-        String methodName = "set" + Util.LargerFirstChar("workarea");
-        Method method = clazz.getDeclaredMethod(methodName, String.class);
-        method.invoke(o,"aaaworkaera");
-        System.out.println(o);
+//        Class<?> clazz = PremiumsKafkaEntity01.class;
+//        Object o = clazz.newInstance();
+//        String methodName = "set" + Util.LargerFirstChar("workarea");
+//        Method method = clazz.getDeclaredMethod(methodName, String.class);
+//        method.invoke(o,"aaaworkaera");
+//        System.out.println(o);
+//
+//        //Java通过Class类型将Object转换为相应类型
+//        Object o1 = clazz.newInstance();
+//        PremiumsKafkaEntity01.class.cast(o1);
 
-        //Java通过Class类型将Object转换为相应类型
-        Object o1 = clazz.newInstance();
-        PremiumsKafkaEntity01.class.cast(o1);
+        String str ="";
+        for (int i = 0; i < 10; i++) {
+            str += String.valueOf(i);
 
+        }
+        System.out.println("2019-07-29 00:00:00.0".split("\\s+")[0]);
 
 
     }

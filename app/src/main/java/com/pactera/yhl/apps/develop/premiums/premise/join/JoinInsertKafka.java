@@ -22,10 +22,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
     protected static final String cfString = "f";
@@ -35,19 +32,21 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
     protected KafkaProducer<String,String> producer;
     protected String topic ;
 
-    protected Set<String> joinFieldsDriver;
+    protected Map<String,String> joinFieldsDriver;
     protected Set<String> otherFieldsDriver;
     protected Set<String> fieldsHbase;
     protected Class<?> hbaseClazz;
     protected Class<?> kafkaClazz;
-    protected Map<String,String> filterMap;
+    protected Map<String,String> filterMapDriver;
+    protected Map<String,String> filterMapHbase;
 
 
 
     public JoinInsertKafka(String tableName, String topic,
-                          Set<String> joinFieldsDriver, Set<String> otherFieldsDriver,
+                          Map<String,String> joinFieldsDriver, Set<String> otherFieldsDriver,
                           Set<String> fieldsHbase, Class<?> hbaseClazz,
-                          Class<?> kafkaClazz, Map<String,String> filterMap){
+                          Class<?> kafkaClazz, Map<String,String> filterMapDriver,
+                           Map<String,String> filterMapHbase){
         this.tableName = tableName;//HBase中间表名
         this.topic = topic; //"testyhlv3";  //目的topic
 
@@ -56,7 +55,8 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
         this.fieldsHbase = fieldsHbase;
         this.hbaseClazz = hbaseClazz;
         this.kafkaClazz = kafkaClazz;
-        this.filterMap = filterMap;
+        this.filterMapDriver = filterMapDriver;
+        this.filterMapHbase = filterMapHbase;
 
     }
 
@@ -105,68 +105,112 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
             e.printStackTrace();
         }
     }
-    public void handle(OUT value, Context context, HTable hTable) throws Exception {
 
+    public void handle(OUT value, Context context, HTable hTable) throws Exception {
         Result result = null;
         Object kafkaClazzObj = kafkaClazz.newInstance();
-        StringBuilder rowkeySb = new StringBuilder();
+        String rowkeystr = "";
         for(Field f:value.getClass().getDeclaredFields()){
-            if(joinFieldsDriver.contains(f.getName())){
-                rowkeySb.append(f.get(value)+"");
+            if(joinFieldsDriver.keySet().contains(f.getName())){
+                joinFieldsDriver.put(f.getName(),f.get(value).toString());
             }
-            result = Util.getHbaseResultSync(rowkeySb.toString(),hTable);
-            if(otherFieldsDriver.contains(f.getName())){
-                String methodName = "set"+Util.LargerFirstChar(f.getName());
-                Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
-                method.invoke(kafkaClazzObj,f.get(value).toString());
 
+            if(otherFieldsDriver.contains(f.getName())){
+                if(filterMapDriver.keySet().contains(f.getName())
+                        && filterMapDriver.get(f.getName()+"").equals(f.get(value)+"")){
+                    String methodName = "set"+Util.LargerFirstChar(f.getName());
+                    Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                    method.invoke(kafkaClazzObj,f.get(value).toString());
+                }else{
+                    String methodName = "set"+Util.LargerFirstChar(f.getName());
+                    Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                    method.invoke(kafkaClazzObj,f.get(value).toString());
+                }
             }
         }
+        for(String fstr: joinFieldsDriver.values()){
+            rowkeystr+=fstr;
+        }
+        result = Util.getHbaseResultSync(rowkeystr,hTable);
 
         for(Cell cell:result.listCells()){
             String valueJson = Bytes.toString(CellUtil.cloneValue(cell));
-            Object o = JSON.parseObject(valueJson, T02salesinfok.class);
+            Object o = JSON.parseObject(valueJson, hbaseClazz);
 
             for(String fieldName:fieldsHbase){
-                if(filterMap.size() == 0){
-                    //获得hbase的值
-                    Field field = T02salesinfok.class.cast(o).getClass().getField(fieldName);
-                    String v = field.get(T02salesinfok.class.cast(o)).toString();
-                    //将hbase的值赋值到kafka实体类中
-                    String methodName = "set"+Util.LargerFirstChar(fieldName);
+                //获得hbase的值
+                Field field = hbaseClazz.cast(o).getClass().getField(fieldName);
+                String v = field.get(hbaseClazz.cast(o)).toString();
+                //将hbase的值赋值到kafka实体类中
+                String methodName = "set"+Util.LargerFirstChar(fieldName);
+                Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                method.invoke(kafkaClazzObj,v);
+
+            }
+
+            int size = filterMapHbase.size();
+            int flagTotalNum = 0;
+
+
+            for(String keyField: filterMapHbase.keySet()){
+                if (filterMapHbase.get(keyField).equals("function_date")){
+                    Field field = kafkaClazzObj.getClass().getField(keyField);
+                    String v = field.get(kafkaClazzObj).toString().split("\\s+")[0];
+                    System.out.println(v);
+                    String todayStr = new SimpleDateFormat("yyyy-MM-dd")
+                            .format(new Date(System.currentTimeMillis()));
+                    if("2019-05-30".equals(v)){
+                        //将hbase的值赋值到kafka实体类中
+                        String methodName = "set"+Util.LargerFirstChar(keyField);
+                        Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
+                        method.invoke(kafkaClazzObj,todayStr);
+
+                        flagTotalNum += 1;
+                    }
+                }
+              else  if(filterMapHbase.get(keyField).equals("function_substr")){
+                    Field field = kafkaClazzObj.getClass().getField(keyField);
+                    String v = field.get(kafkaClazzObj).toString();
+                    String vv = v.substring(2,v.length());
+                    String methodName = "set"+Util.LargerFirstChar(keyField);
                     Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
-                    method.invoke(kafkaClazzObj,v);
-                }else{
-                    if(filterMap.keySet().contains(fieldName)){
-                        Field field = T02salesinfok.class.cast(o).getClass().getField(fieldName);
-                        String v = field.get(T02salesinfok.class.cast(o)).toString();
+                    method.invoke(kafkaClazzObj,vv);
 
-                        if(filterMap.get(fieldName).equals("function")){
-                            //给一个指定的function
-                            String todayStr = new SimpleDateFormat("yyyy-MM-dd")
-                                    .format(new Date(System.currentTimeMillis()));
-                            if(todayStr.equals(v)){
-                                //将hbase的值赋值到kafka实体类中
-                                String methodName = "set"+Util.LargerFirstChar(fieldName);
-                                Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
-                                method.invoke(kafkaClazzObj,v);
-                            }
-                        }
-
-                        if(filterMap.get(fieldName).equals(v)){
-                            //将hbase的值赋值到kafka实体类中
+                    flagTotalNum += 1;
+                }
+                else {
+                    int flagNum = 0;
+                    String[] key_values = filterMapHbase.get("key_value").split(",");
+                    int len = key_values.length;
+                    for(String key_value:key_values){
+                        String fieldName = key_value.split("=")[0];
+                        String flagValue = key_value.split("=")[1];
+                        Field field = kafkaClazzObj.getClass().getField(fieldName);
+                        String v = field.get(kafkaClazzObj).toString();
+                        if(flagValue.equals(v)){
                             String methodName = "set"+Util.LargerFirstChar(fieldName);
                             Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
                             method.invoke(kafkaClazzObj,v);
+                            flagNum+=1;
                         }
                     }
+                    System.out.println("flagNum "+flagNum);
+                    System.out.println("len "+len);
+                    if(flagNum == len){
+//                        producer.send(new ProducerRecord<>(topic,
+//                                JSON.toJSONString(kafkaClazzObj)));
+                        flagTotalNum += 1;
+                    }
+
                 }
             }
-            //判断是否有过滤，有过滤的话，如何处理
-            producer.send(new ProducerRecord<>(topic,
-                    JSON.toJSONString(kafkaClazzObj)));
+
+            if(size == flagTotalNum){
+                producer.send(new ProducerRecord<>(topic,
+                        JSON.toJSONString(kafkaClazzObj)));
+            }
+
+
         }
     }
-
-
 }
