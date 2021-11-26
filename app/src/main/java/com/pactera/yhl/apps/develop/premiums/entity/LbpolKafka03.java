@@ -15,4 +15,5 @@ public class LbpolKafka03 implements Serializable,KafkaEntity{
     public String edorstate; //lpedoritem
     public String workarea; //salesinfo
     public String branch_id; //branchinfo
+    public String branch_name;//branchinfo
 }

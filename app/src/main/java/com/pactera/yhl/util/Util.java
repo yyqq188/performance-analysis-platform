@@ -18,10 +18,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class Util {
@@ -179,8 +176,26 @@ public class Util {
     }
 
 
+    //toString遇到null时会报错，所以这里给null一个空字符串
+    public static String toString(Object o){
+        try{
+            return o.toString();
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+    }
 
-    //
+
+    public static String toSubString(Object o){
+        try{
+            String s = o.toString();
+            return s.substring(2,s.length());
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+    }
 
 
 

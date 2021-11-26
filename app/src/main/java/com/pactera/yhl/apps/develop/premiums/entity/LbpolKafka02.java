@@ -2,6 +2,7 @@ package com.pactera.yhl.apps.develop.premiums.entity;
 
 import lombok.Data;
 
+import javax.annotation.Nullable;
 import java.io.Serializable;
 
 @Data
@@ -14,4 +15,6 @@ public class LbpolKafka02 implements Serializable,KafkaEntity{
     public String edortype;  //lpedoritem
     public String edorstate; //lpedoritem
     public String workarea; //salesinfo
+//    public String area_type; //salesinfo
+
 }

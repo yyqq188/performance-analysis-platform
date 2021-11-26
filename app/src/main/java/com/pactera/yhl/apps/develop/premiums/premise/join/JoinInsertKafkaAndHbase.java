@@ -1,8 +1,7 @@
 package com.pactera.yhl.apps.develop.premiums.premise.join;
 
 import com.alibaba.fastjson.JSON;
-import com.pactera.yhl.entity.source.Lcpol;
-import com.pactera.yhl.entity.source.T02salesinfok;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pactera.yhl.sink.abstr.MyHbaseCli;
 import com.pactera.yhl.sink.abstr.MyKafka;
 import com.pactera.yhl.util.Util;
@@ -12,26 +11,25 @@ import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.Connection;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.regionserver.BloomType;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
+public class JoinInsertKafkaAndHbase<OUT> extends RichSinkFunction<OUT> {
     protected static final String cfString = "f";
     protected static final byte[] cf = Bytes.toBytes(cfString);
     protected  String tableName;
     private Connection connection;
     protected KafkaProducer<String,String> producer;
     protected String topic ;
-
     protected Map<String,String> joinFieldsDriver;
     protected Set<String> otherFieldsDriver;
     protected Set<String> fieldsHbase;
@@ -40,13 +38,17 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
     protected Map<String,String> filterMapDriver;
     protected Map<String,String> filterMapHbase;
 
+    protected String outputHbaseTableName;
+    protected Map<String,String> outputHbaseRowkey;
+    HTable OutputHTable = null;
 
 
-    public JoinInsertKafka(String tableName, String topic,
-                          Map<String,String> joinFieldsDriver, Set<String> otherFieldsDriver,
-                          Set<String> fieldsHbase, Class<?> hbaseClazz,
-                          Class<?> kafkaClazz, Map<String,String> filterMapDriver,
-                           Map<String,String> filterMapHbase){
+    public JoinInsertKafkaAndHbase(String tableName, String topic,
+                                   Map<String,String> joinFieldsDriver, Set<String> otherFieldsDriver,
+                                   Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                   Class<?> kafkaClazz,
+                                   String outputHbaseTableName,Map<String,String> outputHbaseRowkey,
+                                   Map<String,String> filterMapDriver, Map<String,String> filterMapHbase){
         this.tableName = tableName;//HBase中间表名
         this.topic = topic; //"testyhlv3";  //目的topic
 
@@ -55,6 +57,8 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
         this.fieldsHbase = fieldsHbase;
         this.hbaseClazz = hbaseClazz;
         this.kafkaClazz = kafkaClazz;
+        this.outputHbaseTableName = outputHbaseTableName;
+        this.outputHbaseRowkey = outputHbaseRowkey;
         this.filterMapDriver = filterMapDriver;
         this.filterMapHbase = filterMapHbase;
 
@@ -87,6 +91,18 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
             Util.createTopic(kafkaservers,topic);
         }
 
+        if(outputHbaseTableName!= null){
+
+            try{
+                OutputHTable = (HTable) connection.getTable(TableName.valueOf(outputHbaseTableName));
+                //无则创建表
+                createTable(outputHbaseTableName);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
 
     }
 
@@ -97,10 +113,10 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
 
     @Override
     public void invoke(OUT value, Context context) throws Exception {
-        HTable hTable = null;
+        HTable inputHTable = null;
         try{
-            hTable = (HTable) connection.getTable(TableName.valueOf(tableName));
-            handle(value,context,hTable);
+            inputHTable = (HTable) connection.getTable(TableName.valueOf(tableName));
+            handle(value,context,inputHTable);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -133,13 +149,9 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
                 }
             }
         }
-        System.out.println(joinFieldsDriver);
         for(String fstr: joinFieldsDriver.values()){
-
             rowkeystr += fstr;
         }
-
-        System.out.println(hbaseClazz +" ==+++== "+rowkeystr);
         result = Util.getHbaseResultSync(rowkeystr,hTable);
 
         for(Cell cell:result.listCells()){
@@ -166,7 +178,6 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
                 if (filterMapHbase.get(keyField).equals("function_date")){
                     Field field = kafkaClazzObj.getClass().getField(keyField);
                     String v = Util.toString(field.get(kafkaClazzObj)).split("\\s+")[0];
-                    System.out.println(v);
                     String todayStr = new SimpleDateFormat("yyyy-MM-dd")
                             .format(new Date(System.currentTimeMillis()));
                     if(todayStr.equals(v)){
@@ -214,11 +225,67 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
             }
 
             if(size == flagTotalNum){
+                //开始发送
                 producer.send(new ProducerRecord<>(topic,
                         JSON.toJSONString(kafkaClazzObj)));
+                //写入中间hbase
+                handleToHbase(kafkaClazzObj,context,OutputHTable);
+            }
+        }
+    }
+
+
+
+    public void createTable(String outputTableName) throws IOException {
+        Admin admin = connection.getAdmin();
+        boolean b = admin.tableExists(TableName.valueOf(outputTableName));
+        if(b) return;
+
+
+        ColumnFamilyDescriptorBuilder columnFamilyDescriptorBuilder =
+                ColumnFamilyDescriptorBuilder.newBuilder(cf);
+        columnFamilyDescriptorBuilder.setBloomFilterType(BloomType.ROW);
+        columnFamilyDescriptorBuilder.setMaxVersions(1);
+
+        ColumnFamilyDescriptor columnFamilyDescriptor = columnFamilyDescriptorBuilder.build();
+        TableDescriptorBuilder tableDescriptorBuilder = TableDescriptorBuilder
+                .newBuilder(TableName.valueOf(outputTableName));
+        tableDescriptorBuilder.setColumnFamily(columnFamilyDescriptor);
+        TableDescriptor tableDescriptor = tableDescriptorBuilder.build();
+
+        try{
+            admin.createTable(tableDescriptor);
+
+        }catch (Exception e){
+            System.out.println("已经创建输出表  "+outputHbaseTableName);
+        }finally {
+            admin.close();
+        }
+    }
+
+
+    public  void handleToHbase(Object value, Context context,HTable hTable) throws Exception{
+
+        StringBuilder rowkeySb = new StringBuilder();
+        StringBuilder columnSb = new StringBuilder();
+        columnSb.append(outputHbaseTableName);
+        columnSb.append(value.hashCode()+"");   //所有值的hash放到列名中
+        try{
+            for(String rowkey:outputHbaseRowkey.keySet()){
+                Field field = value.getClass().getField(rowkey);
+                outputHbaseRowkey.put(field.getName(),Util.toString(field.get(value)));
+            }
+            for(String fstr: outputHbaseRowkey.values()){
+                rowkeySb.append(fstr);
             }
 
+            Put put = new Put(Bytes.toBytes(rowkeySb.toString()));
+            String valueJson = JSON.toJSONString(value, SerializerFeature.WriteMapNullValue, SerializerFeature.DisableCircularReferenceDetect, SerializerFeature.WriteDateUseDateFormat);
+            put.addColumn(cf, Bytes.toBytes(columnSb.toString()), Bytes.toBytes(valueJson));
+            hTable.put(put);
 
+        }catch (Exception e){
+            System.out.println(e);
         }
     }
 }
