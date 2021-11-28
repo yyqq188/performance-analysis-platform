@@ -9,6 +9,7 @@ import com.pactera.yhl.apps.develop.premiums.premise.join.JoinInsertKafkaAndHbas
 import com.pactera.yhl.apps.develop.premiums.premise.join_bak.Lbpol2Saleinfo;
 import com.pactera.yhl.apps.develop.premiums.premise.join_bak.Lcpol2Saleinfo;
 import com.pactera.yhl.apps.develop.premiums.premise.mid.InsertHbase;
+import com.pactera.yhl.apps.develop.premiums.premise.mid.InsertHbaseOrder;
 import com.pactera.yhl.entity.source.*;
 import com.pactera.yhl.sink.abstr.AbstractCKSink;
 import com.pactera.yhl.transform.TestMapTransformFunc;
@@ -112,77 +113,95 @@ public class JobPremiums {
                 .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
     }
 
+    //为了order的中间层
+    public static void midLcpolOrder(StreamExecutionEnvironment env, String topic, Properties prop,
+                                     String tableName,String[] rowkeys,String[] columnNames,
+                                     String[] orderColumns,String order,Class<?> clazz,
+                                     String columnTableName){
+        prop.setProperty("group.id","JobPremiums_midLcpolOrder");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new TestMapTransformFunc())
+//                .filter(x -> x instanceof T01branchinfo)
+//                .map(x -> (T01branchinfo) x)
+                .addSink(new InsertHbaseOrder<>(tableName,rowkeys,columnNames,
+                        clazz,orderColumns,order,
+                        columnTableName));
+
+    }
+
 
 
 
     //关联层
 
-//    public static void lcpol2saleinfo(StreamExecutionEnvironment env, String topic,
-//                                      Properties prop, String topicOut,
-//                                      String tableName, Set<String> joinFieldsDriver,
-//                                      Set<String> otherFieldsDriver,
-//                                      Set<String> fieldsHbase, Class<?> hbaseClazz,
-//                                      Class<?> kafkaClazz, Map<String,String> filterMapDriver,
-//                                      Map<String,String> filterMapHbase){
-//        prop.setProperty("group.id","JobPremiums_lcpol2saleinfo");
-//        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
-//                topic, new SimpleStringSchema(), prop);
-//        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
-//        env.addSource(kafkaConsumer)
-//                .map(new TestMapTransformFunc())
-//                .filter(x -> x instanceof Lcpol)
-//                .map(x -> (Lcpol) x)
-//                .addSink(new JoinInsertKafka(tableName,topicOut,
-//                        joinFieldsDriver,otherFieldsDriver,
-//                        fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
-//    }
-//    public static void saleinfo2lcpol(StreamExecutionEnvironment env, String topic,
-//                                      Properties prop,String topicOut,
-//                                      String tableName, Set<String> joinFieldsDriver,
-//                                      Set<String> otherFieldsDriver,
-//                                      Set<String> fieldsHbase, Class<?> hbaseClazz,
-//                                      Class<?> kafkaClazz, Map<String,String> filterMapDriver,
-//                                      Map<String,String> filterMapHbase){
-//        prop.setProperty("group.id","JobPremiums_saleinfo2lcpol");
-//        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
-//                topic, new SimpleStringSchema(), prop);
-//        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
-//        env.addSource(kafkaConsumer)
-//                .map(new TestMapTransformFunc())
-//                .filter(x -> x instanceof T02salesinfok)
-//                .map(x -> (T02salesinfok) x)
-//                .addSink(new JoinInsertKafka(tableName,topicOut,
-//                        joinFieldsDriver,otherFieldsDriver,
-//                        fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
-//    }
-//
-//
-//    public static void PremiumsKafkaEntity01ToBranchId(StreamExecutionEnvironment env, String topic,
-//                                      Properties prop,String topicOut,
-//                                      String tableName, Set<String> joinFieldsDriver,
-//                                      Set<String> otherFieldsDriver,
-//                                      Set<String> fieldsHbase, Class<?> hbaseClazz,
-//                                      Class<?> kafkaClazz, Map<String,String> filterMapDriver,
-//                                                       Map<String,String> filterMapHbase){
-//        prop.setProperty("group.id","JobPremiums_PremiumsKafkaEntity01ToBranchId");
-//        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
-//                topic, new SimpleStringSchema(), prop);
-//        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
-//        env.addSource(kafkaConsumer)
-//                .map(new MapFunction<String, PremiumsKafkaEntity01>() {
-//                    @Override
-//                    public PremiumsKafkaEntity01 map(String s) throws Exception {
-//                        return JSON.parseObject(s,PremiumsKafkaEntity01.class);
-//                    }
-//                })
-//                .addSink(new JoinInsertKafka(tableName,topicOut,
-//                        joinFieldsDriver,otherFieldsDriver,
-//                        fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
-//    }
+    public static void lcpol2saleinfo(StreamExecutionEnvironment env, String topic,
+                                      Properties prop, String topicOut,
+                                      String tableName, Map<String,String> joinFieldsDriver,
+                                      Set<String> otherFieldsDriver,
+                                      Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                      Class<?> kafkaClazz, Map<String,String> filterMapDriver,
+                                      Map<String,String> filterMapHbase){
+        prop.setProperty("group.id","JobPremiums_lcpol2saleinfo");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new TestMapTransformFunc())
+                .filter(x -> x instanceof Lcpol)
+                .map(x -> (Lcpol) x)
+                .addSink(new JoinInsertKafka(tableName,topicOut,
+                        joinFieldsDriver,otherFieldsDriver,
+                        fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
+    }
+    public static void saleinfo2lcpol(StreamExecutionEnvironment env, String topic,
+                                      Properties prop,String topicOut,
+                                      String tableName, Map<String,String> joinFieldsDriver,
+                                      Set<String> otherFieldsDriver,
+                                      Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                      Class<?> kafkaClazz, Map<String,String> filterMapDriver,
+                                      Map<String,String> filterMapHbase){
+        prop.setProperty("group.id","JobPremiums_saleinfo2lcpol");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new TestMapTransformFunc())
+                .filter(x -> x instanceof T02salesinfok)
+                .map(x -> (T02salesinfok) x)
+                .addSink(new JoinInsertKafka(tableName,topicOut,
+                        joinFieldsDriver,otherFieldsDriver,
+                        fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
+    }
+
+
+    public static void PremiumsKafkaEntity01ToBranchId(StreamExecutionEnvironment env, String topic,
+                                      Properties prop,String topicOut,
+                                      String tableName, Map<String,String> joinFieldsDriver,
+                                      Set<String> otherFieldsDriver,
+                                      Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                      Class<?> kafkaClazz, Map<String,String> filterMapDriver,
+                                                       Map<String,String> filterMapHbase){
+        prop.setProperty("group.id","JobPremiums_PremiumsKafkaEntity01ToBranchId");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new MapFunction<String, PremiumsKafkaEntity01>() {
+                    @Override
+                    public PremiumsKafkaEntity01 map(String s) throws Exception {
+                        return JSON.parseObject(s,PremiumsKafkaEntity01.class);
+                    }
+                })
+                .addSink(new JoinInsertKafka(tableName,topicOut,
+                        joinFieldsDriver,otherFieldsDriver,
+                        fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
+    }
 
 
 
-    //不需要修改的
     public static void lbpol2lpedoritem(StreamExecutionEnvironment env, String topic,
                                        Properties prop,String topicOut,
                                        String tableName, Map<String,String> joinFieldsDriver,

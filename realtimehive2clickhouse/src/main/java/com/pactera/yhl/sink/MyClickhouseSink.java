@@ -1,16 +1,17 @@
-package com.pactera.yhl.sink.abstr;
+package com.pactera.yhl.sink;
 
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
-import ru.yandex.clickhouse.settings.ClickHouseConnectionSettings;
 
 import java.lang.reflect.Field;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-public  class AbstractCKSink<T> extends RichSinkFunction<T> {
+public  class MyClickhouseSink<T> extends RichSinkFunction<T> {
     String address = "jdbc:clickhouse://10.5.2.134:8123/default";
 //    String address = "jdbc:clickhouse://10.114.10.94:9191/default";
     String user = "kl";
@@ -52,6 +53,8 @@ public  class AbstractCKSink<T> extends RichSinkFunction<T> {
 
     @Override
     public void invoke(T value, Context context) throws Exception {
+        System.out.println(value);
+
         Field[] declaredFields = value.getClass().getDeclaredFields();
         List<String> arrs = new ArrayList<>();
         for(Field f:declaredFields){
@@ -62,7 +65,6 @@ public  class AbstractCKSink<T> extends RichSinkFunction<T> {
             }catch (Exception e){
                 arrs.add("null");
             }
-
         }
         sql = String.format("insert into ldcode values (\'%s\')",
                 String.join("\',\'",arrs));

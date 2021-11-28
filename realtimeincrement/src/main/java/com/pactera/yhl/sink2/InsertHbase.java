@@ -49,8 +49,6 @@ public  class InsertHbase<OUT> extends RichSinkFunction<OUT> {
 
         try{
             hTable = (HTable) connection.getTable(TableName.valueOf(tableName));
-            //无则创建表
-            createTable(hTable);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -66,7 +64,6 @@ public  class InsertHbase<OUT> extends RichSinkFunction<OUT> {
     public void invoke(OUT value, Context context) throws Exception {
         try{
             handle(value,context,hTable);
-            System.out.println(value);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -94,9 +91,7 @@ public  class InsertHbase<OUT> extends RichSinkFunction<OUT> {
                     putLists.add(put);
                 }
             }
-
             hTable.put(putLists);
-
         }catch (Exception e){
             System.out.println(e);
         }

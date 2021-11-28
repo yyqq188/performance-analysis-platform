@@ -193,6 +193,7 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
                     String[] key_values = filterMapHbase.get("key_value").split(",");
                     int len = key_values.length;
                     for(String key_value:key_values){
+                        System.out.println(key_value);
                         String fieldName = key_value.split("=")[0];
                         String flagValue = key_value.split("=")[1];
                         Field field = kafkaClazzObj.getClass().getField(fieldName);
@@ -212,7 +213,8 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
 
                 }
             }
-
+            System.out.println("size "+size);
+            System.out.println("flagTotalNum "+flagTotalNum);
             if(size == flagTotalNum){
                 producer.send(new ProducerRecord<>(topic,
                         JSON.toJSONString(kafkaClazzObj)));

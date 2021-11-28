@@ -35,8 +35,9 @@ public class Job {
         kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
         env.addSource(kafkaConsumer)
                 .map(new TestMapTransformFunc())
-                .filter(x -> x instanceof Ldcode)
-                .map(x -> (Ldcode) x)
-                .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
+//                .filter(x -> x instanceof Ldcode)
+//                .map(x -> (Ldcode) x)
+                .print();
+//                .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
     }
 }

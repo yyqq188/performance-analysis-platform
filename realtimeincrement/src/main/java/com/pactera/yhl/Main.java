@@ -7,6 +7,8 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public class Main {
@@ -22,18 +24,27 @@ public class Main {
         //获得kafka的配置
         Properties props = new Properties();
         props.setProperty("bootstrap.servers", params.toMap().get("kafka_bootstrap_servers"));
-        String topic = "testyhlv2";
+        String topic = "listables";
+//        String topic = "testyhlv2";
 
-        String tableName = "hbase_test_ldcode";
-        String[] rowkeys = {"code"};
-        String[] columnNames = {"codetype","code","codename","codealias","comcode","othersign",
-                "etl_dt","etl_tm","etl_fg","op_ts","current_ts","load_date"};
-        String columnTableName = "";
 
-        //获得hdfs hive的配置信息
 
-//        Job.insertHiveTable1( env, topic, props);
-        Job.insertHbaseTable2(env,topic,props, tableName,  rowkeys, columnNames, columnTableName);
+        Job.insertHbaseTable2(env,topic,props, Config.anychatcont_ins,  Config.anychatcont_rowkeys, Config.anychatcont_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.labranchgroup_ins,  Config.labranchgroup_rowkeys, Config.labranchgroup_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.lbpol_ins,  Config.lbpol_rowkeys, Config.lbpol_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.lcaddress_ins,  Config.lcaddress_rowkeys, Config.lcaddress_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.lcappnt_ins,  Config.lcappnt_rowkeys, Config.lcappnt_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.lccont_ins,  Config.lccont_rowkeys, Config.lccont_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.lccontextend_ins,  Config.lccontextend_rowkeys, Config.lccontextend_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.lcinsured_ins,  Config.lcinsured_rowkeys, Config.lcinsured_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.lcphoinfonewresult_ins,  Config.lcphoinfonewresult_rowkeys, Config.lcphoinfonewresult_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.ldcode_ins,  Config.ldcode_rowkeys, Config.ldcode_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.ldcom_ins,  Config.ldcom_rowkeys, Config.ldcom_columnNames, "");
+//        Job.insertHbaseTable2(env,topic,props, Config.lmedoritem_ins,  Config.lmedoritem_rowkeys, Config.lmedoritem_columnNames, "");
+
+
+
+
 
         env.execute(Main.class.getSimpleName());
 
