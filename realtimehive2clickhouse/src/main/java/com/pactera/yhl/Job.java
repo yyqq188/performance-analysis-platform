@@ -11,6 +11,6 @@ public class Job {
 
         env.addSource(new MyHiveSource(hiveTableName))
                 .map(new TestMapTransformFunc())
-                .addSink(new MyClickhouseSink<>());
+                .addSink(new MyClickhouseSink<>(clickhouseTableName));
     }
 }

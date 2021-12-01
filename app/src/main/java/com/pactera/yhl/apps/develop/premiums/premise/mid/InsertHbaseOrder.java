@@ -168,7 +168,8 @@ public class InsertHbaseOrder<OUT> extends RichSinkFunction<OUT> {
         columnFamilyDescriptorBuilder.setMaxVersions(1);
 
         ColumnFamilyDescriptor columnFamilyDescriptor = columnFamilyDescriptorBuilder.build();
-        TableDescriptorBuilder tableDescriptorBuilder = TableDescriptorBuilder.newBuilder(TableName.valueOf(tableName));
+        TableDescriptorBuilder tableDescriptorBuilder = TableDescriptorBuilder.newBuilder(
+                TableName.valueOf(tableName));
         tableDescriptorBuilder.setColumnFamily(columnFamilyDescriptor);
         TableDescriptor tableDescriptor = tableDescriptorBuilder.build();
 

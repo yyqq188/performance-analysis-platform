@@ -1,11 +1,10 @@
 package com.pactera.yhl.join;
 
 import org.apache.calcite.config.Lex;
-import org.apache.calcite.sql.SqlKind;
-import org.apache.calcite.sql.SqlNode;
-import org.apache.calcite.sql.SqlSelect;
+import org.apache.calcite.sql.*;
 import org.apache.calcite.sql.parser.SqlParseException;
 import org.apache.calcite.sql.parser.SqlParser;
+import org.apache.calcite.sql.parser.SqlParserPos;
 
 public class Demo1 {
     public static void main(String[] args) throws SqlParseException {
@@ -13,17 +12,41 @@ public class Demo1 {
         SqlParser.Config config = SqlParser.configBuilder().setLex(Lex.MYSQL).build();
         SqlParser sqlParser = SqlParser.create(sql, config);
         SqlNode sqlNode = sqlParser.parseStmt();
+        String leftTable = "";
+        String rightTable = "";
+        SqlSelect sqlSelect = null;
         if(SqlKind.SELECT.equals(sqlNode.getKind())){
-            SqlSelect sqlSelect = (SqlSelect) sqlNode;
+            sqlSelect = (SqlSelect) sqlNode;
             SqlNode where = sqlSelect.getWhere();
             SqlNode from = sqlSelect.getFrom();
             if(SqlKind.JOIN.equals(from.getKind())){
-                
+                SqlJoin sqlJoin = (SqlJoin) from;
+                SqlNode left = sqlJoin.getLeft();
+                SqlNode right = sqlJoin.getRight();
+                leftTable =parserTableName(left);
+                rightTable = parserTableName(right);
+                System.out.println("left "+parserTableName(left));
+                System.out.println("right "+parserTableName(right));
             }
         }
-        System.out.println(sqlNode.getKind());
+
+        String newTable = leftTable+"_"+rightTable;
+        SqlParserPos pos = new SqlParserPos(0,0);
+        SqlIdentifier sqlIdentifier = new SqlIdentifier(newTable, pos);
+        sqlSelect.setFrom(sqlIdentifier);
+        System.out.println(sqlSelect);
 
 
 
+    }
+    public static String parserTableName(SqlNode tbl){
+        if(SqlKind.AS.equals(tbl.getKind())){
+            SqlBasicCall sqlBasicCall = (SqlBasicCall) tbl;
+//            for(SqlNode sqlNode1 : sqlBasicCall.operands){
+//                System.out.println(sqlNode1);
+//            }
+            return sqlBasicCall.operands[1].toString();
+        }
+        return "";
     }
 }

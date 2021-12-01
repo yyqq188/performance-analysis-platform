@@ -15,6 +15,15 @@ public class Hive2HbaseMain {
 
         env.getConfig().setGlobalJobParameters(params);
 
+        String[] tables_rowkey = parameterTool.get("tables_rowkey").split(";");
+        for(String table_rowkey:tables_rowkey){
+            String[] e = table_rowkey.split(",");
+            String hiveTableName = e[0];
+            String hbaseTableName = e[1];
+            String rowkey = e[2];
+
+
+        }
         String hiveTableName = "kl_core.ldcode";
         String hbaseTableName = "testyhl:ldcode";
         String[] rowkeys = {"code"};

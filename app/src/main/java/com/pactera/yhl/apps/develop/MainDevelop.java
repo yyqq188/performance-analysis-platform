@@ -71,7 +71,7 @@ public class MainDevelop {
 
         //自关联的话，要尽量考虑列要小，所以就只要表名做列名就可,rowkey就是源表的主键
         JobPremiums.midLcpolOrder(env,topic,kafkaProp,
-                "KLMIDAPP:lcpol_payendyear&insuyear",
+                "KLMIDAPP:lcpol_payendyear_insuyear",
                 new String[]{"polno"},
                 new String[]{},
                 new String[]{"payendyear","insuyear"},   //需要更新的列

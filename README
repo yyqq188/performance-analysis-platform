@@ -1,0 +1,2 @@
+#!/bin/bash
+java -Djava.ext.dirs=$JAVA_HOME/jre/lib/ext/:./lib -cp dws-1.0-SNAPSHOT.jar com.pactera.yhl.hivekafka3.Main conf.properties

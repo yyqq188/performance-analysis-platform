@@ -1,0 +1,11 @@
+CREATE TABLE orders(
+    orderId varchar,
+    gdsId varchar,
+    orderTime varchar
+ )WITH(
+    type = 'kafka',
+    kafka.bootstrap.servers = 'localhost:9092',
+    kafka.topic = 'topic1',
+    kafka.group.id = 'gId1',
+    sourcedatatype ='json'
+ );

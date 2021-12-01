@@ -1,44 +1,42 @@
-package com.pactera.yhl.source;
+package com.pactera.yhl.demo;
 
 import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.utils.ParameterTool;
-import org.apache.flink.configuration.Configuration;
-import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
-import org.slf4j.LoggerFactory;
+
 
 import java.sql.*;
 import java.util.*;
-@Slf4j
-public class MyHiveSource extends RichSourceFunction<String> {
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class ReadHive {
     PreparedStatement stmt;
     Connection con;
     List<String> fields;
     List<String> fieldTypes;
     String tableName;
-    public MyHiveSource(String hiveTableName){
+    LinkedBlockingQueue<Object> queueCap;
+    public ReadHive(String hiveTableName, LinkedBlockingQueue<Object> queueCap) throws SQLException, ClassNotFoundException {
         this.tableName = hiveTableName;
+        this.queueCap = queueCap;
+        init();
     }
-    @Override
-    public void open(Configuration parameters) throws Exception {
-        ParameterTool parameterTool = (ParameterTool) getRuntimeContext()
-                .getExecutionConfig().getGlobalJobParameters();
-        Class.forName(parameterTool.get("driver"));
-        Tuple2<List<String>, List<String>> fieldTuple = getFieldStr(tableName,parameterTool);
+    private void init() throws ClassNotFoundException, SQLException {
+        Class.forName("org.apache.hive.jdbc.HiveDriver");
+        Tuple2<List<String>, List<String>> fieldTuple = getFieldStr(tableName);
         fields = fieldTuple.getField(0);
         fieldTypes = fieldTuple.getField(1);
+
+
         String querySQL = String.join(" ",
                 "select",String.join(",",fields),"from",tableName,"limit 10");
         System.out.println(querySQL);
-        log.info(querySQL);
-        con = DriverManager.getConnection(parameterTool.get("url"));
+        String url = "jdbc:hive2://prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2";
+        con = DriverManager.getConnection(url);
         stmt = con.prepareStatement(querySQL);
+
     }
-    @Override
-    public void run(SourceContext<String> ctx) throws Exception {
+
+    public void run() throws Exception {
         ResultSet res = stmt.executeQuery();
         while(res.next()){
             Map<String,Object> mapData = new HashMap<>();
@@ -72,25 +70,15 @@ public class MyHiveSource extends RichSourceFunction<String> {
                 }
             }
             map.put("data",mapData);
-            ctx.collect(JSON.toJSONString(map));
+//            System.out.println(JSON.toJSONString(map));
+            queueCap.put(JSON.toJSONString(map));
         }
     }
 
-    @SneakyThrows
-    @Override
-    public void cancel() {
-        if(stmt != null){
-            stmt.close();
-        }
-        if(con != null){
-            con.close();
-        }
-
-    }
-
-    private static Tuple2<List<String>, List<String>> getFieldStr(String tableName, ParameterTool prop) throws SQLException {
+    private static Tuple2<List<String>,List<String>> getFieldStr(String tableName) throws SQLException {
         String querySQL = "desc " + tableName;
-        Connection con = DriverManager.getConnection(prop.get("url"));
+        String url = "jdbc:hive2://prod-bigdata-pc10:2181,prod-bigdata-pc14:2181,prod-bigdata-pc15:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2";
+        Connection con = DriverManager.getConnection(url);
         Statement stmt = con.createStatement();
         ResultSet res = stmt.executeQuery(querySQL);
         List<String> fields = new ArrayList<>();
@@ -99,8 +87,9 @@ public class MyHiveSource extends RichSourceFunction<String> {
             fields.add(res.getString(1));
             fieldTypes.add(res.getString(2));
         }
-
         return Tuple2.of(fields,fieldTypes);
 
     }
+
+
 }
