@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop.premiums.aggregate;
+package com.pactera.yhl.apps.develop.premiums.job.jobCompute;
 
 import com.pactera.yhl.entity.source.Lcpol;
 import com.pactera.yhl.apps.develop.premiums.sink.PremiumsKuduSinkV2;

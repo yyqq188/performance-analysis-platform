@@ -37,8 +37,10 @@ public class JsonDeserialization implements DeserializationSchema<Row> {
 
 
 
-        return null;
+        return row;
     }
+
+
 
     @Override
     public boolean isEndOfStream(Row row) {

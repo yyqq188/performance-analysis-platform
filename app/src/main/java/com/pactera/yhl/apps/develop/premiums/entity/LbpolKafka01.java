@@ -13,4 +13,14 @@ public class LbpolKafka01 implements Serializable,KafkaEntity{
     public String edorvalidate; //lpedoritem
     public String edortype;  //lpedoritem
     public String edorstate;
+
+    public String polno;
+    public String payendyear;
+    public String signdate;
+    public String amnt;
+
+
+
+
+
 }

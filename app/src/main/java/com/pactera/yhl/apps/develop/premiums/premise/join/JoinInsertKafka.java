@@ -110,12 +110,31 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
         Result result = null;
         Object kafkaClazzObj = kafkaClazz.newInstance();
         String rowkeystr = "";
+        //这是对product_code进行处理
+
+        Map<String,Object> productRateConfigRowkey = new HashMap<>();
+
         for(Field f:value.getClass().getDeclaredFields()){
             if(joinFieldsDriver.keySet().contains(f.getName())){
                 //这里对关联的字段进行特殊处理
                 if(f.getName().equals("managecom")){
                     joinFieldsDriver.put(f.getName(),Util.toSubString(f.get(value)));
-                }else{
+                }else if(f.getName().equals("branch_id_full")){
+                    joinFieldsDriver.put(f.getName(),f.get(value).toString().split("-")[1]);
+                }
+
+                else if(f.getName().equals("contplancode")){
+                    productRateConfigRowkey.put("contplancode",f.get(value));
+                    joinFieldsDriver.put(f.getName(),"");
+                }else if(f.getName().equals("riskcode")){
+                    productRateConfigRowkey.put("riskcode",f.get(value));
+                    joinFieldsDriver.put(f.getName(),"");
+                }else if(f.getName().equals("payendyear")){
+                    productRateConfigRowkey.put("payendyear",f.get(value));
+                    joinFieldsDriver.put(f.getName(),"");
+                }
+
+                else{
                     joinFieldsDriver.put(f.getName(),Util.toString(f.get(value)));
                 }
             }
@@ -133,6 +152,20 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
                 }
             }
         }
+
+        String productRateConfigRowkeyStr = "";
+        if(productRateConfigRowkey.size() != 0){
+            if(productRateConfigRowkey.get("contplancode") != null){
+                productRateConfigRowkeyStr += productRateConfigRowkey.get("contplancode");
+            }
+            if("".equals(productRateConfigRowkeyStr)|| productRateConfigRowkeyStr.length() == 0){
+                productRateConfigRowkeyStr += productRateConfigRowkey.get("riskcode");
+            }
+            productRateConfigRowkeyStr += productRateConfigRowkey.get("payendyear");
+            joinFieldsDriver.put("productRateConfigRowkeyStr",productRateConfigRowkeyStr);
+        }
+
+
         System.out.println(joinFieldsDriver);
         for(String fstr: joinFieldsDriver.values()){
 

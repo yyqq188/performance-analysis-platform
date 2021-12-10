@@ -113,6 +113,7 @@ public class JoinInsertKafkaAndHbase<OUT> extends RichSinkFunction<OUT> {
 
     @Override
     public void invoke(OUT value, Context context) throws Exception {
+        System.out.println(value);
         HTable inputHTable = null;
         try{
             inputHTable = (HTable) connection.getTable(TableName.valueOf(tableName));

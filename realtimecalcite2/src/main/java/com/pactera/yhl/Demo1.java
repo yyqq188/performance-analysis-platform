@@ -21,12 +21,12 @@ public class Demo1 {
                 if(SqlKind.OTHER_FUNCTION.equals(x.getKind())){
                     SqlBasicCall sqlBasicCall =  (SqlBasicCall) x;
                     for(SqlNode sqlNode1 : sqlBasicCall.operands){
-                        System.out.println(sqlNode1);
+                        System.out.println("====" + sqlNode1);
                     }
                 }
-                System.out.println("=====");
+
                 if(SqlKind.IDENTIFIER.equals(x.getKind())){
-                    System.out.println(x.toString());
+                    System.out.println("----"+x.toString());
                 }
             });
         }

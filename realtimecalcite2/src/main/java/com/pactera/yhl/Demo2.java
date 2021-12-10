@@ -7,8 +7,9 @@ import org.apache.calcite.sql.parser.SqlParser;
 
 public class Demo2 {
     public static void main(String[] args) throws SqlParseException {
+        String sql = "select id ,name ,age from student where age < 10";
         SqlParser.Config config = SqlParser.configBuilder().setLex(Lex.MYSQL).build();
-        SqlParser sqlParser = SqlParser.create("select id ,name ,age from student where age < 10", config);
+        SqlParser sqlParser = SqlParser.create(sql, config);
         SqlNode sqlNode = sqlParser.parseStmt();
         //得到SqlSelect
         if(SqlKind.SELECT.equals(sqlNode.getKind())){

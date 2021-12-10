@@ -17,4 +17,10 @@ public class LbpolKafka02 implements Serializable,KafkaEntity{
     public String workarea; //salesinfo
 //    public String area_type; //salesinfo
 
+    public String polno;
+    public String payendyear;
+    public String signdate;
+    public String amnt;
+
+    public String channel_id;
 }

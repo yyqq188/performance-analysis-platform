@@ -2,6 +2,7 @@ package com.pactera.yhl.transform;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.pactera.yhl.apps.develop.premiums.entity.ProductRateConfig;
 import com.pactera.yhl.constract.TestTableName;
 import com.pactera.yhl.entity.source.*;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -28,6 +29,8 @@ public class TestMapTransformFunc implements MapFunction<String, KLEntity> {
             return JSONObject.parseObject(data, Lpedoritem.class);
         }else if(tableName.equals(TestTableName.Ldcode)){
             return JSONObject.parseObject(data, Ldcode.class);
+        }else if(tableName.equals(TestTableName.ProductRateConfig)){
+            return JSONObject.parseObject(data, ProductRateConfig.class);
         }
         return null;
     }

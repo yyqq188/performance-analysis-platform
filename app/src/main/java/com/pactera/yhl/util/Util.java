@@ -39,8 +39,8 @@ public class Util {
 
 
     public static <T> Tuple2<List<String>,List<String>> getHbaseValue(Object o, Class<T> clazz,
-                                             String[] rowkeys, String[] columns,
-                                             String tableName, AsyncTable<AdvancedScanResultConsumer> table) throws Exception {
+                                                                      String[] rowkeys, String[] columns,
+                                                                      String tableName, AsyncTable<AdvancedScanResultConsumer> table) throws Exception {
         ObjectMapper objMapper = new ObjectMapper();
         T t = objMapper.convertValue(o, clazz);
         String rowkey = String.join("", rowkeys);
@@ -159,8 +159,8 @@ public class Util {
 
     }
     //通过 表名 rowkey column获得值
-    public static List<String> getHbaseValueWithTableName(HTable hTable,String rowkey,String family,
-                                        String columnName) throws IOException {
+    public static List<String> getHbaseValueWithTableNames
+    (HTable hTable,String rowkey,String family,String columnName) throws IOException {
         List<String> values = new ArrayList<>();
         Get get = new Get(Bytes.toBytes(rowkey));
         get.addColumn(
@@ -173,6 +173,51 @@ public class Util {
             values.add(value);
         }
         return values;
+    }
+    //通过表名,rowkey 获得全部column的json
+    public static String getHbaseJsonValue(
+            HTable hTable,String rowkey,String family,String columnName) throws IOException {
+        String value = "";
+        Get get = new Get(Bytes.toBytes(rowkey));
+        get.addColumn(
+                Bytes.toBytes(family),
+                Bytes.toBytes(columnName));
+        Result result = hTable.get(get);
+        return Bytes.toString(result.getValue(Bytes.toBytes(family), Bytes.toBytes(columnName)));
+    }
+
+    public static String getHbaseColumnNameValue(
+            HTable hTable,String rowkey,String family,String columnName) throws IOException {
+        String value = "";
+        Get get = new Get(Bytes.toBytes(rowkey));
+        get.addColumn(
+                Bytes.toBytes(family),
+                Bytes.toBytes(columnName));
+        Result result = hTable.get(get);
+        return Bytes.toString(result.getValue(Bytes.toBytes(family), Bytes.toBytes(columnName)));
+    }
+    //通过表名,rowkey 获得指定字段的值
+    public static String getHbaseValue(
+            HTable hTable,String rowkey,String family,
+            String columnName,String field) throws IOException {
+        Map<String,String> valueMaps = new HashMap<>();
+        String json = "";
+        Get get = new Get(Bytes.toBytes(rowkey));
+        get.addFamily(Bytes.toBytes(family));
+        Result result = hTable.get(get);
+        if(result.value() == null) return  "";
+        String resultValue = "";
+        for(Cell cell:result.listCells()) {
+            byte[] bytes = CellUtil.cloneValue(cell);
+            byte[] qualifierBytes = CellUtil.cloneQualifier(cell);
+            String value = Bytes.toString(bytes);
+            String qualifier = Bytes.toString(qualifierBytes);
+
+            if(qualifier.equals(columnName)){
+                resultValue = JSON.parseObject(value).getString(field);
+            }
+        }
+        return resultValue;
     }
 
 
@@ -196,28 +241,6 @@ public class Util {
             return "";
         }
     }
-
-
-
-
-
-    //判断某个kafka的topic是否存在
-//    public static boolean topicExists_bak(String zkConnection,String topic){
-//        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
-//        boolean exists = AdminUtils.topicExists(zkUtils, topic);
-//        return exists;
-//    }
-//    //创建新的topic
-//    public static boolean createTopic_bak(String zkConnection,String topic){
-//        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
-//        try{
-//            AdminUtils.createTopic(zkUtils,topic,1,1,new Properties(), RackAwareMode.Enforced$.MODULE$);
-//            return true;
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
 
     public static void main(String[] args) {
 //        System.out.println(LargerFirstChar("esadaaaa"));
@@ -261,3 +284,27 @@ public class Util {
 //
 //
 //}
+
+
+
+
+
+
+//判断某个kafka的topic是否存在
+//    public static boolean topicExists_bak(String zkConnection,String topic){
+//        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+//        boolean exists = AdminUtils.topicExists(zkUtils, topic);
+//        return exists;
+//    }
+//    //创建新的topic
+//    public static boolean createTopic_bak(String zkConnection,String topic){
+//        ZkUtils zkUtils = ZkUtils.apply(zkConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+//        try{
+//            AdminUtils.createTopic(zkUtils,topic,1,1,new Properties(), RackAwareMode.Enforced$.MODULE$);
+//            return true;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
+

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class LbpolKafka03 implements Serializable,KafkaEntity{
+public class LbpolKafka04 implements Serializable,KafkaEntity{
     public String agentcode; //lbpol
     public String managecom; //lbpol    lpedoritem
     public String prem; //lbpol
@@ -27,4 +27,8 @@ public class LbpolKafka03 implements Serializable,KafkaEntity{
     public String class_id;
     public String branch_id_parent;
     public String branch_id_full;
+
+
+    public String contplancode;
+    public String riskcode;
 }

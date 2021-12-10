@@ -3,6 +3,8 @@ package com.pactera.yhl.constract;
 public class TestTableName {
     public static final String dbName = "kl_core";
     public static final String dbNameXG = "kl_umss";
+    public static final String dbNameBase= "kl_base";
+
     public static final String Lbcont = dbName+"."+"lbcont";
     public static final String Lbpol = dbName+"."+ "lbpol";
     public static final String Lccont = dbName+"."+ "lccont";
@@ -37,5 +39,7 @@ public class TestTableName {
     public static final String T01branchinfo = dbNameXG+"."+ "t01branchinfo";
     public static final String T01teaminfo = dbNameXG+"."+ "t01teaminfo";
     public static final String T02salesinfo = dbNameXG+"."+ "t02salesinfo";
+
+    public static final String ProductRateConfig = dbNameBase+"."+ "product_rate_config";
 
 }
