@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop;
+package com.pactera.yhl.apps.develop.mainbak;
 
 import com.pactera.yhl.apps.develop.premiums.entity.*;
 import com.pactera.yhl.apps.develop.premiums.job.JobPremiums;
@@ -180,8 +180,26 @@ public class MainDevelopStreamOne {
 //        AppGeneralResultLC.LC_branch_name_periodtype(env,"testyhlv7",kafkaProp,"testyhlv8",appGeneralResult);
 //        AppGeneralResultLC.LC_workarea_periodtype(env,"testyhlv7",kafkaProp,"testyhlv8",appGeneralResult);
 
-        AppProductResultLC.LC_branch_name(env,"testyhlv7",kafkaProp,"testyhlv8",appProductResult);
-        AppProductDetailLC.LC_branch_name_product_payperiod(env,"testyhlv7",kafkaProp,"testyhlv8",appProductDetail);
+//        AppProductResultLC.LC_branch_name_product(env,"testyhlv7",kafkaProp,"testyhlv8",appProductResult);
+//        AppProductDetailLC.LC_branch_name_product_payperiod(env,"testyhlv7",kafkaProp,"testyhlv8",appProductDetail);
+//
+//        //加件数
+//        AppGeneralResultLC.LC_branch_name_num(env,"testyhlv7",kafkaProp,"testyhlv8",appGeneralResult);
+//        AppGeneralResultLC.LC_workarea_num(env,"testyhlv7",kafkaProp,"testyhlv8",appGeneralResult);
+//
+//        AppProductResultLC.LC_branch_name_product_num(env,"testyhlv7",kafkaProp,"testyhlv8",appProductResult);
+//        AppProductDetailLC.LC_branch_name_product_payperiod_num(env,"testyhlv7",kafkaProp,"testyhlv8",appProductDetail);
+
+        //加承保
+//        AppGeneralResultLC.LC_branch_name_approve(env,"testyhlv7",kafkaProp,"testyhlv8",appGeneralResult);
+//        AppGeneralResultLC.LC_workarea_approve(env,"testyhlv7",kafkaProp,"testyhlv8",appGeneralResult);
+//        AppGeneralResultLC.LC_branch_name_periodtype_approve(env,"testyhlv7",kafkaProp,"testyhlv8",appGeneralResult);
+//        AppGeneralResultLC.LC_workarea_periodtype_approve(env,"testyhlv7",kafkaProp,"testyhlv8",appGeneralResult);
+//
+//        AppProductResultLC.LC_branch_name_product_approve(env,"testyhlv7",kafkaProp,"testyhlv8",appProductResult);
+//        AppProductDetailLC.LC_branch_name_product_payperiod_approve(env,"testyhlv7",kafkaProp,"testyhlv8",appProductDetail);
+
+
         env.execute("one");
     }
 }

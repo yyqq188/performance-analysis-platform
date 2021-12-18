@@ -1,4 +1,4 @@
-package com.pactera.yhl.apps.develop;
+package com.pactera.yhl.apps.develop.mainbak;
 
 import com.pactera.yhl.apps.develop.premiums.job.JobPremiums;
 import com.pactera.yhl.entity.source.Lcpol;
@@ -90,7 +90,6 @@ public class MainDevelopMid {
         "desc",        //升序还是降序
         Lcpol.class,  // hbase数据的类型
         "lbpol");
-
 
         env.execute("mid");
 

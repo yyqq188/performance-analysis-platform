@@ -22,12 +22,13 @@ public class Main {
         String topic = prop.getProperty("topic");
         String tables = prop.getProperty("tables");
         String limitNum = prop.getProperty("limitnum");
+        String whereSql = prop.getProperty("whereSql");
 
-        System.out.println(topic+","+tables+","+limitNum);
+        System.out.println(topic+","+tables+","+limitNum+","+whereSql);
 
         ExecutorService executorService = Executors.newCachedThreadPool();
         for(String tableName : tables.split(",")){
-            executorService.execute(new DirectHiveToKafka(topic,tableName,prop,limitNum));
+            executorService.execute(new DirectHiveToKafka(topic,tableName,prop,limitNum,whereSql));
         }
 
         executorService.shutdown();

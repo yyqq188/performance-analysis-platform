@@ -17,7 +17,7 @@ public class PremiumsKafkaEntity01 implements Serializable,KafkaEntity{
     public String agentcom;
     public String channel_id;
     public String polno;
-    public String payendyear;
+    public String payyears;
     public String signdate;
     public String amnt;
 }

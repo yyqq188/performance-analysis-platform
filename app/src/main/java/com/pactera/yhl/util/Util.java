@@ -22,6 +22,19 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class Util {
+
+    /**@Create Sun Haitian */
+    //通过 rowkey column获得值
+    public static Result getHbaseValue(HTable hTable,String rowkey,String family,
+                                       String columnName) throws IOException {
+        Get get = new Get(Bytes.toBytes(rowkey));
+        get.addColumn(
+                Bytes.toBytes(family),
+                Bytes.toBytes(columnName));
+        Result values = hTable.get(get);
+        return values;
+
+    }
     public static final byte[] cf = Bytes.toBytes("f");
     //字符串转可执行程序
     public static Object convertToCode(String jexlExp, Map<String,Object> map){

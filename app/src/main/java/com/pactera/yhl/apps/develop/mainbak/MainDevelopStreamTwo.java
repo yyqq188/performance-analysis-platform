@@ -1,8 +1,11 @@
-package com.pactera.yhl.apps.develop;
+package com.pactera.yhl.apps.develop.mainbak;
 
 import com.pactera.yhl.apps.develop.premiums.entity.*;
 import com.pactera.yhl.apps.develop.premiums.job.JobPremiums;
 import com.pactera.yhl.apps.develop.premiums.job.jobComputeV2.LCJob1;
+import com.pactera.yhl.apps.develop.premiums.job.jobComputeV3.AppGeneralResultLB;
+import com.pactera.yhl.apps.develop.premiums.job.jobComputeV3.AppProductDetailLB;
+import com.pactera.yhl.apps.develop.premiums.job.jobComputeV3.AppProductResultLB;
 import com.pactera.yhl.entity.source.*;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.time.Time;
@@ -22,7 +25,7 @@ public class MainDevelopStreamTwo {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.enableCheckpointing(5000, CheckpointingMode.EXACTLY_ONCE);
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(10)));
+//        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(10)));
         ParameterTool parameterTool = ParameterTool.fromArgs(args);
         String configPath = parameterTool.get("config_path");
         ParameterTool params = ParameterTool.fromPropertiesFile(configPath);
@@ -131,7 +134,6 @@ public class MainDevelopStreamTwo {
 //                    }
 //                }
         ); //过滤的字段和值
-
 //        JobPremiums.saleinfoTolbpolKafka01(
 //                env,
 //                "testyhlv2",  //输入topic
@@ -189,7 +191,8 @@ public class MainDevelopStreamTwo {
                 },// 要从主流中需要取得的字段 之 关联字段
                 new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id",
                         "branch_name","branch_id",
-                        "class_id","branch_id_parent","branch_id_full","polno","payendyear","signdate","amnt")),// 要从主流中需要取得的字段 之 其他字段
+                        "class_id","branch_id_parent","branch_id_full","polno",
+                        "payendyear","signdate","amnt")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("contplancode","riskcode")),// 要从hbase中取得的字段
                 Lbpol.class,// hbase表的实体类名字
                 LbpolKafka04.class,// 发到kafka的实体类的名字  (固定的变量名)
@@ -219,6 +222,34 @@ public class MainDevelopStreamTwo {
                 LbpolKafka05.class,// 发到kafka的实体类的名字  (固定的变量名)
                 new HashMap<>(),
                 new HashMap<>()); //过滤的字段和值
+
+
+        String appGeneralResult = "APPLICATION_GENERAL_RESULT_RT";
+        String appProductDetail = "APPLICATION_PRODUCT_DETIAL_RT";
+        String appProductResult = "APPLICATION_PRODUCT_RESULT_RT";
+
+//        AppGeneralResultLB.LB_branch_name(env,"testyhlv9",kafkaProp,"",appGeneralResult);
+//        AppGeneralResultLB.LB_branch_name_periodtype(env,"testyhlv9",kafkaProp,"",appGeneralResult);
+
+//        AppProductResultLB.LB_branch_name_product(env,"testyhlv9",kafkaProp,"",appProductResult);
+//        AppProductDetailLB.LB_branch_name_product_payperiod(env,"testyhlv9",kafkaProp,"",appProductDetail);
+//
+//        //加件数
+//        AppGeneralResultLB.LB_branch_name_num(env,"testyhlv9",kafkaProp,"testyhlv8",appGeneralResult);
+//        AppProductResultLB.LB_branch_name_num_product(env,"testyhlv9",kafkaProp,"testyhlv8",appProductResult);
+//        AppProductDetailLB.LB_branch_name_product_payperiod_num(env,"testyhlv9",kafkaProp,"testyhlv8",appProductDetail);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -22,7 +22,7 @@ public class PremiumsKafkaEntity03 {
     public String contplancode;
     public String riskcode;
     public String polno;
-    public String payendyear;
+    public String payyears;
     public String signdate;
     public String amnt;
 

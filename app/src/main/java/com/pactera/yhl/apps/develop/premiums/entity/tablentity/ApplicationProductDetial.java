@@ -17,8 +17,8 @@ public class ApplicationProductDetial implements Serializable, KLEntity {
     public String manage_name;
     public String product_code;
     public String product_name;
-    public String prem_day;
-    public String num_day;
+    public Double prem_day;
+    public Double num_day;
     public Double contribution_day;
     public Double single_prem_day;
     public Double three_year_prem_day;

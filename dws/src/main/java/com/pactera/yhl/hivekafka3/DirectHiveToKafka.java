@@ -18,11 +18,15 @@ public class DirectHiveToKafka implements Runnable{
     String tableName;
     Properties prop;
     String limitNum;
-    public DirectHiveToKafka(String topic,String tableName,Properties prop,String limitNum){
+    String whereSql;
+    public DirectHiveToKafka(String topic,String tableName,
+                             Properties prop,String limitNum,
+                             String whereSql){
         this.topic = topic;
         this.tableName = tableName;
         this.prop = prop;
         this.limitNum = limitNum;
+        this.whereSql = whereSql;
     }
 
     @SneakyThrows
@@ -31,9 +35,16 @@ public class DirectHiveToKafka implements Runnable{
         KafkaProducer producer = KafkaClient.getProducer();
         Class.forName(prop.getProperty("driver"));
         List<String> fields = getFieldStr(tableName, prop);
-        String querySQL = String.join(" ",
-                "select",String.join(",",fields),"from",tableName,"limit",limitNum);
-        System.out.println(querySQL);
+        String querySQL = "";
+        if(Objects.isNull(whereSql) || whereSql.length() == 0){
+            querySQL = String.join(" ",
+                    "select",String.join(",",fields),"from",tableName,"limit",limitNum);
+            System.out.println(querySQL);
+        }else{
+            querySQL = String.join(" ",
+                    "select",String.join(",",fields),"from",tableName,"where",whereSql);
+            System.out.println(querySQL);
+        }
         Connection con = DriverManager.getConnection(prop.getProperty("url"));
         Statement stmt = con.createStatement();
         ResultSet res = stmt.executeQuery(querySQL);

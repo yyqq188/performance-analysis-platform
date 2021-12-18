@@ -15,7 +15,7 @@
         <module>app</module>
         <module>realtimeincrement</module>
         <module>realtimehive2hbase</module>
-        <module>realtimecalcite</module>
+<!--        <module>realtimecalcite</module>-->
         <module>realtimehive2clickhouse</module>
     </modules>
 

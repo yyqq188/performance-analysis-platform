@@ -27,6 +27,7 @@ public class MyHiveSource extends RichSourceFunction<String> {
         ParameterTool parameterTool = (ParameterTool) getRuntimeContext()
                 .getExecutionConfig().getGlobalJobParameters();
         Class.forName(parameterTool.get("driver"));
+        System.out.println("连接成功");
         Tuple2<List<String>, List<String>> fieldTuple = getFieldStr(tableName,parameterTool);
         fields = fieldTuple.getField(0);
         fieldTypes = fieldTuple.getField(1);

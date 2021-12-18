@@ -122,18 +122,16 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
                 }else if(f.getName().equals("branch_id_full")){
                     joinFieldsDriver.put(f.getName(),f.get(value).toString().split("-")[1]);
                 }
-
                 else if(f.getName().equals("contplancode")){
                     productRateConfigRowkey.put("contplancode",f.get(value));
                     joinFieldsDriver.put(f.getName(),"");
                 }else if(f.getName().equals("riskcode")){
                     productRateConfigRowkey.put("riskcode",f.get(value));
                     joinFieldsDriver.put(f.getName(),"");
-                }else if(f.getName().equals("payendyear")){
-                    productRateConfigRowkey.put("payendyear",f.get(value));
+                }else if(f.getName().equals("payyears")){
+                    productRateConfigRowkey.put("payyears",f.get(value));
                     joinFieldsDriver.put(f.getName(),"");
                 }
-
                 else{
                     joinFieldsDriver.put(f.getName(),Util.toString(f.get(value)));
                 }
@@ -161,7 +159,7 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
             if("".equals(productRateConfigRowkeyStr)|| productRateConfigRowkeyStr.length() == 0){
                 productRateConfigRowkeyStr += productRateConfigRowkey.get("riskcode");
             }
-            productRateConfigRowkeyStr += productRateConfigRowkey.get("payendyear");
+            productRateConfigRowkeyStr += productRateConfigRowkey.get("payyears");
             joinFieldsDriver.put("productRateConfigRowkeyStr",productRateConfigRowkeyStr);
         }
 
@@ -174,9 +172,9 @@ public class JoinInsertKafka<OUT> extends RichSinkFunction<OUT> {
 
         System.out.println(hbaseClazz +" ==+++== "+rowkeystr);
         result = Util.getHbaseResultSync(rowkeystr,hTable);
-
         for(Cell cell:result.listCells()){
             String valueJson = Bytes.toString(CellUtil.cloneValue(cell));
+            if(valueJson.equals("") || valueJson.length() == 0) continue;
             Object o = JSON.parseObject(valueJson, hbaseClazz);
 
             for(String fieldName:fieldsHbase){

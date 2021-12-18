@@ -22,7 +22,7 @@ public class PremiumsKafkaEntity02 implements Serializable,KafkaEntity{
     public String branch_id_parent;
     public String branch_id_full;
     public String polno;
-    public String payendyear;
+    public String payyears;
     public String signdate;
     public String amnt;
 }

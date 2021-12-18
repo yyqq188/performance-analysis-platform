@@ -41,5 +41,6 @@ public class TestTableName {
     public static final String T02salesinfo = dbNameXG+"."+ "t02salesinfo";
 
     public static final String ProductRateConfig = dbNameBase+"."+ "product_rate_config";
+    public static final String ProductConfig = dbNameBase+"."+ "product_config";
 
 }

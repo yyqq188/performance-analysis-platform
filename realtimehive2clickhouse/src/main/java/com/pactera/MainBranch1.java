@@ -23,7 +23,8 @@ public class MainBranch1 {
         String[] tables = parameterTool.get("tables").split(",");
         for(String table:tables){
             String hiveTableName = "kl_base."+ table;
-            String clickhouseTableName = "kl_base."+table.toUpperCase();
+//            String clickhouseTableName = "kl_base."+table.toUpperCase();
+            String clickhouseTableName = "default."+table.toUpperCase();
             Job.Table1Hive2Clickhouse(env,hiveTableName,clickhouseTableName);
 
 

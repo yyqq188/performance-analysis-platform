@@ -179,8 +179,9 @@ public class JoinInsertKafkaAndHbase<OUT> extends RichSinkFunction<OUT> {
                 if (filterMapHbase.get(keyField).equals("function_date")){
                     Field field = kafkaClazzObj.getClass().getField(keyField);
                     String v = Util.toString(field.get(kafkaClazzObj)).split("\\s+")[0];
-                    String todayStr = new SimpleDateFormat("yyyy-MM-dd")
-                            .format(new Date(System.currentTimeMillis()));
+//                    String todayStr = new SimpleDateFormat("yyyy-MM-dd")
+//                            .format(new Date(System.currentTimeMillis()));
+                    String todayStr = "2021-09-30";
                     if(todayStr.equals(v)){
                         //将hbase的值赋值到kafka实体类中
                         String methodName = "set"+Util.LargerFirstChar(keyField);

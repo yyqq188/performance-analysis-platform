@@ -38,26 +38,30 @@ public class Demo1 {
 
 
 
-        PremiumsKafkaEntity01 premiumsKafkaEntity01 = new PremiumsKafkaEntity01();
-        premiumsKafkaEntity01.setWorkarea(null);
-        premiumsKafkaEntity01.setPrem("prem");
-        premiumsKafkaEntity01.setManagecom("managecom");
-        premiumsKafkaEntity01.setAgentcom("agentcom");
-        premiumsKafkaEntity01.setChannel_id("channel_id");
+//        PremiumsKafkaEntity01 premiumsKafkaEntity01 = new PremiumsKafkaEntity01();
+//        premiumsKafkaEntity01.setWorkarea(null);
+//        premiumsKafkaEntity01.setPrem("prem");
+//        premiumsKafkaEntity01.setManagecom("managecom");
+//        premiumsKafkaEntity01.setAgentcom("agentcom");
+//        premiumsKafkaEntity01.setChannel_id("channel_id");
+//
+//        Field field = premiumsKafkaEntity01.getClass().getField("workarea");
+//        Object o = field.get(premiumsKafkaEntity01);
+//        if(Objects.isNull(o)){
+//            System.out.println("空");
+//        }else{
+//            System.out.println("非空");
+//        }
+//        System.out.println(o);
 
-        Field field = premiumsKafkaEntity01.getClass().getField("workarea");
-        Object o = field.get(premiumsKafkaEntity01);
-        if(Objects.isNull(o)){
-            System.out.println("空");
-        }else{
-            System.out.println("非空");
-        }
-        System.out.println(o);
 //        //将hbase的值赋值到kafka实体类中
 //        String methodName = "set"+Util.LargerFirstChar(fieldName);
 //        Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);
 //        method.invoke(kafkaClazzObj,v);
 
+
+        String a = "abc";
+        System.out.println(a.substring(1,a.length()));
 
     }
 
