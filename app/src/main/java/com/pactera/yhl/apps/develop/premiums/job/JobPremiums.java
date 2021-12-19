@@ -351,6 +351,30 @@ public class JobPremiums {
                         fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
     }
 
+    public static void lbpolToProductConfig(StreamExecutionEnvironment env, String topic,
+                                            Properties prop,String topicOut,
+                                            String tableName, Map<String,String> joinFieldsDriver,
+                                            Set<String> otherFieldsDriver,
+                                            Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                            Class<?> kafkaClazz, Map<String,String> filterMapDriver,
+                                            Map<String,String> filterMapHbase){
+        prop.setProperty("group.id","lbpolToProductConfig");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new MapFunction<String, LbpolKafka05>() {
+                    @Override
+                    public LbpolKafka05 map(String s) throws Exception {
+                        return JSON.parseObject(s,LbpolKafka05.class);
+                    }
+                })
+                .addSink(new JoinInsertKafkaAssign<>(tableName,topicOut,
+                        joinFieldsDriver,otherFieldsDriver,
+                        fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
+    }
+
+
     public static void lbpol2lpedoritem(StreamExecutionEnvironment env, String topic,
                                        Properties prop,String topicOut,
                                        String tableName, Map<String,String> joinFieldsDriver,
@@ -367,7 +391,7 @@ public class JobPremiums {
                 .map(new TestMapTransformFunc())
                 .filter(x -> x instanceof Lbpol)
                 .map(x -> (Lbpol) x)
-                .addSink(new JoinInsertKafkaAndHbase(tableName,topicOut,
+                .addSink(new JoinInsertKafkaAndHbaseOutJoin(tableName,topicOut,
                         joinFieldsDriver,otherFieldsDriver,
                         fieldsHbase,hbaseClazz,kafkaClazz,hbaseTableName,outputHbaseRowkey,
                         filterMapDriver,filterMapHbase));

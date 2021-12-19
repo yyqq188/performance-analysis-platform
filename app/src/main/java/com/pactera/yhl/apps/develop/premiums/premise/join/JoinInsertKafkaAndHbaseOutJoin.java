@@ -20,10 +20,12 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.Set;
 
-public class JoinInsertKafkaAndHbase<OUT> extends RichSinkFunction<OUT> {
+public class JoinInsertKafkaAndHbaseOutJoin<OUT> extends RichSinkFunction<OUT> {
     protected static final String cfString = "f";
     protected static final byte[] cf = Bytes.toBytes(cfString);
     protected  String tableName;
@@ -43,12 +45,12 @@ public class JoinInsertKafkaAndHbase<OUT> extends RichSinkFunction<OUT> {
     HTable OutputHTable = null;
 
 
-    public JoinInsertKafkaAndHbase(String tableName, String topic,
-                                   Map<String,String> joinFieldsDriver, Set<String> otherFieldsDriver,
-                                   Set<String> fieldsHbase, Class<?> hbaseClazz,
-                                   Class<?> kafkaClazz,
-                                   String outputHbaseTableName,Map<String,String> outputHbaseRowkey,
-                                   Map<String,String> filterMapDriver, Map<String,String> filterMapHbase){
+    public JoinInsertKafkaAndHbaseOutJoin(String tableName, String topic,
+                                          Map<String,String> joinFieldsDriver, Set<String> otherFieldsDriver,
+                                          Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                          Class<?> kafkaClazz,
+                                          String outputHbaseTableName, Map<String,String> outputHbaseRowkey,
+                                          Map<String,String> filterMapDriver, Map<String,String> filterMapHbase){
         this.tableName = tableName;//HBase中间表名
         this.topic = topic; //"testyhlv3";  //目的topic
 
@@ -154,8 +156,14 @@ public class JoinInsertKafkaAndHbase<OUT> extends RichSinkFunction<OUT> {
             rowkeystr += fstr;
         }
         result = Util.getHbaseResultSync(rowkeystr,hTable);
-        if(result.listCells() != null) {
 
+        //如果关联不上的话，就直接返回
+        if(Objects.isNull(result.listCells())){
+            producer.send(new ProducerRecord<>(topic,
+                    JSON.toJSONString(kafkaClazzObj,
+                            SerializerFeature.WriteMapNullValue,
+                            SerializerFeature.DisableCircularReferenceDetect,
+                            SerializerFeature.WriteDateUseDateFormat)));
         }
         for(Cell cell:result.listCells()){
             String valueJson = Bytes.toString(CellUtil.cloneValue(cell));

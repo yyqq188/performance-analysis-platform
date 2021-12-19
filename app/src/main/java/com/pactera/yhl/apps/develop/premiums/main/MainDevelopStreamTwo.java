@@ -11,10 +11,8 @@ import com.pactera.yhl.apps.develop.premiums.main.job.lb.AppProductDetailLBV4;
 import com.pactera.yhl.apps.develop.premiums.main.job.lb.AppProductResultLBV4;
 import com.pactera.yhl.apps.develop.premiums.premise.join.JoinInsertKafkaSpecial;
 import com.pactera.yhl.apps.develop.premiums.sink.InsertKafkaOnly;
-import com.pactera.yhl.entity.source.Lbpol;
-import com.pactera.yhl.entity.source.Lpedoritem;
-import com.pactera.yhl.entity.source.T01branchinfo;
-import com.pactera.yhl.entity.source.T02salesinfok;
+import com.pactera.yhl.apps.develop.premiums.test.KafkaComuserMyTestLBCompute;
+import com.pactera.yhl.entity.source.*;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
@@ -52,6 +50,7 @@ public class MainDevelopStreamTwo {
         String lcTopic = "testyhlv3";
         String lbTopic = "testyhlv4";
 
+        //todo 这里改为了left join
         JobPremiums.lbpol2lpedoritem(
                 env,
                 "testyhlv2LB",  //输入topic
@@ -101,23 +100,59 @@ public class MainDevelopStreamTwo {
                 }).filter(new FilterFunction<LbpolKafka01>() {
                     @Override
                     public boolean filter(LbpolKafka01 lbpolKafka01) throws Exception {
+////                        String todayStr = new SimpleDateFormat("yyyy-MM-dd")
+////                        .format(new Date(System.currentTimeMillis()));
+//                        String signData = lbpolKafka01.getSigndate().split("\\s+")[0];
+//                        String modifyDate = lbpolKafka01.getModifydate().split("\\s+")[0];
+//                        String todayStr = "2021-09-30";
+//                        String edorState = lbpolKafka01.getEdorstate().toString();
+//                        String edorType = lbpolKafka01.getEdortype().toString();
+//                        String edorNo = lbpolKafka01.getEdorno().toString();
+//                        if((todayStr.equals(signData) && edorNo.startsWith("YBT")) ||
+//                        (todayStr.equals(modifyDate) && edorState.equals("0") && edorType.equals("WT"))){
+//                            return true;
+//                        }else{
+//                            return false;
+//                        }
+
+
 //                        String todayStr = new SimpleDateFormat("yyyy-MM-dd")
 //                        .format(new Date(System.currentTimeMillis()));
-                        String signData = lbpolKafka01.getSigndate().split("\\s+")[0];
-                        String modifyDate = lbpolKafka01.getModifydate().split("\\s+")[0];
                         String todayStr = "2021-09-30";
-                        String edorState = lbpolKafka01.getEdorstate().toString();
-                        String edorType = lbpolKafka01.getEdortype().toString();
+                        String signData = lbpolKafka01.getSigndate().split("\\s+")[0];
                         String edorNo = lbpolKafka01.getEdorno().toString();
-                        if((todayStr.equals(signData) && edorNo.startsWith("YBT")) ||
-                        (todayStr.equals(modifyDate) && edorState.equals("0") && edorType.equals("WT"))){
+                        if((todayStr.equals(signData) && edorNo.startsWith("YBT"))){
                             return true;
                         }else{
-                            return false;
+                            if(!Objects.isNull(lbpolKafka01.getModifydate())){
+                                String modifyDate = lbpolKafka01.getModifydate().split("\\s+")[0];
+                                String edorState = lbpolKafka01.getEdorstate().toString();
+                                String edorType = lbpolKafka01.getEdortype().toString();
+                                if((todayStr.equals(modifyDate)
+                                        && edorState.equals("0")
+                                        && edorType.equals("WT"))){
+                                    return true;
+                                }else{
+                                    return false;
+                                }
+                            }else{
+                                return false;
+                            }
+
                         }
+
 
                     }
                 }).addSink(new InsertKafkaOnly<>("testyhlv6LB"));
+
+
+
+
+
+
+
+
+
 
 
 
@@ -274,19 +309,46 @@ public class MainDevelopStreamTwo {
                 new HashMap<>()); //过滤的字段和值
 
 
+        //有的数据里没有期缴趸交的字段，以及产品名称 为了补充上
+        JobPremiums.lbpolToProductConfig(
+                env,
+                "testyhlv10LB",  //输入topic
+                kafkaProp,// kafka默认配置
+                "testyhlv11LB",// 输出topic
+                "KLMIDAPP:product_config_period_type",// 需要关联的中间hbase表
+                new LinkedHashMap<String,String>(){
+                    {
+                        put("contplancode","contplancode");
+                        put("riskcode","riskcode");
+                    }
+                },// 要从主流中需要取得的字段 之 关联字段
+                new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id",
+                        "branch_name","branch_id","modifydate",
+                        "class_id","branch_id_parent","branch_id_full",
+                        "polno","payyears","signdate","amnt",
+                        "contplancode","riskcode","edorstate","edortype",
+                        "rate","start_date",
+                        "end_date","state","pay_period")),//period_type product_name      要从主流中需要取得的字段 之 其他字段
+                new HashSet<>(Arrays.asList("product_name","product_payintv")),// 要从hbase中取得的字段
+                ProductConfig.class,// hbase表的实体类名字
+                LbpolKafka06.class,// 发到kafka的实体类的名字  (固定的变量名)
+                new HashMap<>(),
+                new HashMap<>()); //过滤的字段和值
+
+
         String appGeneralResult = "APPLICATION_GENERAL_RESULT_RT";
         String appProductDetail = "APPLICATION_PRODUCT_DETIAL_RT";
         String appProductResult = "APPLICATION_PRODUCT_RESULT_RT";
 
-        AppGeneralResultLBV4.LB_branch_name(env,"testyhlv10LB",kafkaProp,"",appGeneralResult);
-//        AppGeneralResultLBV4.LB_branch_name_periodtype(env,"testyhlv10LB",kafkaProp,"",appGeneralResult);
-//        AppGeneralResultLBV4.LB_branch_name_num(env,"testyhlv10LB",kafkaProp,"",appGeneralResult);
-//
-//        AppProductResultLBV4.LB_branch_name_product(env,"testyhlv10LB",kafkaProp,"",appProductResult);
-//        AppProductResultLBV4.LB_branch_name_num_product(env,"testyhlv10LB",kafkaProp,"",appProductResult);
-//
-//        AppProductDetailLBV4.LB_branch_name_product_payperiod_num(env,"testyhlv10LB",kafkaProp,"",appProductDetail);
-//        AppProductDetailLBV4.LB_branch_name_product_payperiod(env,"testyhlv10LB",kafkaProp,"",appProductDetail);
+        AppGeneralResultLBV4.LB_branch_name(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
+        AppGeneralResultLBV4.LB_branch_name_periodtype(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
+        AppGeneralResultLBV4.LB_branch_name_num(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
+
+        AppProductResultLBV4.LB_branch_name_product(env,"testyhlv11LB",kafkaProp,"",appProductResult);
+        AppProductResultLBV4.LB_branch_name_num_product(env,"testyhlv11LB",kafkaProp,"",appProductResult);
+
+        AppProductDetailLBV4.LB_branch_name_product_payperiod_num(env,"testyhlv11LB",kafkaProp,"",appProductDetail);
+        AppProductDetailLBV4.LB_branch_name_product_payperiod(env,"testyhlv11LB",kafkaProp,"",appProductDetail);
 
         env.execute("two");
     }

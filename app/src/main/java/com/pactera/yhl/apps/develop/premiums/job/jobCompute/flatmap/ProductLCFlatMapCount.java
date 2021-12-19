@@ -1,6 +1,6 @@
 package com.pactera.yhl.apps.develop.premiums.job.jobCompute.flatmap;
 
-import com.pactera.yhl.apps.develop.premiums.entity.LbpolKafka05;
+import com.pactera.yhl.apps.develop.premiums.entity.LbpolKafka06;
 import net.sf.cglib.beans.BeanCopier;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
@@ -16,7 +16,7 @@ import org.apache.flink.util.Collector;
  * time: 2021/12/7 上午10:34
  * company: gientech
  */
-public class ProductLCFlatMapCount extends RichFlatMapFunction<LbpolKafka05,LbpolKafka05> {
+public class ProductLCFlatMapCount extends RichFlatMapFunction<LbpolKafka06,LbpolKafka06> {
     ReducingState<Double> reducingState;
     @Override
     public void open(Configuration parameters) throws Exception {
@@ -36,11 +36,11 @@ public class ProductLCFlatMapCount extends RichFlatMapFunction<LbpolKafka05,Lbpo
         reducingState = getRuntimeContext().getReducingState(descriptor);
     }
     @Override
-    public void flatMap(LbpolKafka05 lbpolKafka05, Collector<LbpolKafka05> collector) throws Exception {
+    public void flatMap(LbpolKafka06 lbpolKafka06, Collector<LbpolKafka06> collector) throws Exception {
         reducingState.add(Double.valueOf("1"));
-        LbpolKafka05 newObj = new LbpolKafka05();
-        BeanCopier beanCopier = BeanCopier.create(lbpolKafka05.getClass(), newObj.getClass(), false);
-        beanCopier.copy(lbpolKafka05,newObj,null);
+        LbpolKafka06 newObj = new LbpolKafka06();
+        BeanCopier beanCopier = BeanCopier.create(lbpolKafka06.getClass(), newObj.getClass(), false);
+        beanCopier.copy(lbpolKafka06,newObj,null);
         newObj.setPrem(String.valueOf(reducingState.get()));
         collector.collect(newObj);
     }

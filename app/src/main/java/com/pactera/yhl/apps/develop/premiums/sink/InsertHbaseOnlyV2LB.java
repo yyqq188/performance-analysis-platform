@@ -137,6 +137,7 @@ public class InsertHbaseOnlyV2LB<T> extends RichSinkFunction<T> {
         String jsonStr = genEntityJSON(value,
                 sb.toString().substring(1, sb.toString().length()), table);
         insertKafka(jsonStr);
+//        insertKafka(value.toString());
     }
 
 
@@ -150,6 +151,7 @@ public class InsertHbaseOnlyV2LB<T> extends RichSinkFunction<T> {
     }
     private String genEntityJSON(T value,String rowkey,HTable hTable) throws Exception {
         System.out.println("before value = " + value);
+        System.out.println("true rowkey = "+rowkey);
         Get get = new Get(Bytes.toBytes(rowkey));
         Result result = hTable.get(get);
         List<Cell> cells = result.listCells();
