@@ -11,9 +11,11 @@ public class EntityStrategyV2 {
         if(tableName == null || tableName.isEmpty()){
             throw new IllegalArgumentException("tablename should not empty");
         }
-        if(tableName.equals(TableNameV2.Lbcont)){
-            return new Lbcont();
-        }else if(tableName.equals(TableNameV2.Lbpol)){
+//        if(tableName.equals(TableNameV2.Lbcont)){
+//            return new Lbcont();
+//        }else
+
+        if(tableName.equals(TableNameV2.Lbpol)){
             return new Lbpol();
         }else if(tableName.equals(TableNameV2.Lccont)){
             return new Lccont();

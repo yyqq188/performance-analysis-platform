@@ -18,12 +18,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import java.util.*;
 
 public class MainDevelopStreamOne {
-
-
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.enableCheckpointing(5000, CheckpointingMode.EXACTLY_ONCE);
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(10)));
+//        env.enableCheckpointing(5000, CheckpointingMode.EXACTLY_ONCE);
+//        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(10)));
         ParameterTool parameterTool = ParameterTool.fromArgs(args);
         String configPath = parameterTool.get("config_path");
         ParameterTool params = ParameterTool.fromPropertiesFile(configPath);
@@ -33,10 +31,9 @@ public class MainDevelopStreamOne {
         parameterTool.getProperties();
         Properties kafkaProp = new Properties();
         kafkaProp.setProperty("bootstrap.servers", params.toMap().get("kafka_bootstrap_servers"));
-
         JobPremiums.lcpol2saleinfo(
                 env,
-                "testyhlv2LC",  //输入topic
+                "listables",  //输入topic
                 kafkaProp,// kafka默认配置
                 "testyhlv3LC",// 输出topic
                 "KLMIDAPP:t02salesinfok_salesId",// 需要关联的中间hbase表
@@ -45,7 +42,8 @@ public class MainDevelopStreamOne {
                         put("agentcode","agentcode");
                     }
                 },// 要从主流中需要取得的字段 之 关联字段
-                new HashSet<>(Arrays.asList("managecom","prem","agentcom","polno","payyears","signdate","amnt")),// 要从主流中需要取得的字段 之 其他字段
+                new HashSet<>(Arrays.asList("managecom","prem","agentcom","polno","payyears",
+                        "signdate","amnt","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("workarea","channel_id")),// 要从hbase中取得的字段
                 T02salesinfok.class,// hbase表的实体类名字
                 PremiumsKafkaEntity01.class,// 发到kafka的实体类的名字  (固定的变量名)
@@ -70,7 +68,7 @@ public class MainDevelopStreamOne {
 //                    }
 //                },// 要从主流中需要取得的字段 之 关联字段
 //                new HashSet<>(Arrays.asList("workarea","channel_id")),// 要从主流中需要取得的字段 之 其他字段
-//                new HashSet<>(Arrays.asList("managecom","prem","agentcom","polno","payyears","signdate","amnt")),// 要从hbase中取得的字段
+//                new HashSet<>(Arrays.asList("managecom","prem","agentcom","polno","payyears","signdate","amnt","contno")),// 要从hbase中取得的字段
 //                Lcpol.class,// hbase表的实体类名字
 //                PremiumsKafkaEntity01.class,// 发到kafka的实体类的名字  (固定的变量名)
 //                new HashMap<String,String>(){
@@ -93,7 +91,8 @@ public class MainDevelopStreamOne {
                         put("managecom","managecom");
                     }
                 },// 要从主流中需要取得的字段 之 关联字段
-                new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id","polno","payyears","signdate","amnt")),// 要从主流中需要取得的字段 之 其他字段
+                new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id",
+                        "polno","payyears","signdate","amnt","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("branch_name","branch_id",
                         "class_id","branch_id_parent","branch_id_full")),// 要从hbase中取得的字段
                 T01branchinfo.class,// hbase表的实体类名字
@@ -114,13 +113,36 @@ public class MainDevelopStreamOne {
                         put("branch_id_full","branch_id_full");
                     }
                 },// 要从主流中需要取得的字段 之 关联字段
-                new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id","polno","payyears","signdate","amnt")),// 要从主流中需要取得的字段 之 其他字段
+                new HashSet<>(Arrays.asList("workarea","prem","managecom",
+                        "agentcom","channel_id","polno","payyears",
+                        "signdate","amnt","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("branch_name","branch_id",
                         "class_id","branch_id_parent","branch_id_full")),// 要从hbase中取得的字段
                 T01branchinfo.class,// hbase表的实体类名字
                 PremiumsKafkaEntity02.class,// 发到kafka的实体类的名字  (固定的变量名)
                 new HashMap<>(),
                 new HashMap<>()); //过滤的字段和值
+
+
+//        JobPremiums.lcpolTolcpol(
+//                env,
+//                "testyhlv5LC",  //输入topic
+//                kafkaProp,// kafka默认配置
+//                "testyhlv6LC",// 输出topic
+//                "KLMIDAPP:LCPOL_CONTNO",// 需要关联的中间hbase表
+//                new LinkedHashMap<String,String>(){
+//                    {
+//                        put("polno","polno");
+//                    }
+//                },// 要从主流中需要取得的字段 之 关联字段
+//                new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id",
+//                        "branch_name","branch_id","class_id","branch_id_parent","branch_id_full",
+//                        "polno","signdate","amnt","contno")),// 要从主流中需要取得的字段 之 其他字段
+//                new HashSet<>(Arrays.asList("contplancode","riskcode","payyears")),// 要从hbase中取得的字段
+//                Lcpol.class,// hbase表的实体类名字
+//                PremiumsKafkaEntity03.class,// 发到kafka的实体类的名字  (固定的变量名)
+//                new HashMap<>(),
+//                new HashMap<>()); //过滤的字段和值
 
         JobPremiums.lcpolTolcpol(
                 env,
@@ -134,14 +156,14 @@ public class MainDevelopStreamOne {
                     }
                 },// 要从主流中需要取得的字段 之 关联字段
                 new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id",
-                        "branch_name","branch_id",
-                        "class_id","branch_id_parent","branch_id_full","polno","payyears","signdate","amnt")),// 要从主流中需要取得的字段 之 其他字段
-                new HashSet<>(Arrays.asList("contplancode","riskcode")),// 要从hbase中取得的字段
+                        "branch_name","branch_id","class_id","branch_id_parent","branch_id_full",
+                        "polno","signdate","amnt","contno")),// 要从主流中需要取得的字段 之 其他字段
+                new HashSet<>(Arrays.asList("contplancode","riskcode","payyears")),// 要从hbase中取得的字段
                 Lcpol.class,// hbase表的实体类名字
                 PremiumsKafkaEntity03.class,// 发到kafka的实体类的名字  (固定的变量名)
                 new HashMap<>(),
                 new HashMap<>()); //过滤的字段和值
-        
+
         //这里是外关联
         JobPremiums.lcpolToProductRateConfig(
                 env,
@@ -157,9 +179,9 @@ public class MainDevelopStreamOne {
                     }
                 },// 要从主流中需要取得的字段 之 关联字段
                 new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id",
-                        "branch_name","branch_id",
-                        "class_id","branch_id_parent","branch_id_full","polno","payyears","signdate","amnt",
-                        "contplancode","riskcode")),// 要从主流中需要取得的字段 之 其他字段
+                        "branch_name","branch_id","class_id","branch_id_parent",
+                        "branch_id_full","polno","payyears","signdate","amnt",
+                        "contplancode","riskcode","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("product_name","rate","start_date",
                         "end_date","period_type","state","pay_period")),// 要从hbase中取得的字段
                 ProductRateConfig.class,// hbase表的实体类名字
@@ -181,10 +203,10 @@ public class MainDevelopStreamOne {
                     }
                 },// 要从主流中需要取得的字段 之 关联字段
                 new HashSet<>(Arrays.asList("workarea","prem","managecom","agentcom","channel_id",
-                        "branch_name","branch_id",
-                        "class_id","branch_id_parent","branch_id_full","polno","payyears","signdate","amnt",
+                        "branch_name","branch_id","class_id","branch_id_parent",
+                        "branch_id_full","polno","payyears","signdate","amnt",
                         "contplancode","riskcode","rate","start_date",
-                        "end_date","state","pay_period")),// 要从主流中需要取得的字段 之 其他字段
+                        "end_date","state","pay_period","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("product_name","product_payintv")),// 要从hbase中取得的字段
                 ProductConfig.class,// hbase表的实体类名字
                 PremiumsKafkaEntity05.class,// 发到kafka的实体类的名字  (固定的变量名)
@@ -199,26 +221,38 @@ public class MainDevelopStreamOne {
         String appProductResult = "APPLICATION_PRODUCT_RESULT_RT";
 
 
+
+        //总公司
+
+
         //table1
         AppGeneralResultLCV4.LC_branch_name(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
         AppGeneralResultLCV4.LC_workarea(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
+        AppGeneralResultLCV4.LC_all(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
 
         AppGeneralResultLCV4.LC_branch_name_periodtype(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
         AppGeneralResultLCV4.LC_workarea_periodtype(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
+        AppGeneralResultLCV4.LC_all_periodtype(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
 
         AppGeneralResultLCV4.LC_branch_name_num(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
         AppGeneralResultLCV4.LC_workarea_num(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
+        AppGeneralResultLCV4.LC_all_num(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appGeneralResult);
 
 
         //table2
         AppProductResultLCV4.LC_branch_name_product(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductResult);
         AppProductResultLCV4.LC_branch_name_product_num(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductResult);
-
+        AppProductResultLCV4.LC_all_product(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductResult);
+        AppProductResultLCV4.LC_all_product_num(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductResult);
 
         //table3
-        AppProductDetailLCV4.LC_branch_name_product_payperiod(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductDetail);
-        AppProductDetailLCV4.LC_branch_name_product_payperiod_num(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductDetail);
+        AppProductDetailLCV4.LC_branch_name_product(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductDetail);
+//        AppProductDetailLCV4.LC_branch_name_product_payperiod(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductDetail);
+        AppProductDetailLCV4.LC_all_product_payperiod(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductDetail);
 
+        //这个待做
+        AppProductDetailLCV4.LC_branch_name_product_payperiod_num(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductDetail);
+        AppProductDetailLCV4.LC_all_product_payperiod_num(env,"testyhlv8LC",kafkaProp,"testyhlv9LC",appProductDetail);
         env.execute("one");
     }
 }

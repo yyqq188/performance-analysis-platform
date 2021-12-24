@@ -1,5 +1,6 @@
 package com.pactera.yhl.apps.develop.premiums.test;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
@@ -25,7 +26,7 @@ public class KafkaComuserMyTest5 {
         props.put("auto.offset.reset","latest ");
         props.put("client.id", "zy_client_id");
         KafkaConsumer<String,String> consumer = new KafkaConsumer<String, String>(props);
-        consumer.subscribe(Collections.singletonList("testyhlv5LB"));
+        consumer.subscribe(Collections.singletonList("APPLICATION_PRODUCT_DETIAL_RT"));
         AtomicLong num1 = new AtomicLong(0);
         while(true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
@@ -33,10 +34,10 @@ public class KafkaComuserMyTest5 {
 //                System.out.printf("topic = %s ,partition = %d,offset = %d, key = %s, value = %s%n", record.topic(), record.partition(),
 //                        record.offset(), record.key(), record.value());
 
-                num1.addAndGet(1);
-                System.out.println("num = " + num1);
-                System.out.println(record.value());
-//                PaserTest.ParseJson(record.value());
+                Object branch_name = JSON.parseObject(record.value()).get("branch_name");
+                Object contno = JSON.parseObject(record.value()).get("contno");
+                Object payyears = JSON.parseObject(record.value()).get("payyears");
+                System.out.println("branch_name = " + branch_name +" "+ contno+" "+ payyears);
             });
         }
 

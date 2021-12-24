@@ -41,4 +41,9 @@ public class LbpolKafka06 implements Serializable,KafkaEntity{
     public String product_payintv;
     public String state;
     public String pay_period;
+    public String contno;
+    public String payintv;
+    public String payendyear;
+    public String insuyear;
+    public String mainpolno;
 }

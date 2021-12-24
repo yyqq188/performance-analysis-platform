@@ -25,7 +25,7 @@ public class KafkaComuserMyTest6 {
         props.put("auto.offset.reset","latest ");
         props.put("client.id", "zy_client_id");
         KafkaConsumer<String,String> consumer = new KafkaConsumer<String, String>(props);
-        consumer.subscribe(Collections.singletonList("testyhlv6LB"));
+        consumer.subscribe(Collections.singletonList("APPLICATION_PRODUCT_DETIAL_RT"));
         AtomicLong num1 = new AtomicLong(0);
         while(true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
@@ -33,8 +33,8 @@ public class KafkaComuserMyTest6 {
 //                System.out.printf("topic = %s ,partition = %d,offset = %d, key = %s, value = %s%n", record.topic(), record.partition(),
 //                        record.offset(), record.key(), record.value());
 
-                num1.addAndGet(1);
-                System.out.println("num = " + num1);
+//                num1.addAndGet(1);
+//                System.out.println("num = " + num1);
                 System.out.println(record.value());
 //                PaserTest.ParseJson(record.value());
             });

@@ -83,15 +83,19 @@ public class InsertHbaseOnlyV2<T> extends RichSinkFunction<T> {
         String rowkeys = strs[1];
         StringBuffer sb = new StringBuffer();
         for(String rowkeyfield:rowkeys.split(",")){
+            System.out.println("rowkeyfield = " + rowkeyfield);
             Field field = value.getClass().getField(rowkeyfield);
-            String s = field.get(value).toString();
+            System.out.println("field.getName() = " + field.getName());
+            String s = "";
+            if(field.get(value) != null){
+                s = field.get(value).toString();
+            }
             sb.append(",");
             sb.append(s);
         }
         List<Put> puts = new ArrayList<>();
         for(String column:columns.split(",")){
             Field columField = value.getClass().getField(column);
-//            double columValue = Double.parseDouble(columField.get(value).toString());
             String columValue = columField.get(value).toString();
             Put put = new Put(Bytes.toBytes(sb.toString().substring(1,sb.toString().length())));
             put.addColumn(Bytes.toBytes("f"),Bytes.toBytes(column),Bytes.toBytes(columValue));
@@ -118,7 +122,7 @@ public class InsertHbaseOnlyV2<T> extends RichSinkFunction<T> {
         List<Cell> cells = result.listCells();
         for(Cell cell:cells){
             String qualifier = new String(CellUtil.cloneQualifier(cell));
-            double hbaseValue = Double.valueOf(new String(CellUtil.cloneValue(cell)));
+            Double hbaseValue = Double.valueOf(new String(CellUtil.cloneValue(cell)));
             setNewDoubleValue(qualifier,value,hbaseValue);
         }
         JSONObject jsonObject = new JSONObject();

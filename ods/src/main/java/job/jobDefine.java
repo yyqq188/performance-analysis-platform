@@ -1,5 +1,6 @@
 package job;
 
+import entity.Lcpol;
 import map.MapFuncTableAnychatcont;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -21,10 +22,11 @@ public class jobDefine {
         kafkaConsumer.setStartFromEarliest();
 //        kafkaConsumer.setStartFromLatest();
         DataStreamSource<String> source = env.addSource(kafkaConsumer);
-        source.map(new MapFuncTableAnychatcont())  //.print();
-                .filter(x -> x != null)
-                .addSink(new SinkFuncTableAnychatcont())
-                .name("sinkToHBaseTable");
+        source.map(new MapFuncTableAnychatcont()).print();
+
+//                .filter(x -> x != null)
+//                .addSink(new SinkFuncTableAnychatcont())
+//                .name("sinkToHBaseTable");
         env.execute(jobDefine.class.getName());
     }
 }

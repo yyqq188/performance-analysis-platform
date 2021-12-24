@@ -39,7 +39,7 @@ public class OrganizationLCFlatMapCount extends RichFlatMapFunction<PremiumsKafk
     }
     @Override
     public void flatMap(PremiumsKafkaEntity05 premiumsKafkaEntity05, Collector<PremiumsKafkaEntity05> collector) throws Exception {
-        reducingState.add(1.00);
+        reducingState.add(Double.valueOf("1"));
         PremiumsKafkaEntity05 newObj = new PremiumsKafkaEntity05();
         BeanCopier beanCopier = BeanCopier.create(premiumsKafkaEntity05.getClass(), newObj.getClass(), false);
         beanCopier.copy(premiumsKafkaEntity05,newObj,null);

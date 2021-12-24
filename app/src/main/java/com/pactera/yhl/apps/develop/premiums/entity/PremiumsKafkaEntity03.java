@@ -25,5 +25,15 @@ public class PremiumsKafkaEntity03 {
     public String payyears;
     public String signdate;
     public String amnt;
+    public String contno;
+    public String payintv;
+    public String payendyear;
+    public String insuyear;
+    public String mainpolno;
+
+    public String product_payintv; //期缴趸缴
+
+
+
 
 }

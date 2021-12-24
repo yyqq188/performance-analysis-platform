@@ -12,15 +12,15 @@ public class EntityStrategy {
         }
 
 
-        if(tableName.equals(TableName.Lbcont)){
-            return new Lbcont();
-        }else if(tableName.equals(TableName.Lbpol)){
-            return new Lbpol();
-        }else if(tableName.equals(TableName.Lccont)){
-            return new Lccont();
-        }else if(tableName.equals(TableName.Lcpol)){
-            return new Lcpol();
-        }
+//        if(tableName.equals(TableName.Lbcont)){
+//            return new Lbcont();
+//        }else if(tableName.equals(TableName.Lbpol)){
+//            return new Lbpol();
+//        }else if(tableName.equals(TableName.Lccont)){
+//            return new Lccont();
+//        }else if(tableName.equals(TableName.Lcpol)){
+//            return new Lcpol();
+//        }
 
 //        if(tableName.equals(TableName.AnyChatCont)){
 //            return new Anychatcont();

@@ -139,9 +139,9 @@ public class JoinInsertKafkaSpecial<OUT> extends RichSinkFunction<OUT> {
                 //edorno,signdate
                 if(f.getName().toString().equals("edorno")){
                     String v = f.get(value).toString().split("\\s+")[0];
-//                    String todayStr = new SimpleDateFormat("yyyy-MM-dd")
-//                            .format(new Date(System.currentTimeMillis()));
-                    String todayStr = "2021-09-30";
+                    String todayStr = new SimpleDateFormat("yyyy-MM-dd")
+                            .format(new Date(System.currentTimeMillis()));
+//                    String todayStr = "2021-09-30";
                     if(todayStr.equals(v)){
                         String methodName = "set"+Util.LargerFirstChar(f.getName());
                         Method method = kafkaClazz.getDeclaredMethod(methodName, String.class);

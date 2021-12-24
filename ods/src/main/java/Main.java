@@ -22,11 +22,11 @@ public class Main {
         //设置并行度
         env.setParallelism(2);
         // 设置模式为exactly-once并且每隔5s启动一个检查点
-        env.enableCheckpointing(5000, CheckpointingMode.EXACTLY_ONCE);
-        //设置状态后端
-        env.setStateBackend(new FsStateBackend("hdfs://prod-bigdata-pc2:50070/tmp/kunlun/ckp_ods"));
-        //重启策略
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(2, 2000L));
+//        env.enableCheckpointing(5000, CheckpointingMode.EXACTLY_ONCE);
+//        //设置状态后端
+//        env.setStateBackend(new FsStateBackend("hdfs://prod-bigdata-pc2:50070/tmp/kunlun/ckp_ods"));
+//        //重启策略
+//        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(2, 2000L));
         //设置流处理的时间特性为事件时间
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 

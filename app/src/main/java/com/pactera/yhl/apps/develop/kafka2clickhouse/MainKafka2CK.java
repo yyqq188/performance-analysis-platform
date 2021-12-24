@@ -22,18 +22,17 @@ public class MainKafka2CK {
         Properties kafkaProp = new Properties();
         kafkaProp.setProperty("bootstrap.servers", params.toMap().get("kafka_bootstrap_servers"));
 
-
-        JobKafka2CK.applicationGeneralResult(env,
+        JobKafka2CKV2.applicationGeneralResult(env,
                 "APPLICATION_GENERAL_RESULT_RT",kafkaProp,
                 "APPLICATION_GENERAL_RESULT_RT"
                 );
 
-        JobKafka2CK.applicationProductResult(env,
+        JobKafka2CKV2.applicationProductResult(env,
                 "APPLICATION_PRODUCT_RESULT_RT",
                 kafkaProp,
                 "APPLICATION_PRODUCT_RESULT_RT");
 
-        JobKafka2CK.applicationProductDetial(env,
+        JobKafka2CKV2.applicationProductDetial(env,
                 "APPLICATION_PRODUCT_DETIAL_RT",
                 kafkaProp,
                 "APPLICATION_PRODUCT_DETIAL_RT");

@@ -17,7 +17,6 @@ import java.lang.reflect.Field;
  */
 public class MapFuncTableAnychatcont extends RichMapFunction<String, KLEntity> {
     private static final Logger logger = LoggerFactory.getLogger(MapFuncTableAnychatcont.class);
-
     @Override
     public KLEntity map(String s) throws Exception {
         JSONObject jsonObject = JSON.parseObject(s);

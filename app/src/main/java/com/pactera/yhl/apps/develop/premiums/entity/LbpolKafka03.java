@@ -25,8 +25,15 @@ public class LbpolKafka03 implements Serializable,KafkaEntity{
     public String amnt;
 
     public String channel_id;
-
     public String class_id;
     public String branch_id_parent;
     public String branch_id_full;
+    public String contno;
+    public String payintv;
+    public String payendyear;
+    public String insuyear;
+    public String mainpolno;
+
+    public String contplancode;
+    public String riskcode;
 }

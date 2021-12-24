@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.pactera.yhl.sink.abstr.MyHbaseCli;
 import com.pactera.yhl.sink.abstr.MyKafka;
 import com.pactera.yhl.util.Util;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
@@ -20,11 +21,9 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
-
+import java.text.SimpleDateFormat;
+import java.util.*;
+@Slf4j
 public class JoinInsertKafkaAndHbaseOutJoin<OUT> extends RichSinkFunction<OUT> {
     protected static final String cfString = "f";
     protected static final byte[] cf = Bytes.toBytes(cfString);
@@ -189,9 +188,9 @@ public class JoinInsertKafkaAndHbaseOutJoin<OUT> extends RichSinkFunction<OUT> {
                 if (filterMapHbase.get(keyField).equals("function_date")){
                     Field field = kafkaClazzObj.getClass().getField(keyField);
                     String v = Util.toString(field.get(kafkaClazzObj)).split("\\s+")[0];
-//                    String todayStr = new SimpleDateFormat("yyyy-MM-dd")
-//                            .format(new Date(System.currentTimeMillis()));
-                    String todayStr = "2021-09-30";
+                    String todayStr = new SimpleDateFormat("yyyy-MM-dd")
+                            .format(new Date(System.currentTimeMillis()));
+//                    String todayStr = "2021-09-30";
                     if(todayStr.equals(v)){
                         //将hbase的值赋值到kafka实体类中
                         String methodName = "set"+Util.LargerFirstChar(keyField);

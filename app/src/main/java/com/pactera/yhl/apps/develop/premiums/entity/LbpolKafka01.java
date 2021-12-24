@@ -20,6 +20,11 @@ public class LbpolKafka01 implements Serializable,KafkaEntity{
     public String payyears;
     public String signdate;
     public String amnt;
+    public String contno;
+    public String payintv;
+    public String payendyear;
+    public String insuyear;
+    public String mainpolno;
 
 
 

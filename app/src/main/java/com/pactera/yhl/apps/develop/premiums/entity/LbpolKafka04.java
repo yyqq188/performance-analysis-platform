@@ -33,4 +33,10 @@ public class LbpolKafka04 implements Serializable,KafkaEntity{
 
     public String contplancode;
     public String riskcode;
+    public String contno;
+    public String payintv;
+    public String payendyear;
+    public String insuyear;
+    public String mainpolno;
+
 }

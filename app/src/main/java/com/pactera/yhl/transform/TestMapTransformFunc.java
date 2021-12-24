@@ -15,8 +15,6 @@ public class TestMapTransformFunc implements MapFunction<String, KLEntity> {
         String data = jsonObject.getJSONObject("data").toString();
         if(tableName.equals(TestTableName.Lbpol)){
             return JSONObject.parseObject(data, Lbpol.class);
-        }else if(tableName.equals(TestTableName.Lbcont)){
-            return JSONObject.parseObject(data, Lbcont.class);
         }else if(tableName.equals(TestTableName.Lcpol)){
             return JSONObject.parseObject(data, Lcpol.class);
         }else if(tableName.equals(TestTableName.Lccont)){

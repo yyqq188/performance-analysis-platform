@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lbcont implements KLEntity{
+public class Lbcont{
     public String edorno;
     public String grpcontno;
     public String contno;

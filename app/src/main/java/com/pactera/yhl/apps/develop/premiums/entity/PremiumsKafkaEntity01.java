@@ -20,4 +20,13 @@ public class PremiumsKafkaEntity01 implements Serializable,KafkaEntity{
     public String payyears;
     public String signdate;
     public String amnt;
+    public String contno;
+
+    public String payintv;
+    public String payendyear;
+    public String insuyear;
+    public String riskcode;
+    public String contplancode;
+    public String mainpolno;
+
 }

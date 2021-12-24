@@ -47,9 +47,9 @@ public class OrganizationLCFlatMap extends RichFlatMapFunction<PremiumsKafkaEnti
         System.out.println("premiumsKafkaEntity05.getPolno() = " + premiumsKafkaEntity05.getPolno());
         //每次添加的时候要乘以系数
         Double prem = Double.valueOf(premiumsKafkaEntity05.getPrem());
-        if(premiumsKafkaEntity05.getRate().equals("")
-                ||premiumsKafkaEntity05.getRate().length() == 0
-                || Objects.isNull(premiumsKafkaEntity05.getRate())){
+        if(Objects.isNull(premiumsKafkaEntity05.getRate()) ||
+                premiumsKafkaEntity05.getRate().equals("")
+                ||premiumsKafkaEntity05.getRate().length() == 0){
             reducingState.add(prem);
         }else {
             Double rate = Double.valueOf(premiumsKafkaEntity05.getRate());

@@ -19,7 +19,7 @@ public class KafkaComuserMyTestLBCompute2 {
                 "10.5.2.133:6667,10.5.2.134:6667,10.5.2.144:6667,10.5.2.145:6667");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("group.id", "group12");
+        props.put("group.id", "group14");
 
         // 可选设置属性
         props.put("enable.auto.commit", "true");

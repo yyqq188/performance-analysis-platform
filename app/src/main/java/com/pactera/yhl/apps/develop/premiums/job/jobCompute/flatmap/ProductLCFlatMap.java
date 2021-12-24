@@ -23,11 +23,6 @@ public class ProductLCFlatMap extends RichFlatMapFunction<LbpolKafka06,LbpolKafk
     ReducingState<Double> reducingState;
 
     @Override
-    public void close() throws Exception {
-        reducingState.clear();
-    }
-
-    @Override
     public void open(Configuration parameters) throws Exception {
         StateTtlConfig ttlConfig = StateTtlConfig.newBuilder(Time.days(2))
                 .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)

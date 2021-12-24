@@ -25,7 +25,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class InsertClickhouseOnly<T> extends RichSinkFunction<T> {
-    String address = "jdbc:clickhouse://10.5.2.134:8123/default";
+//    String address = "jdbc:clickhouse://10.5.2.134:8123/default";
+    String address = "jdbc:clickhouse://10.5.2.134:8123/kl_base";
     String user = "default";
     String password = "default";
     Connection connection;
@@ -90,6 +91,7 @@ public class InsertClickhouseOnly<T> extends RichSinkFunction<T> {
         sql = String.format("insert into %s (%s) values (%s)",tableName,
                 sbKey.toString().toUpperCase().substring(1,sbKey.toString().length()),
                 sbValue.toString().substring(1,sbValue.toString().length()));
+        System.out.println("sqlValue123 = " + sql);
         statement.executeQuery(sql);
     }
 }

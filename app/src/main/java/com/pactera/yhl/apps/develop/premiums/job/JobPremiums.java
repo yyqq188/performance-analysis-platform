@@ -11,6 +11,10 @@ import com.pactera.yhl.apps.develop.premiums.premise.mid.InsertHbaseWithFilter;
 import com.pactera.yhl.entity.source.*;
 import com.pactera.yhl.sink.abstr.AbstractCKSink;
 import com.pactera.yhl.transform.TestMapTransformFunc;
+import com.pactera.yhl.transform.normal.MapFuncTableAnychatcont;
+import com.pactera.yhl.transform.normal2.LbpolSplitMapFunc;
+import com.pactera.yhl.transform.normal2.LcpolSplitMapFunc;
+import com.pactera.yhl.transform.normal3.MapFuncTableHXTest;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -19,10 +23,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 public class JobPremiums {
     //中间层
@@ -48,7 +49,8 @@ public class JobPremiums {
                 topic, new SimpleStringSchema(), prop);
         kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
         env.addSource(kafkaConsumer)
-                .map(new TestMapTransformFunc())
+                .map(new LcpolSplitMapFunc())
+//                .map(new TestMapTransformFunc())
                 .filter(x -> x instanceof Lcpol)
                 .map(x -> (Lcpol) x)
                 .addSink(new InsertHbase<>(tableName,rowkeys,columnNames,columnTableName));
@@ -207,9 +209,16 @@ public class JobPremiums {
                 topic, new SimpleStringSchema(), prop);
         kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
         env.addSource(kafkaConsumer)
-                .map(new TestMapTransformFunc())
+                //todo 修改了解析
+//                .map(new MapFuncTableAnychatcont())
+                .map(new LcpolSplitMapFunc())
+//                .map(new TestMapTransformFunc())
+                .filter(Objects::nonNull)
                 .filter(x -> x instanceof Lcpol)
                 .map(x -> (Lcpol) x)
+                //加过滤
+                .filter(x -> x.getRenewcount().equals("0") && x.getConttype().equals("1") && !x.stateflag.equals("0"))
+                .filter(x -> x.salechnl.equals("04") || x.salechnl.equals("13"))
                 .addSink(new JoinInsertKafka(tableName,topicOut,
                         joinFieldsDriver,otherFieldsDriver,
                         fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
@@ -280,6 +289,50 @@ public class JobPremiums {
                         joinFieldsDriver,otherFieldsDriver,
                         fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
     }
+    public static void ComplexLogicProcess(StreamExecutionEnvironment env, String topic,
+                                    Properties prop,String topicOut,
+                                    String tableName, Map<String,String> joinFieldsDriver,
+                                    Set<String> otherFieldsDriver,
+                                    Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                    Class<?> kafkaClazz, Map<String,String> filterMapDriver,
+                                    Map<String,String> filterMapHbase) throws Exception {
+        prop.setProperty("group.id","JobPremiums_lcpolTolcpol");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new MapFunction<String, PremiumsKafkaEntity02>() {
+                    @Override
+                    public PremiumsKafkaEntity02 map(String s) throws Exception {
+                        return JSON.parseObject(s,PremiumsKafkaEntity02.class);
+                    }
+                })
+                .addSink(new JoinInsertKafkaSHT(tableName,topic,topicOut));
+    }
+
+    public static void ComplexLogicProcessLB(StreamExecutionEnvironment env, String topic,
+                                           Properties prop,String topicOut,
+                                           String tableName, Map<String,String> joinFieldsDriver,
+                                           Set<String> otherFieldsDriver,
+                                           Set<String> fieldsHbase, Class<?> hbaseClazz,
+                                           Class<?> kafkaClazz, Map<String,String> filterMapDriver,
+                                           Map<String,String> filterMapHbase) throws Exception {
+        prop.setProperty("group.id","JobPremiums_lcpolTolcpol");
+        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+                topic, new SimpleStringSchema(), prop);
+        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+        env.addSource(kafkaConsumer)
+                .map(new MapFunction<String, LbpolKafka03>() {
+                    @Override
+                    public LbpolKafka03 map(String s) throws Exception {
+                        return JSON.parseObject(s,LbpolKafka03.class);
+                    }
+                })
+                .addSink(new JoinInsertKafkaSHTLB(tableName,topic,topicOut));
+    }
+
+
+
     public static void lcpolTolcpol(StreamExecutionEnvironment env, String topic,
                                     Properties prop,String topicOut,
                                     String tableName, Map<String,String> joinFieldsDriver,
@@ -302,6 +355,30 @@ public class JobPremiums {
                         joinFieldsDriver,otherFieldsDriver,
                         fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
     }
+
+    //这是原来的逻辑，是错误的
+//    public static void lcpolTolcpol(StreamExecutionEnvironment env, String topic,
+//                                    Properties prop,String topicOut,
+//                                    String tableName, Map<String,String> joinFieldsDriver,
+//                                    Set<String> otherFieldsDriver,
+//                                    Set<String> fieldsHbase, Class<?> hbaseClazz,
+//                                    Class<?> kafkaClazz, Map<String,String> filterMapDriver,
+//                                    Map<String,String> filterMapHbase){
+//        prop.setProperty("group.id","JobPremiums_lcpolTolcpol");
+//        FlinkKafkaConsumer<String> kafkaConsumer = new FlinkKafkaConsumer<>(
+//                topic, new SimpleStringSchema(), prop);
+//        kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
+//        env.addSource(kafkaConsumer)
+//                .map(new MapFunction<String, PremiumsKafkaEntity02>() {
+//                    @Override
+//                    public PremiumsKafkaEntity02 map(String s) throws Exception {
+//                        return JSON.parseObject(s,PremiumsKafkaEntity02.class);
+//                    }
+//                })
+//                .addSink(new JoinInsertKafka(tableName,topicOut,
+//                        joinFieldsDriver,otherFieldsDriver,
+//                        fieldsHbase,hbaseClazz,kafkaClazz,filterMapDriver,filterMapHbase));
+//    }
 
 
     public static void lcpolToProductRateConfig(StreamExecutionEnvironment env, String topic,
@@ -388,9 +465,16 @@ public class JobPremiums {
                 topic, new SimpleStringSchema(), prop);
         kafkaConsumer.setStartFromTimestamp(System.currentTimeMillis());
         env.addSource(kafkaConsumer)
-                .map(new TestMapTransformFunc())
-                .filter(x -> x instanceof Lbpol)
-                .map(x -> (Lbpol) x)
+//                .map(new MapFuncTableAnychatcont())
+                .map(new LbpolSplitMapFunc())
+//                .map(new MapFuncTableHXTest())
+//                .map(new TestMapTransformFunc())
+//                .filter(Objects::nonNull)
+                .filter(x -> x.getRenewcount() != null)
+//                //加过滤
+                .filter(x -> x.getRenewcount().equals("0") && x.getConttype().equals("1")
+                        && !x.edorno.startsWith("xb"))
+                .filter(x -> x.salechnl.equals("04") || x.salechnl.equals("13"))
                 .addSink(new JoinInsertKafkaAndHbaseOutJoin(tableName,topicOut,
                         joinFieldsDriver,otherFieldsDriver,
                         fieldsHbase,hbaseClazz,kafkaClazz,hbaseTableName,outputHbaseRowkey,
@@ -705,6 +789,8 @@ public class JobPremiums {
 //                .map(x -> (Ldcode) x)
 //                .addSink(new AbstractCKSink<>());
 //    }
+
+
 
 
 }

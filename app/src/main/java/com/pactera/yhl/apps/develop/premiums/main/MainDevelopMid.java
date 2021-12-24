@@ -83,14 +83,15 @@ public class MainDevelopMid {
 //
 
 
-        JobPremiums.midLbpolOrder(env,topic,kafkaProp,
-        "KLMIDAPP:lbpol_payendyear_insuyear",
-        new String[]{"polno"},
-        new String[]{},
-        new String[]{"payendyear","insuyear"},   //需要更新的列
-        "desc",        //升序还是降序
-        Lcpol.class,  // hbase数据的类型
-        "lbpol");
+//        JobPremiums.midLbpolOrder(env,topic,kafkaProp,
+//        "KLMIDAPP:lbpol_payendyear_insuyear",
+//        new String[]{"polno"},
+//        new String[]{},
+//        new String[]{"payendyear","insuyear"},   //需要更新的列
+//        "desc",        //升序还是降序
+//        Lcpol.class,  // hbase数据的类型
+//        "lbpol");
+
 //
 //        //缴费类型
 //        JobPremiums.midPeriodType(env,topic,kafkaProp,

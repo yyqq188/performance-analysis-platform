@@ -9,6 +9,7 @@ import com.pactera.yhl.apps.develop.premiums.job.jobComputeV3.AppProductResultLB
 import com.pactera.yhl.apps.develop.premiums.main.job.lb.AppGeneralResultLBV4;
 import com.pactera.yhl.apps.develop.premiums.main.job.lb.AppProductDetailLBV4;
 import com.pactera.yhl.apps.develop.premiums.main.job.lb.AppProductResultLBV4;
+import com.pactera.yhl.apps.develop.premiums.main.job.lc.AppProductDetailLCV4;
 import com.pactera.yhl.apps.develop.premiums.premise.join.JoinInsertKafkaSpecial;
 import com.pactera.yhl.apps.develop.premiums.sink.InsertKafkaOnly;
 import com.pactera.yhl.apps.develop.premiums.test.KafkaComuserMyTestLBCompute;
@@ -22,6 +23,7 @@ import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import scala.App;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -35,8 +37,8 @@ import java.util.*;
 public class MainDevelopStreamTwo {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.enableCheckpointing(5000, CheckpointingMode.EXACTLY_ONCE);
-//        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(10)));
+//        env.enableCheckpointing(5000, CheckpointingMode.EXACTLY_ONCE);
+//        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(6)));
         ParameterTool parameterTool = ParameterTool.fromArgs(args);
         String configPath = parameterTool.get("config_path");
         ParameterTool params = ParameterTool.fromPropertiesFile(configPath);
@@ -53,7 +55,7 @@ public class MainDevelopStreamTwo {
         //todo 这里改为了left join
         JobPremiums.lbpol2lpedoritem(
                 env,
-                "testyhlv2LB",  //输入topic
+                "listables",  //输入topic
                 kafkaProp,// kafka默认配置
                 "testyhlv5LB",// 输出topic
                 "KLMIDAPP:lpedoritem_contno_edorno",// 需要关联的中间hbase表
@@ -64,7 +66,7 @@ public class MainDevelopStreamTwo {
                     }
                 },// 要从主流中需要取得的字段 之 关联字段
                 new HashSet<>(Arrays.asList("agentcode","managecom","prem","agentcom",
-                        "polno","payyears","signdate","amnt","edorno")),// 要从主流中需要取得的字段 之 其他字段
+                        "polno","payyears","signdate","amnt","edorno","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("modifydate","edortype","edorstate")),// 要从hbase中取得的字段
                 Lpedoritem.class,// hbase表的实体类名字
                 LbpolKafka01.class,// 发到kafka的实体类的名字  (固定的变量名)
@@ -100,25 +102,9 @@ public class MainDevelopStreamTwo {
                 }).filter(new FilterFunction<LbpolKafka01>() {
                     @Override
                     public boolean filter(LbpolKafka01 lbpolKafka01) throws Exception {
-////                        String todayStr = new SimpleDateFormat("yyyy-MM-dd")
-////                        .format(new Date(System.currentTimeMillis()));
-//                        String signData = lbpolKafka01.getSigndate().split("\\s+")[0];
-//                        String modifyDate = lbpolKafka01.getModifydate().split("\\s+")[0];
+                        String todayStr = new SimpleDateFormat("yyyy-MM-dd")
+                        .format(new Date(System.currentTimeMillis()));
 //                        String todayStr = "2021-09-30";
-//                        String edorState = lbpolKafka01.getEdorstate().toString();
-//                        String edorType = lbpolKafka01.getEdortype().toString();
-//                        String edorNo = lbpolKafka01.getEdorno().toString();
-//                        if((todayStr.equals(signData) && edorNo.startsWith("YBT")) ||
-//                        (todayStr.equals(modifyDate) && edorState.equals("0") && edorType.equals("WT"))){
-//                            return true;
-//                        }else{
-//                            return false;
-//                        }
-
-
-//                        String todayStr = new SimpleDateFormat("yyyy-MM-dd")
-//                        .format(new Date(System.currentTimeMillis()));
-                        String todayStr = "2021-09-30";
                         String signData = lbpolKafka01.getSigndate().split("\\s+")[0];
                         String edorNo = lbpolKafka01.getEdorno().toString();
                         if((todayStr.equals(signData) && edorNo.startsWith("YBT"))){
@@ -138,23 +124,9 @@ public class MainDevelopStreamTwo {
                             }else{
                                 return false;
                             }
-
                         }
-
-
                     }
                 }).addSink(new InsertKafkaOnly<>("testyhlv6LB"));
-
-
-
-
-
-
-
-
-
-
-
 
         //1
 //        JobPremiums.lpedoritem2lbpol(
@@ -171,7 +143,7 @@ public class MainDevelopStreamTwo {
 //                },// 要从主流中需要取得的字段 之 关联字段
 //                new HashSet<>(Arrays.asList("modifydate","edortype","edorstate")),// 要从主流中需要取得的字段 之 其他字段
 //                new HashSet<>(Arrays.asList("agentcode","managecom","prem","agentcom",
-//                        "polno","payendyear","signdate","amnt")),// 要从hbase中取得的字段
+//                        "polno","payendyear","signdate","amnt","contno")),// 要从hbase中取得的字段
 //                Lbpol.class,// hbase表的实体类名字
 //                LbpolKafka01.class,// 发到kafka的实体类的名字  (固定的变量名)
 //                "KLMIDAPPRUN:LbpolKafka01",  //输出的hbase表名
@@ -205,7 +177,7 @@ public class MainDevelopStreamTwo {
                 },// 要从主流中需要取得的字段 之 关联字段
                 new HashSet<>(Arrays.asList("agentcode","managecom",
                         "prem","agentcom","modifydate","edortype","edorstate",
-                        "polno","payyears","signdate","amnt")),// 要从主流中需要取得的字段 之 其他字段
+                        "polno","payyears","signdate","amnt","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("workarea","channel_id")),// 要从hbase中取得的字段 area_type
                 T02salesinfok.class,// hbase表的实体类名字
                 LbpolKafka02.class,// 发到kafka的实体类的名字  (固定的变量名)
@@ -231,7 +203,7 @@ public class MainDevelopStreamTwo {
 //                new HashSet<>(Arrays.asList("workarea","channel_id")),// 要从主流中需要取得的字段 之 其他字段
 //                new HashSet<>(Arrays.asList("agentcode","managecom","prem","agentcom",
 //                        "modifydate","edortype","edorstate",
-//                        "polno","payendyear","signdate","amnt")),// 要从hbase中取得的字段
+//                        "polno","payendyear","signdate","amnt","contno")),// 要从hbase中取得的字段
 //                LbpolKafka01.class,// hbase表的实体类名字
 //                LbpolKafka02.class,// 发到kafka的实体类的名字  (固定的变量名)
 //                new HashMap<>(),
@@ -251,7 +223,7 @@ public class MainDevelopStreamTwo {
                 },// 要从主流中需要取得的字段 之 关联字段
                 new HashSet<>(Arrays.asList("workarea","agentcode","managecom","prem",
                         "modifydate","edortype","edorstate",
-                        "polno","payyears","signdate","amnt")),// 要从主流中需要取得的字段 之 其他字段
+                        "polno","payyears","signdate","amnt","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("branch_id","branch_name",
                         "class_id","branch_id_parent","branch_id_full")),// 要从hbase中取得的字段
                 T01branchinfo.class,// hbase表的实体类名字
@@ -276,7 +248,7 @@ public class MainDevelopStreamTwo {
                         "channel_id","modifydate",
                         "branch_name","branch_id",
                         "class_id","branch_id_parent","branch_id_full","polno",
-                        "payyears","signdate","amnt","edorstate","edortype")),// 要从主流中需要取得的字段 之 其他字段
+                        "payyears","signdate","amnt","edorstate","edortype","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("contplancode","riskcode")),// 要从hbase中取得的字段
                 Lbpol.class,// hbase表的实体类名字
                 LbpolKafka04.class,// 发到kafka的实体类的名字  (固定的变量名)
@@ -300,7 +272,7 @@ public class MainDevelopStreamTwo {
                         "branch_name","branch_id","modifydate",
                         "class_id","branch_id_parent","branch_id_full",
                         "polno","payyears","signdate","amnt",
-                        "contplancode","riskcode","edorstate","edortype")),// 要从主流中需要取得的字段 之 其他字段
+                        "contplancode","riskcode","edorstate","edortype","contno")),// 要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("product_name","rate","start_date",
                         "end_date","period_type","state","pay_period")),// 要从hbase中取得的字段
                 ProductRateConfig.class,// hbase表的实体类名字
@@ -328,7 +300,7 @@ public class MainDevelopStreamTwo {
                         "polno","payyears","signdate","amnt",
                         "contplancode","riskcode","edorstate","edortype",
                         "rate","start_date",
-                        "end_date","state","pay_period")),//period_type product_name      要从主流中需要取得的字段 之 其他字段
+                        "end_date","state","pay_period","contno")),//period_type product_name      要从主流中需要取得的字段 之 其他字段
                 new HashSet<>(Arrays.asList("product_name","product_payintv")),// 要从hbase中取得的字段
                 ProductConfig.class,// hbase表的实体类名字
                 LbpolKafka06.class,// 发到kafka的实体类的名字  (固定的变量名)
@@ -341,15 +313,23 @@ public class MainDevelopStreamTwo {
         String appProductResult = "APPLICATION_PRODUCT_RESULT_RT";
 
         AppGeneralResultLBV4.LB_branch_name(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
+        AppGeneralResultLBV4.LB_all(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
         AppGeneralResultLBV4.LB_branch_name_periodtype(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
-        AppGeneralResultLBV4.LB_branch_name_num(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
+        AppGeneralResultLBV4.LB_all_periodtype(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
 
+        AppGeneralResultLBV4.LB_branch_name_num(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
+        AppGeneralResultLBV4.LB_all_num(env,"testyhlv11LB",kafkaProp,"",appGeneralResult);
+
+        /////
         AppProductResultLBV4.LB_branch_name_product(env,"testyhlv11LB",kafkaProp,"",appProductResult);
         AppProductResultLBV4.LB_branch_name_num_product(env,"testyhlv11LB",kafkaProp,"",appProductResult);
-
+        AppProductResultLBV4.LB_all_num_product(env,"testyhlv11LB",kafkaProp,"",appProductResult);
+        /////
+        AppProductDetailLBV4.LB_branch_name_product(env,"testyhlv11LB",kafkaProp,"",appProductDetail);
         AppProductDetailLBV4.LB_branch_name_product_payperiod_num(env,"testyhlv11LB",kafkaProp,"",appProductDetail);
-        AppProductDetailLBV4.LB_branch_name_product_payperiod(env,"testyhlv11LB",kafkaProp,"",appProductDetail);
-
+        //todo暂时
+//        AppProductDetailLBV4.LB_branch_name_product_payperiod(env,"testyhlv11LB",kafkaProp,"",appProductDetail);
+        AppProductDetailLBV4.LB_all_product_payperiod(env,"testyhlv11LB",kafkaProp,"",appProductDetail);
         env.execute("two");
     }
 }
